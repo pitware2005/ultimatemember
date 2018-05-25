@@ -372,13 +372,9 @@ function um_get_custom_field_array( $array, $fields ) {
 			$condition_metakey = $fields[ $value[1] ]['metakey'];
 			if ( isset( $_POST[ $condition_metakey ] ) ) {
                 
-                if ( $fields[ $value[1] ]['type'] == 'radio' ) {
+                if ( is_array( $_POST[ $condition_metakey ] ) ) {
                     $cond_value = $_POST[ $condition_metakey ][0];
-                }
-                elseif ( $fields[ $value[1] ]['type'] == 'checkbox' ) {
-                    $cond_value = $_POST[ $condition_metakey ][0];
-                }
-                else {
+                } else {
                     $cond_value = $_POST[ $condition_metakey ];                    
                 }
 				//$cond_value = ( $fields[ $value[1] ]['type'] == 'radio' ) ? $_POST[ $condition_metakey ][0] : $_POST[ $condition_metakey ];

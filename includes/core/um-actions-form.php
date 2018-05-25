@@ -316,13 +316,9 @@ function um_submit_form_errors_hook_( $args ) {
 					if ( ! isset( $args[ $parent_key ] ) )
 						continue;
                 
-                    if ( $fields[ $parent_key ]['type'] == 'radio' ) {
+                    if ( is_array( $args[ $parent_key ] ) ) {
                         $cond_value = $args[ $parent_key ][0];
-                    }
-                    elseif ( $fields[ $parent_key ]['type'] == 'checkbox' ) {
-                        $cond_value = $args[ $parent_key ][0];
-                    }
-                    else {
+                    } else {
                         $cond_value = $args[ $parent_key ];                    
                     }
                     //$cond_value = ( $fields[ $parent_key ]['type'] == 'radio' ) ? $args[ $parent_key ][0] : $args[ $parent_key ];
