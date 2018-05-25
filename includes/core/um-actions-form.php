@@ -213,49 +213,48 @@ function um_submit_form_errors_hook( $args ) {
 		 */
 		do_action( 'um_submit_form_errors_hook_logincheck', $args );
 
-	} else {
-		/**
-		 * UM hook
-		 *
-		 * @type action
-		 * @title um_submit_form_errors_hook_
-		 * @description Submit form validation
-		 * @input_vars
-		 * [{"var":"$args","type":"array","desc":"Form Arguments"}]
-		 * @change_log
-		 * ["Since: 2.0"]
-		 * @usage add_action( 'um_submit_form_errors_hook_', 'function_name', 10, 1 );
-		 * @example
-		 * <?php
-		 * add_action( 'um_submit_form_errors_hook_', 'my_submit_form_errors_hook', 10, 1 );
-		 * function my_submit_form_errors_hook( $args ) {
-		 *     // your code here
-		 * }
-		 * ?>
-		 */
-		do_action( 'um_submit_form_errors_hook_', $args );
-		/**
-		 * UM hook
-		 *
-		 * @type action
-		 * @title um_submit_form_errors_hook__blockedwords
-		 * @description Submit form validation
-		 * @input_vars
-		 * [{"var":"$args","type":"array","desc":"Form Arguments"}]
-		 * @change_log
-		 * ["Since: 2.0"]
-		 * @usage add_action( 'um_submit_form_errors_hook__blockedwords', 'function_name', 10, 1 );
-		 * @example
-		 * <?php
-		 * add_action( 'um_submit_form_errors_hook__blockedwords', 'my_submit_form_errors_hook__blockedwords', 10, 1 );
-		 * function my_submit_form_errors_hook__blockedwords( $args ) {
-		 *     // your code here
-		 * }
-		 * ?>
-		 */
-		do_action( "um_submit_form_errors_hook__blockedwords", $args );
-
 	}
+    
+    /**
+     * UM hook
+     *
+     * @type action
+     * @title um_submit_form_errors_hook_
+     * @description Submit form validation
+     * @input_vars
+     * [{"var":"$args","type":"array","desc":"Form Arguments"}]
+     * @change_log
+     * ["Since: 2.0"]
+     * @usage add_action( 'um_submit_form_errors_hook_', 'function_name', 10, 1 );
+     * @example
+     * <?php
+     * add_action( 'um_submit_form_errors_hook_', 'my_submit_form_errors_hook', 10, 1 );
+     * function my_submit_form_errors_hook( $args ) {
+     *     // your code here
+     * }
+     * ?>
+     */
+    do_action( 'um_submit_form_errors_hook_', $args );
+    /**
+     * UM hook
+     *
+     * @type action
+     * @title um_submit_form_errors_hook__blockedwords
+     * @description Submit form validation
+     * @input_vars
+     * [{"var":"$args","type":"array","desc":"Form Arguments"}]
+     * @change_log
+     * ["Since: 2.0"]
+     * @usage add_action( 'um_submit_form_errors_hook__blockedwords', 'function_name', 10, 1 );
+     * @example
+     * <?php
+     * add_action( 'um_submit_form_errors_hook__blockedwords', 'my_submit_form_errors_hook__blockedwords', 10, 1 );
+     * function my_submit_form_errors_hook__blockedwords( $args ) {
+     *     // your code here
+     * }
+     * ?>
+     */
+    do_action( "um_submit_form_errors_hook__blockedwords", $args );
 
 }
 add_action( 'um_submit_form_errors_hook', 'um_submit_form_errors_hook', 10 );
@@ -316,8 +315,17 @@ function um_submit_form_errors_hook_( $args ) {
 
 					if ( ! isset( $args[ $parent_key ] ) )
 						continue;
-
-					$cond_value = ( $fields[ $parent_key ]['type'] == 'radio' ) ? $args[ $parent_key ][0] : $args[ $parent_key ];
+                
+                    if ( $fields[ $parent_key ]['type'] == 'radio' ) {
+                        $cond_value = $args[ $parent_key ][0];
+                    }
+                    elseif ( $fields[ $parent_key ]['type'] == 'checkbox' ) {
+                        $cond_value = $args[ $parent_key ][0];
+                    }
+                    else {
+                        $cond_value = $args[ $parent_key ];                    
+                    }
+                    //$cond_value = ( $fields[ $parent_key ]['type'] == 'radio' ) ? $args[ $parent_key ][0] : $args[ $parent_key ];
 
 					if ( $visibility == 'hide' ) {
 						if ( $op == 'empty' ) {
@@ -471,10 +479,10 @@ function um_submit_form_errors_hook_( $args ) {
 				}
 
 				if ( isset( $array['force_confirm_pass'] ) && $array['force_confirm_pass'] == 1 ) {
-					if ( $args[ 'confirm_' . $key] == '' && ! UM()->form()->has_error($key) ) {
+					if ( empty( $args[ 'confirm_' . $key] ) && ! UM()->form()->has_error($key) ) {
 						UM()->form()->add_error( 'confirm_' . $key , __('Please confirm your password','ultimate-member') );
 					}
-					if ( $args[ 'confirm_' . $key] != $args[$key] && !UM()->form()->has_error($key) ) {
+					if ( isset( $args[ 'confirm_' . $key] ) && $args[ 'confirm_' . $key] != $args[$key] && !UM()->form()->has_error($key) ) {
 						UM()->form()->add_error( 'confirm_' . $key , __('Your passwords do not match','ultimate-member') );
 					}
 				}
