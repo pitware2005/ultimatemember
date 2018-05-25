@@ -318,8 +318,10 @@ function um_submit_form_errors_hook_( $args ) {
                 
                     if ( is_array( $args[ $parent_key ] ) ) {
                         $cond_value = $args[ $parent_key ][0];
+                        $cond_value_arr = $args[ $parent_key ];
                     } else {
-                        $cond_value = $args[ $parent_key ];                    
+                        $cond_value = $args[ $parent_key ];
+                        $cond_value_arr = array( $args[ $parent_key ] );
                     }
                     //$cond_value = ( $fields[ $parent_key ]['type'] == 'radio' ) ? $args[ $parent_key ][0] : $args[ $parent_key ];
 
@@ -349,7 +351,7 @@ function um_submit_form_errors_hook_( $args ) {
 								continue 2;
 							}
 						} elseif ( $op == 'contains' ) {
-							if ( strstr( $cond_value, $parent_value ) ) {
+							if ( strstr( $cond_value, $parent_value ) || in_array( $parent_value, $cond_value_arr )  ) {
 								continue 2;
 							}
 						}
@@ -379,7 +381,7 @@ function um_submit_form_errors_hook_( $args ) {
 								continue 2;
 							}
 						} elseif ( $op == 'contains' ) {
-							if ( ! strstr( $cond_value, $parent_value ) ) {
+							if ( ! strstr( $cond_value, $parent_value ) && ! in_array( $parent_value, $cond_value_arr ) ) {
 								continue 2;
 							}
 						}

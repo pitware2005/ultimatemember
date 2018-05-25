@@ -374,8 +374,10 @@ function um_get_custom_field_array( $array, $fields ) {
                 
                 if ( is_array( $_POST[ $condition_metakey ] ) ) {
                     $cond_value = $_POST[ $condition_metakey ][0];
+                    $cond_value_arr = $_POST[ $condition_metakey ];
                 } else {
                     $cond_value = $_POST[ $condition_metakey ];                    
+                    $cond_value_arr = array( $args[ $parent_key ] );                   
                 }
 				//$cond_value = ( $fields[ $value[1] ]['type'] == 'radio' ) ? $_POST[ $condition_metakey ][0] : $_POST[ $condition_metakey ];
                 
@@ -407,7 +409,7 @@ function um_get_custom_field_array( $array, $fields ) {
 							$array['required'] = 0;
 						}
 					} elseif ( $op == 'contains' ) {
-						if ( strstr( $cond_value, $parent_value ) ) {
+						if ( strstr( $cond_value, $parent_value ) || in_array( $parent_value, $cond_value_arr ) ) {
 							$array['required'] = 0;
 						}
 					}
@@ -437,7 +439,7 @@ function um_get_custom_field_array( $array, $fields ) {
 							$array['required'] = 0;
 						}
 					} elseif ( $op == 'contains' ) {
-						if ( ! strstr( $cond_value, $parent_value ) ) {
+						if ( ! strstr( $cond_value, $parent_value ) && ! in_array( $parent_value, $cond_value_arr ) ) {
 							$array['required'] = 0;
 						}
 					}
