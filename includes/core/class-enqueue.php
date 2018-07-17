@@ -153,7 +153,7 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 			 */
 			$localize_data = apply_filters( 'um_enqueue_localize_data', array(
 				'nonce' => wp_create_nonce( "um-frontend-nonce" ),
-				'ajax_get_members' => UM()->get_ajax_route( 'um\core\Members', 'ajax_get_members' ),
+				//'ajax_get_members' => UM()->get_ajax_route( 'um\core\Members', 'ajax_get_members' ),
 			) );
 
 			wp_localize_script( 'um-scripts', 'um_scripts', $localize_data );

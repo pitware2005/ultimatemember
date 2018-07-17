@@ -1,6 +1,14 @@
 <?php $args['view_type'] = ! empty( $args['view_type'] ) ? $args['view_type'] : '';
 $args['view_type'] = ! empty( $_GET['view_type'] ) ? $_GET['view_type'] : $args['view_type'];
-$view_type = ( ! empty( $args['view_type'] ) && 'list' == $args['view_type'] ) ? 'list' : 'grid';
+$view_type = ( ! empty( $args['view_type'] ) ) ? $args['view_type'] : 'grid';
+
+$single_view = true;
+if ( in_array( $view_type, array( 'both_list', 'both_grid' ) ) ) {
+	$single_view = false;
+}
+
+///var_dump( $single_view );
+
 $sorting_options = array(); 
 if( isset( $args['sorting_fields'] ) && ! empty( $args['sorting_fields'] ) ){ 
    $sorting_options = $args['sorting_fields'];
@@ -51,11 +59,13 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
                         </a>
                     </div>
                 <?php } ?>
-                <div class="um-member-directory-view-type">
-                    <a href="javascript:void(0);" class="um-member-directory-view-type-a um-tip-n" original-title="<?php if ( 'list' == $view_type ) { ?>Change to Grid<?php } else { ?>Change to List<?php } ?>">
-                        <i class="<?php if ( 'list' == $view_type ) { ?>um-faicon-list<?php } else { ?>um-faicon-th<?php } ?>"></i>
-                    </a>
-                </div>
+	            <?php if ( ! $single_view ) { ?>
+	                <div class="um-member-directory-view-type">
+	                    <a href="javascript:void(0);" class="um-member-directory-view-type-a um-tip-n" original-title="<?php if ( 'list' == $view_type ) { ?>Change to Grid<?php } else { ?>Change to List<?php } ?>">
+	                        <i class="<?php if ( 'list' == $view_type ) { ?>um-faicon-list<?php } else { ?>um-faicon-th<?php } ?>"></i>
+	                    </a>
+	                </div>
+	            <?php } ?>
             </div>
             <div class="um-clear"></div>
         </div>

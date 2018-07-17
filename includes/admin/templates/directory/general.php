@@ -72,8 +72,10 @@ $_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true );
 			'label'		=> __( 'View type', 'ultimate-member' ),
 			'tooltip'	=> __( 'View type a specific parameter in the directory', 'ultimate-member' ),
 			'options'	=> array(
-				'grid'	=> __( 'Grid', 'ultimate-member' ),
-				'list'	=> __( 'List', 'ultimate-member' ),
+				'grid'      => __( 'Grid only', 'ultimate-member' ),
+				'list'      => __( 'List only', 'ultimate-member' ),
+				'both_grid' => __( 'Both (Default Grid)', 'ultimate-member' ),
+				'both_list' => __( 'Both (Default List)', 'ultimate-member' ),
 			),
 			'value'		=> UM()->query()->get_meta_value( '_um_view_type' ),
 		),

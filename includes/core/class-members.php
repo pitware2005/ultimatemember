@@ -55,7 +55,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 * @param $args
 		 */
 		function pre_directory_shortcode( $args ) {
-			wp_localize_script( 'um_members', 'um_members_args', $args );
+			wp_localize_script( 'um-members', 'um_members_args', $args );
 		}
 
 
@@ -357,22 +357,24 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			$total_users = ( ! empty( $max_users ) && $max_users <= $users->total_users ) ? $max_users : $users->total_users;
 			$total_pages = ceil( $total_users / $profiles_per_page );
 
-			$index1 = 0 - ( $current_page - 2 ) + 1;
-			$to = $current_page + 2;
-			if ( $index1 > 0 ) {
-				$to += $index1;
-			}
+			if ( ! empty( $total_pages ) ) {
+				$index1 = 0 - ( $current_page - 2 ) + 1;
+				$to = $current_page + 2;
+				if ( $index1 > 0 ) {
+					$to += $index1;
+				}
 
-			$index2 = $total_pages - ( $current_page + 2 );
-			$from = $current_page - 2;
-			if ( $index2 < 0 ) {
-				$from += $index2;
-			}
+				$index2 = $total_pages - ( $current_page + 2 );
+				$from = $current_page - 2;
+				if ( $index2 < 0 ) {
+					$from += $index2;
+				}
 
-			$pages_to_show = range(
-				( $from > 0 ) ? $from : 1,
-				( $to <= $total_pages ) ? $to : $total_pages
-			);
+				$pages_to_show = range(
+					( $from > 0 ) ? $from : 1,
+					( $to <= $total_pages ) ? $to : $total_pages
+				);
+			}
 
 			$response = array(
 				'users'         => $user_ids,
@@ -497,6 +499,8 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 * get AJAX results members
 		 */
 		function ajax_get_members() {
+			UM()->check_frontend_ajax_nonce();
+
 			$args = ! empty( $_POST['args'] ) ? $_POST['args'] : array();
 			$args['page'] = ! empty( $_POST['page'] ) ? $_POST['page'] : ( isset( $args['page'] ) ? $args['page'] : 1 );
 
