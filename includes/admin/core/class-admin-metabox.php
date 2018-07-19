@@ -1164,8 +1164,9 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 
 			$where = array( 'ID' => $post_id );
 
-			if ( empty( $_POST['post_title'] ) )
+			if ( empty( $_POST['post_title'] ) ) {
 				$_POST['post_title'] = 'Directory #'.$post_id;
+			}
 
 			$wpdb->update( $wpdb->posts, array( 'post_title' => $_POST['post_title'] ), $where );
 
@@ -1186,6 +1187,15 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 				if ( $k == '_um_tagline_fields' || $k == '_um_reveal_fields' )  {
 					$remove = array_keys( $v, '0' );
 					$v = array_values( array_diff_key( $v, array_flip( $remove ) ) );
+				}
+
+				if ( $k == '_um_sorting_fields' )  {
+					unset( $v[0] );
+					$v = array_values( $v );
+				}
+
+				if ( is_array( $v ) ) {
+					$v = array_unique( $v );
 				}
 
 				if ( strstr( $k, '_um_' ) ) {

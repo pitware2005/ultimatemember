@@ -116,7 +116,7 @@ $_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true );
 			'value'		=> $_um_sorting_fields,
 			'options'   => $sorting_fields,
 			'add_text'		=> __( 'Add New Field','ultimate-member' ),
-			'show_default_number'	=> 1,
+			'show_default_number'	=> 0,
 		),
 		array(
 			'id'		=> '_um_sortby',
@@ -125,6 +125,7 @@ $_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true );
 			'tooltip'	=> __( 'Default sorting users by a specific parameter in the directory', 'ultimate-member' ),
 			'options'	=> $sort_options,
 			'value'		=> UM()->query()->get_meta_value( '_um_sortby' ),
+			'conditional' => array( '_um_sorting_fields', 'in_array' )
 		),
 		array(
 			'id'		    => '_um_sortby_custom',
@@ -134,12 +135,6 @@ $_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true );
 			'value'		    => UM()->query()->get_meta_value( '_um_sortby_custom', null, 'na' ),
 			'conditional'   => array( '_um_sortby', '=', 'other' )
 		),
-		array(
-			'id'		    => '_um_show_these_users',
-			'type'		    => 'textarea',
-			'label'		    => __( 'Only show specific users (Enter one username per line)', 'ultimate-member' ),
-			'value'		    => $show_these_users,
-		)
 	);
 
 	/**

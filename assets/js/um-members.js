@@ -9,7 +9,7 @@ var um_members_directory_busy = [];
 jQuery(document).ready(function() {
 
 	//change layout
-	jQuery( document ).on( 'click', '.um-member-directory-view-type-a', function(e){
+	jQuery( document.body ).on( 'click', '.um-member-directory-view-type-a', function(e){
 		e.preventDefault();
 
 		var directory = jQuery(this).parents('.um-directory');
@@ -43,7 +43,7 @@ jQuery(document).ready(function() {
 
 
 	//pagination
-	jQuery( document ).on( 'click', '.um-directory .pagi:not(.current)', function(e){
+	jQuery( document.body ).on( 'click', '.um-directory .pagi:not(.current)', function(e){
 		e.preventDefault();
 
 		if ( jQuery(this).hasClass('disabled') )
@@ -91,7 +91,7 @@ jQuery(document).ready(function() {
 
 
 	//mobile pagination
-	jQuery( document ).on( 'change', '.um-directory .um-members-pagi-dropdown', function(e){
+	jQuery( document.body ).on( 'change', '.um-directory .um-members-pagi-dropdown', function(e){
 		e.preventDefault();
 
 		var directory = jQuery(this).parents('.um-directory');
@@ -116,7 +116,7 @@ jQuery(document).ready(function() {
 	/**
 	 * Searching
 	 */
-	jQuery( document ).on( 'click', '.um-do-search', function(e){
+	jQuery( document.body ).on( 'click', '.um-do-search', function(e){
 		e.preventDefault();
 
 		var directory = jQuery(this).parents('.um-directory');
@@ -135,7 +135,7 @@ jQuery(document).ready(function() {
 		return false;
 	});
 
-	jQuery( document ).on('keypress', '.um-search-line', function(e) {
+	jQuery( document.body ).on('keypress', '.um-search-line', function(e) {
 		if ( e.which == '13' ) {
 			var directory = jQuery(this).parents('.um-directory');
 			directory.find('.um-do-search').trigger('click');
@@ -164,7 +164,7 @@ jQuery(document).ready(function() {
 
 
 	//filtration process
-	jQuery( document ).on( 'change', '.um-search-filter select', function(e){
+	jQuery( document.body ).on( 'change', '.um-search-filter select', function(e){
 		e.preventDefault();
 
 		if ( jQuery(this).val() == '' )
@@ -201,7 +201,7 @@ jQuery(document).ready(function() {
 		return false;
 	});
 
-	jQuery( document ).on( 'click', '.um-members-filter-remove', function(e){
+	jQuery( document.body ).on( 'click', '.um-members-filter-remove', function(e){
 		e.preventDefault();
 
 		var directory = jQuery(this).parents('.um-directory');
@@ -230,7 +230,7 @@ jQuery(document).ready(function() {
 		return false;
 	});
 
-	jQuery( document ).on( 'click', '.um-clear-filters-a', function(e){
+	jQuery( document.body ).on( 'click', '.um-clear-filters-a', function(e){
 		e.preventDefault();
 
 		var directory = jQuery(this).parents('.um-directory');
@@ -306,7 +306,7 @@ jQuery(document).ready(function() {
 
 
 	//sorting
-	jQuery( document ).on( 'change', '.um-member-directory-sorting-options', function(e){
+	jQuery( document.body ).on( 'change', '.um-member-directory-sorting-options', function(e){
 		var directory = jQuery(this).parents('.um-directory');
 
 		if ( is_directory_busy( directory ) )
@@ -321,7 +321,7 @@ jQuery(document).ready(function() {
 
 
 	//grid controls
-	jQuery(document).on( 'click', '.um-member-more a', function(e){
+	jQuery(document.body).on( 'click', '.um-member-more a', function(e){
 		e.preventDefault();
 
 		var directory = jQuery(this).parents('.um-directory');
@@ -542,7 +542,7 @@ function um_build_template( directory, data ) {
 	}
 
 
-    jQuery( document ).trigger( "um_build_template", [ directory ] );
+    jQuery( document.body ).trigger( "um_build_template", [ directory ] );
 }
 
 

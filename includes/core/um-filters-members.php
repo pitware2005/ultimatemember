@@ -445,12 +445,15 @@ function um_add_filter_to_query( $query_args, $args ) {
 	if ( $query && is_array( $query ) ) {
 		foreach ( $query as $field => $value ) {
 
-			if ( in_array( $field, array( 'members_page', 'general_search' ) ) ) continue;
+			if ( in_array( $field, array( 'members_page', 'general_search', 'action', 'nonce' ) ) ) {
+				continue;
+			}
 
 			if ( $value && $field != 'um_search' && $field != 'page_id' ) {
 
-				if ( strstr( $field, 'role_' ) )
+				if ( strstr( $field, 'role_' ) ) {
 					$field = 'role';
+				}
 
 				if ( ! in_array( $field, UM()->members()->core_search_fields ) ) {
 

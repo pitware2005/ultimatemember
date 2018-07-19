@@ -791,7 +791,7 @@ if ( ! class_exists( 'um\admin\core\Admin_Forms' ) ) {
 				$options .= '<option value="' . $key . '">' . $option . '</option>';
 			}
 
-			$html = "<select class=\"um-hidden-multi-selects\" $data_attr>$options</select>";
+			$html = "<input type='hidden' " . $name_attr . " value='' /><select class=\"um-hidden-multi-selects\" $data_attr>$options</select>";
 			$html .= "<ul class=\"um-multi-selects-list\" $data_attr>";
 
 			if ( ! empty( $values ) ) {

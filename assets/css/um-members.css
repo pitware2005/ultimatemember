@@ -501,6 +501,14 @@ div.uimob500 .um-member-directory-search-line .um-do-search {
 	width: calc( 100% - 35px );
 }
 
+.um-member-directory-sorting.hidden_type {
+	width: calc( 100% - 36px );
+}
+
+.um-member-directory-sorting.hidden_type.hidden_filter {
+	width: 100%;
+}
+
 
 .um-member-directory-sorting .select2-container {
 	float:left;
@@ -667,6 +675,13 @@ div.uimob500 .um-members-list .um-member-card-actions {
 
 .um-directory.um-loaded .um-members-wrapper {
 	height: auto;
+}
+
+.um-members-pagination-box {
+	width: 100%;
+	float:left;
+	margin: 0 0 10px 0;
+	padding: 0;
 }
 
 .um-members-pagi,
