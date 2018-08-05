@@ -430,6 +430,11 @@ function um_init_image_upload( event, trigger ) {
 		upload_text = '<span class="str">' + trigger.data('upload_text') + '</span>';
 	}
 
+	var user_id = null;
+	if( jQuery('#um_upload_single:visible').data('user_id') ){
+		user_id = jQuery('#um_upload_single:visible').data('user_id');
+	}
+
 	trigger.uploadFile({
 		url: wp.ajax.settings.url,
 		method: "POST",
@@ -440,7 +445,8 @@ function um_init_image_upload( event, trigger ) {
 			set_id: trigger.data('set_id'),
 			set_mode: trigger.data('set_mode'),
 			_wpnonce: trigger.data('nonce'),
-			timestamp: trigger.data('timestamp')
+			timestamp: trigger.data('timestamp'),
+			user_id: user_id
 		},
 		fileName: trigger.data('key'),
 		allowedTypes: trigger.data('allowed_types'),
@@ -479,12 +485,16 @@ function um_init_image_upload( event, trigger ) {
 
 			} else {
 
-				jQuery.each( data, function(key, value) {
-
+				jQuery.each( data, function( i, d ) {
+					
 					var img_id = trigger.parents('.um-modal-body').find('.um-single-image-preview img');
 					var img_id_h = trigger.parents('.um-modal-body').find('.um-single-image-preview');
 
-					img_id.attr("src", value);
+					var cache_ts = new Date();
+			
+					img_id.attr("src", d.url + "?"+cache_ts.getTime() );
+					img_id.data("file", d.file );
+
 					img_id.load(function(){
 
 						trigger.parents('.um-modal-body').find('.um-modal-btn.um-finish-upload.disabled').removeClass('disabled');
@@ -557,7 +567,7 @@ function um_init_file_upload( event, trigger ) {
 			trigger.parents('.um-modal-body').find('.um-error-block').remove();
 
 		},
-		onSuccess:function(files,data,xhr){
+		onSuccess:function( files,data,xhr ){
 
 			trigger.selectedFiles = 0;
 
@@ -580,13 +590,27 @@ function um_init_file_upload( event, trigger ) {
 					trigger.parents('.um-modal-body').find('.um-single-file-preview').show(0);
 
 					if (key == 'icon') {
-						trigger.parents('.um-modal-body').find('.um-single-fileinfo i').removeClass().addClass(value);
+					
+						trigger.parents('.um-modal-body').find('.um-single-fileinfo i').removeClass().addClass( value );
+					
 					} else if ( key == 'icon_bg' ) {
+						
 						trigger.parents('.um-modal-body').find('.um-single-fileinfo span.icon').css({'background-color' : value } );
+					
 					} else if ( key == 'filename' ) {
-						trigger.parents('.um-modal-body').find('.um-single-fileinfo span.filename').html(value);
-					} else {
+						
+						trigger.parents('.um-modal-body').find('.um-single-fileinfo a').attr('data-file', value );
+						
+					}else if( key == 'original_name' ){
+
+						trigger.parents('.um-modal-body').find('.um-single-fileinfo a').attr('data-orignal-name', value );
+						trigger.parents('.um-modal-body').find('.um-single-fileinfo span.filename').html( value );
+						
+						
+					} else if ( key == 'url' ) {
+						
 						trigger.parents('.um-modal-body').find('.um-single-fileinfo a').attr('href', value);
+					
 					}
 
 				});
