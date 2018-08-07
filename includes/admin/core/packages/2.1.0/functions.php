@@ -101,7 +101,7 @@ function um_upgrade_usermeta2022() {
 		}
 
 		if ( $_POST['page'] == $_POST['pages'] ) {
-			update_option( 'um_last_version_upgrade', '2.0.22-alpha1' );
+			update_option( 'um_last_version_upgrade', '2.1.0' );
 		}
 
 		wp_send_json_success( array( 'message' => sprintf( __( 'Users from %s to %s was upgraded successfully...', 'ultimate-member' ), $from, $to ) ) );
