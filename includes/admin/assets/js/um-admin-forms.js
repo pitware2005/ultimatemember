@@ -197,9 +197,6 @@ jQuery(document).ready( function() {
 
 		var prefix = form_line.data( 'prefix' );
 
-		console.log( condition );
-		console.log( '#' + prefix + '_' + conditional[0] );
-
 		var condition_field = jQuery( '#' + prefix + '_' + conditional[0] );
 		var parent_condition = true;
 		if ( typeof condition_field.parents('.um-forms-line').data('conditional') !== 'undefined' ) {
@@ -207,6 +204,12 @@ jQuery(document).ready( function() {
 		}
 
 		var own_condition = false;
+
+		if ( typeof condition_field.prop("tagName") == 'undefined' ) {
+			own_condition = true;
+			return ( own_condition && parent_condition );
+		}
+
 		var tagName = condition_field.prop("tagName").toLowerCase();
 		var input_type = condition_field.attr('type');
 		if ( condition == '=' ) {
@@ -231,7 +234,16 @@ jQuery(document).ready( function() {
 			} else if ( tagName == 'select' ) {
 				own_condition = ( condition_field.val() != value );
 			}
-		} else if ( condition == 'in_array' ) {
+		} else if ( condition == 'length' ) {
+
+            if ( tagName == 'select' && condition_field.prop('multiple') ) {
+                var multiple = condition_field.val() || [];
+				own_condition = ( multiple.length >= value );
+			} else {
+				own_condition = true;
+			}
+
+		} else if ( condition == 'no_empty' ) {
 
 			own_condition = true;
 

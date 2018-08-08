@@ -68,16 +68,28 @@ $_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true );
 		array(
 			'id'		=> '_um_view_type',
 			'type'		=> 'select',
+			'multi'		=> true,
 			'name'		=> '_um_view_type',
-			'label'		=> __( 'View type', 'ultimate-member' ),
+			'label'		=> __( 'View type(s)', 'ultimate-member' ),
 			'tooltip'	=> __( 'View type a specific parameter in the directory', 'ultimate-member' ),
 			'options'	=> array(
-				'grid'      => __( 'Grid only', 'ultimate-member' ),
-				'list'      => __( 'List only', 'ultimate-member' ),
-				'both_grid' => __( 'Both (Default Grid)', 'ultimate-member' ),
-				'both_list' => __( 'Both (Default List)', 'ultimate-member' ),
+				'grid'      => __( 'Grid', 'ultimate-member' ),
+				'list'      => __( 'List', 'ultimate-member' ),
 			),
 			'value'		=> UM()->query()->get_meta_value( '_um_view_type' ),
+		),
+		array(
+			'id'		=> '_um_default_view',
+			'type'		=> 'select',
+			'name'		=> '_um_default_view',
+			'label'		=> __( 'Default view type', 'ultimate-member' ),
+			'tooltip'	=> __( 'Default directory view type', 'ultimate-member' ),
+			'options'	=> array(
+				'grid'      => __( 'Grid', 'ultimate-member' ),
+				'list'      => __( 'List', 'ultimate-member' ),
+			),
+			'value'		=> UM()->query()->get_meta_value( '_um_default_view' ),
+			'conditional' => array( '_um_view_type', 'length', 2 )
 		),
 		array(
 			'id'		=> '_um_roles',
@@ -125,7 +137,7 @@ $_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true );
 			'tooltip'	=> __( 'Default sorting users by a specific parameter in the directory', 'ultimate-member' ),
 			'options'	=> $sort_options,
 			'value'		=> UM()->query()->get_meta_value( '_um_sortby' ),
-			'conditional' => array( '_um_sorting_fields', 'in_array' )
+			'conditional' => array( '_um_sorting_fields', '!=', '' )
 		),
 		array(
 			'id'		    => '_um_sortby_custom',
