@@ -72,16 +72,15 @@ if ( ! class_exists( 'um\admin\core\Admin_Menu' ) ) {
 
 					<script type="text/javascript">
 						jQuery( 'a.um-admin-rating-link' ).click(function() {
-							jQuery.ajax({
-								url: wp.ajax.settings.url,
-								type: 'post',
+							wp.ajax.send( 'um_rated', {
 								data: {
-									action: 'um_rated'
+									nonce: um_scripts.nonce
 								},
-								success: function(){
+								success: function() {
 
 								}
 							});
+
 							jQuery(this).parent().text( jQuery( this ).data( 'rated' ) );
 						});
 					</script>
