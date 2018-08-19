@@ -164,6 +164,7 @@ if ( ! class_exists( 'UM' ) ) {
 		 */
 		function __construct() {
 			parent::__construct();
+			add_action( 'switch_blog', array( &$this, 'switch_blog' ) );
 		}
 
 
@@ -1318,6 +1319,13 @@ if ( ! class_exists( 'UM' ) ) {
 
 			return $this->classes['mobile'];
 		}
+
+
+		function switch_blog() {
+			if( !empty( $this->classes ) ) {
+				$this->classes = array();
+			}
+        }
 
 
 		/**
