@@ -220,7 +220,7 @@ add_filter( 'um_profile_field_filter_hook__date', 'um_profile_field_filter_hook_
  * @param $value
  * @param $data
  *
- * @return string|void
+ * @return string
  */
 function um_profile_field_filter_hook__file( $value, $data ) {
 	$uri = um_user_uploads_uri() . $value;
@@ -229,12 +229,10 @@ function um_profile_field_filter_hook__file( $value, $data ) {
 	if ( ! file_exists( um_user_uploads_dir() . $value ) ) {
 		$value = __('This file has been removed.','ultimate-member');
 	} else {
-
 		$file_info = um_user( $data['metakey']."_metadata" );
 		if( isset( $file_info['original_name'] ) && ! empty( $file_info['original_name'] ) ){
 			$value = $file_info['original_name'];
 		}
-
 		$value = '<div class="um-single-file-preview show">
                         <div class="um-single-fileinfo">
                             <a href="' . $uri  . '" target="_blank">
@@ -244,7 +242,7 @@ function um_profile_field_filter_hook__file( $value, $data ) {
                         </div>
                     </div>';
 	}
-
+	
 	return $value;
 }
 add_filter( 'um_profile_field_filter_hook__file', 'um_profile_field_filter_hook__file', 99, 2 );

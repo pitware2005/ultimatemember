@@ -1340,18 +1340,18 @@ function um_can_view_profile( $user_id ) {
 		return ! UM()->user()->is_private_profile( $user_id );
 	}
 
+	$temp_id = um_user('ID');
+	um_fetch_user( get_current_user_id() );
+
 	if ( ! um_user( 'can_access_private_profile' ) && UM()->user()->is_private_profile( $user_id ) ) {
 		return false;
 	}
 
-	$temp_id = um_user('ID');
-	um_fetch_user( get_current_user_id() );
-
 	if ( um_user( 'can_view_roles' ) && $user_id != get_current_user_id() ) {
 
 		$can_view_roles = um_user( 'can_view_roles' );
-		
-		if( ! is_array( $can_view_roles ) ) $can_view_roles = array();
+ 		
+ 		if( ! is_array( $can_view_roles ) ) $can_view_roles = array();
 
 		if ( count( array_intersect( UM()->roles()->get_all_user_roles( $user_id ), $can_view_roles ) ) <= 0 ) {
 			um_fetch_user( $temp_id );
@@ -1712,9 +1712,9 @@ function um_get_cover_uri( $image, $attrs ) {
 	}else if ( file_exists( UM()->files()->upload_basedir . um_user( 'ID' ) . "/cover_photo-{$attrs}{$ext}" ) ) {
 		$uri = um_user_uploads_uri() . "/cover_photo-{$attrs}{$ext}?" . current_time( 'timestamp' );
 	}
-
 	return $uri;
 }
+
 
 
 /**
@@ -1743,7 +1743,6 @@ function um_get_avatar_uri( $image, $attrs ) {
 	$uri = false;
 	$find = false;
 	$ext = '.' . pathinfo( $image, PATHINFO_EXTENSION );
-
 	/**
 	 * UM hook
 	 *
@@ -1766,7 +1765,6 @@ function um_get_avatar_uri( $image, $attrs ) {
 	 * ?>
 	 */
 	$cache_time = apply_filters( 'um_filter_avatar_cache_time', current_time( 'timestamp' ), um_user( 'ID' ) );
-
 	if( $attrs == 'original' && file_exists( um_user_uploads_dir() . "profile_photo{$ext}" ) ) {
         $uri = um_user_uploads_uri() . "profile_photo{$ext}";
     } else if ( file_exists( um_user_uploads_dir() . "profile_photo-{$attrs}x{$attrs}{$ext}" ) ) {
@@ -1776,7 +1774,6 @@ function um_get_avatar_uri( $image, $attrs ) {
 	} else {
 		$sizes = UM()->options()->get( 'photo_thumb_sizes' );
 		if ( is_array( $sizes ) ) $find = um_closest_num( $sizes, $attrs );
-
 		if ( file_exists( um_user_uploads_dir() . "profile_photo-{$find}x{$find}{$ext}" ) ) {
 			$uri = um_user_uploads_uri() . "profile_photo-{$find}x{$find}{$ext}";
 		}else if ( file_exists( um_user_uploads_dir() . "profile_photo-{$find}{$ext}" ) ) {
@@ -1785,11 +1782,9 @@ function um_get_avatar_uri( $image, $attrs ) {
 			$uri = um_user_uploads_uri() . "profile_photo{$ext}";
 		}
 	}
-
 	if ( !empty( $cache_time ) ) {
 		$uri .= "?{$cache_time}";
 	}
-
 	return $uri;
 }
 
