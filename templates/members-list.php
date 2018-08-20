@@ -51,7 +51,12 @@
 
                             <?php if ( $show_tagline && is_array( $tagline_fields ) ) {
 
-                                foreach ( $tagline_fields as $key ) { ?>
+                                foreach ( $tagline_fields as $key ) {
+
+	                                if ( empty( $key ) ) {
+		                                continue;
+	                                } ?>
+
                                     <# if ( user.<?php echo $key;?> ) { #>
                                         <div class="um-member-tagline um-member-tagline-<?php echo $key;?>">
                                             {{{user.<?php echo $key;?>}}}
@@ -68,7 +73,12 @@
 
                                 <div class="um-member-meta no-animate">
 
-                                    <?php foreach ( $reveal_fields as $key ) { ?>
+                                    <?php foreach ( $reveal_fields as $key ) {
+
+	                                    if ( empty( $key ) ) {
+		                                    continue;
+	                                    } ?>
+
                                         <# if ( user.<?php echo $key;?> ) { #>
                                             <div class="um-member-metaline um-member-metaline-<?php echo $key; ?>">
                                                 <span>
@@ -90,19 +100,22 @@
 
                     </div>
 
-                    <div class="um-member-card-actions">
-                        <# if ( user.can_edit ) { #>
-                            <div class="um-members-edit-btn">
-                                <a href="{{{user.edit_profile_url}}}" class="um-edit-profile-btn um-button um-alt">
-                                    <?php _e( 'Edit profile','ultimate-member' ) ?>
-                                </a>
-                            </div>
-                        <# } #>
+	                <# if ( user.actions.length > 0 ) { #>
+		                <div class="um-member-card-actions">
+			                <# _.each( user.actions, function( action, action_key, action_list ) { #>
+				                <div class="{{{action.wrapper_class}}}">
+					                <a href="{{{action.url}}}" class="{{{action.class}}}">
+						                {{{action.title}}}
+					                </a>
+				                </div>
+			                <# }); #>
 
-                        <?php do_action( 'um_members_just_after_name', $args ); ?>
-                    </div>
-
+			                <?php do_action( 'um_members_just_after_name', $args ); ?>
+		                </div>
+	                <# } #>
+	                <div class="um-clear"></div>
                 </div>
+	            <div class="um-clear"></div>
             <# }); #>
         <# } else { #>
             <div class="um-members-none">

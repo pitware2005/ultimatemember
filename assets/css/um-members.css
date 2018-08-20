@@ -134,13 +134,15 @@
 	box-sizing: border-box;
 }
 
-.um-member {
+.um-members-grid .um-member {
 	float: left;
 	width: 30%;
 	background: #fff;
 	text-align: center;
 	border: 1px solid #eee;
 	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	margin-bottom: 40px;
 	position: relative;
 }
@@ -568,12 +570,6 @@ div.uimob500 .um-member-directory-search-line .um-do-search {
 	margin: 27px 15px 0 0;
 }
 
-div.uimob340 .um-members-list .um-member .um-member-photo,
-div.uimob500 .um-members-list .um-member .um-member-photo {
-	width: 100%;
-	margin: 27px 0 15px;
-}
-
 .um-members-list .um-member .um-member-card {
 	float: left;
 	padding: 0;
@@ -581,12 +577,6 @@ div.uimob500 .um-members-list .um-member .um-member-photo {
 	margin: 0;
 	text-align: left;
 	box-sizing: border-box;
-}
-
-div.uimob340 .um-members-list .um-member .um-member-card,
-div.uimob500 .um-members-list .um-member .um-member-card {
-	width: 100%;
-	margin-bottom: 10px;
 }
 
 .um-members-list .um-member-card-actions {

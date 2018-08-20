@@ -190,7 +190,7 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 			$style_deps = array(
 				'searchform'    => array( 'um-default-css', 'um-misc', 'um-fonticons-ii', 'um-fonticons-fa' ),
 				'account'       => array( 'um-default-css', 'um-misc', 'um-fonticons-ii', 'um-fonticons-fa', 'select2', 'um-raty', 'um-tipsy', 'um-responsive', 'um-modal' ),
-				'members'       => array( 'um-default-css', 'um-misc', 'um-fonticons-ii', 'um-fonticons-fa', 'select2', 'um-responsive', 'um-modal' ),
+				'members'       => array( 'um-default-css', 'um-misc', 'um-fonticons-ii', 'um-fonticons-fa', 'select2', 'um-responsive', 'um-tipsy', 'um-modal' ),
 				'profile'       => array( 'um-default-css', 'um-misc', 'um-fonticons-ii', 'um-fonticons-fa', 'select2', 'um-raty', 'um-tipsy', 'um-crop', 'um-fileupload', 'um-datetime-time', 'um-datetime-date', 'um-scrollbar', 'um-responsive', 'um-modal' ),
 			);
 

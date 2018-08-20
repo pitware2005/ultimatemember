@@ -513,6 +513,16 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			foreach ( $users['users'] as $user_id ) {
 				um_fetch_user( $user_id );
 
+				$actions = array();
+				if ( UM()->roles()->um_current_user_can( 'edit', $user_id ) || UM()->roles()->um_user_can( 'can_edit_everyone' ) ) {
+					$actions[] = array(
+						'title'         => __( 'Edit profile','ultimate-member' ),
+						'url'           => um_edit_profile_url(),
+						'wrapper_class' => 'um-members-edit-btn',
+						'class'         => 'um-edit-profile-btn um-button um-alt',
+					);
+				}
+
 				$data_array = array(
 					'id'                    => $user_id,
 					'role'                  => um_user('role'),
@@ -526,6 +536,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 					'avatar'                => get_avatar( $user_id, str_replace( 'px', '', UM()->options()->get( 'profile_photosize' ) ) ),
 					'display_name_html'     => um_user('display_name', 'html'),
 					'social_urls'           => UM()->fields()->show_social_urls( false ),
+					'actions'               => $actions,
 				);
 
 				if ( $args['show_tagline'] && is_array( $args['tagline_fields'] ) ) {

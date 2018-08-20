@@ -235,6 +235,17 @@ div.uimob340 .um-search .um-search-submit .um-button {
 div.uimob340 .um-member {width: 100%}
 div.uimob340 .um-gutter-sizer {width: 0px}
 
+div.uimob340 .um-members-list .um-member .um-member-photo,
+div.uimob500 .um-members-list .um-member .um-member-photo {
+	width: 100%;
+	margin: 27px 0 15px;
+}
+div.uimob340 .um-members-list .um-member .um-member-card,
+div.uimob500 .um-members-list .um-member .um-member-card {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
 div.uimob340 .um-account-main {
 	float: none;
 	width: 100%;

@@ -14,7 +14,7 @@ if ( empty( $args['view_types'] ) ) {
 }
 
 $sorting_options = array();
-if( isset( $args['sorting_fields'] ) && ! empty( $args['sorting_fields'] ) ) {
+if ( isset( $args['sorting_fields'] ) && ! empty( $args['sorting_fields'] ) ) {
    $sorting_options = $args['sorting_fields'];
 }
 $show_search = true;
@@ -47,14 +47,16 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 			<?php } ?>
 
 			<div class="um-member-directory-actions">
-				<div class="um-member-directory-sorting <?php if ( ! $filters ) { ?>hidden_filter<?php } ?> <?php if ( $single_view ) { ?>hidden_type<?php } ?>">
-					<select class="um-s3 um-member-directory-sorting-options" id="um-member-directory-sorting-select-<?php echo esc_attr( $form_id ) ?>" data-placeholder="<?php esc_attr_e( 'Sort By', 'ultimate-member' ); ?>">
-						<option value=""></option>
-						<?php foreach ( $sorting_options as $value => $title ) { ?>
-							<option value="<?php echo $value ?>"><?php echo $title ?></option>
-						<?php } ?>
-					</select>
-				</div>
+				<?php if ( ! empty( $sorting_options ) ) { ?>
+					<div class="um-member-directory-sorting <?php if ( ! $filters ) { ?>hidden_filter<?php } ?> <?php if ( $single_view ) { ?>hidden_type<?php } ?>">
+						<select class="um-s3 um-member-directory-sorting-options" id="um-member-directory-sorting-select-<?php echo esc_attr( $form_id ) ?>" data-placeholder="<?php esc_attr_e( 'Sort By', 'ultimate-member' ); ?>">
+							<option value=""></option>
+							<?php foreach ( $sorting_options as $value => $title ) { ?>
+								<option value="<?php echo $value ?>"><?php echo $title ?></option>
+							<?php } ?>
+						</select>
+					</div>
+				<?php } ?>
 				<?php if ( $filters ) { ?>
 					<div class="um-member-directory-filters">
 						<a href="javascript:void(0);" class="um-member-directory-filters-a um-tip-n" original-title="<?php esc_attr_e( 'Filters', 'ultimate-member' ); ?>">
