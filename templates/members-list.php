@@ -13,7 +13,6 @@
         </div>
 
         <div class="um-clear"></div>
-
         <# if ( data.users.length > 0 ) { #>
             <# _.each( data.users, function( user, key, list ) { #>
 

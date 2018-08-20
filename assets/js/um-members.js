@@ -532,7 +532,7 @@ function um_build_template( directory, data ) {
 	var layout = um_members_get_layout( directory );
 
 	var template = wp.template( 'um-member-' + layout );
-
+console.log( data );
 	directory.find('.um-members, .um-members-list').remove();
 	directory.find('.um-members-wrapper').prepend( template( data ) );
 	directory.addClass('um-loaded');

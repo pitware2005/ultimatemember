@@ -56,11 +56,9 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 		 *
 		 */
 		function register_scripts() {
-
 			// SCRIPTS
 			//used in social-activity plugin
 			wp_register_script( 'um-scrollto', $this->js_baseurl . 'um-scrollto' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
-
 			wp_register_script( 'um-scrollbar', $this->js_baseurl . 'um-scrollbar' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
 
 			wp_register_script( 'um-jquery-form', $this->js_baseurl . 'um-jquery-form' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
@@ -119,7 +117,6 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 			//register member directory scripts
 			//todo: Only Members Directory
 			wp_register_script( 'um-members', $this->js_baseurl . 'um-members' . $this->suffix . '.js', array( 'um-modal' ), ultimatemember_version, true );
-
 
 
 			wp_register_script( 'um-conditional', $this->js_baseurl . 'um-conditional' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
@@ -183,7 +180,7 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 
 	        $wp_scripts = wp_scripts();
 	        wp_enqueue_style('um-ui-slider-css',
-		        'http://ajax.googleapis.com/ajax/libs/jqueryui/' . $wp_scripts->registered['jquery-ui-core']->ver . '/themes/smoothness/jquery-ui.css' );
+		        set_url_scheme( 'http://ajax.googleapis.com/ajax/libs/jqueryui/' . $wp_scripts->registered['jquery-ui-core']->ver . '/themes/smoothness/jquery-ui.css' ) );
 
 
 			wp_register_style( 'um-responsive', $this->css_baseurl . 'um-responsive.css', array(), ultimatemember_version );
@@ -246,8 +243,8 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 			$css = str_replace(': ',':', $css );
 			return $css;
             //wp_register_script('um_members', um_url . 'assets/js/um-members' . $this->suffix . '.js', array('jquery'), ultimatemember_version, true );
-            wp_enqueue_script('um_members', um_url . 'assets/js/um-members' . $this->suffix . '.js', array('jquery'), ultimatemember_version, true );
-            wp_enqueue_script('wp-util');
+            /*wp_enqueue_script('um_members', um_url . 'assets/js/um-members' . $this->suffix . '.js', array('jquery'), ultimatemember_version, true );
+            wp_enqueue_script('wp-util');*/
             //wp_enqueue_script('um_members');
 		}
 	}

@@ -564,7 +564,7 @@ function um_init_file_upload( event, trigger ) {
 			trigger.parents('.um-modal-body').find('.um-error-block').remove();
 
 		},
-		onSuccess:function( files, response ,xhr ){
+		onSuccess:function( files, response ,xhr ) {
 
 			trigger.selectedFiles = 0;
 

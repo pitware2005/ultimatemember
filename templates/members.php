@@ -1,14 +1,20 @@
-<?php $args['view_type'] = ! empty( $args['view_type'] ) ? $args['view_type'] : '';
-$args['view_type'] = ! empty( $_GET['view_type'] ) ? $_GET['view_type'] : $args['view_type'];
-$view_type = ( ! empty( $args['view_type'] ) ) ? $args['view_type'] : 'grid';
-
-$single_view = true;
-if ( in_array( $view_type, array( 'both_list', 'both_grid' ) ) ) {
-	$single_view = false;
+<?php $args['view_types'] = ! empty( $args['view_types'] ) ? $args['view_types'] : array();
+if ( empty( $args['view_types'] ) ) {
+	$single_view = true;
+	$view_type = 'grid';
+} else {
+	if ( count( $args['view_types'] ) == 1 ) {
+		$single_view = true;
+		$view_type = $args['view_types'][0];
+	} else {
+		$single_view = false;
+		$args['default_view'] = ! empty( $args['default_view'] ) ? $args['default_view'] : $args['view_types'][0];
+		$view_type = ! empty( $_GET['view_type'] ) ? $_GET['view_type'] : $args['default_view'];
+	}
 }
 
 $sorting_options = array();
-if( isset( $args['sorting_fields'] ) && ! empty( $args['sorting_fields'] ) ){ 
+if( isset( $args['sorting_fields'] ) && ! empty( $args['sorting_fields'] ) ) {
    $sorting_options = $args['sorting_fields'];
 }
 $show_search = true;
@@ -18,8 +24,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 
 <div class="um <?php echo $this->get_class( $mode ); ?> um-<?php echo esc_attr( $form_id ); ?>" data-unique_id="um-<?php echo esc_attr( $form_id ) ?>" data-view_type="<?php echo $view_type ?>" data-only_search="<?php echo ( $search && $show_search && ! empty( $must_search ) ) ? 1 : 0 ?>">
 
-	<?php
-	$all_sorting_options = UM()->members()->get_sorting_fields();
+	<?php $all_sorting_options = UM()->members()->get_sorting_fields();
 
 	$sorting_options = array_intersect_key( $all_sorting_options, array_flip( $sorting_options ) ); ?>
 
@@ -29,9 +34,9 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 
 			<?php if ( $search && $show_search ) { ?>
 				<div class="um-member-directory-search-line">
-					<input type="text" class="um-search-line" value="" placeholder="<?php _e( 'Search', 'ultimate-member' ) ?>" />
+					<input type="text" class="um-search-line" value="" placeholder="<?php esc_attr_e( 'Search', 'ultimate-member' ) ?>" />
 					<div class="uimob340-show uimob500-show">
-						<a href="javascript:void(0);" class="um-button um-do-search um-tip-n" original-title="<?php _e( 'Search', 'ultimate-member' ); ?>">
+						<a href="javascript:void(0);" class="um-button um-do-search um-tip-n" original-title="<?php esc_attr_e( 'Search', 'ultimate-member' ); ?>">
 							<i class="um-faicon-search"></i>
 						</a>
 					</div>
@@ -43,7 +48,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 
 			<div class="um-member-directory-actions">
 				<div class="um-member-directory-sorting <?php if ( ! $filters ) { ?>hidden_filter<?php } ?> <?php if ( $single_view ) { ?>hidden_type<?php } ?>">
-					<select class="um-s3 um-member-directory-sorting-options" id="um-member-directory-sorting-select-<?php echo esc_attr( $form_id ) ?>" data-placeholder="<?php _e( 'Sort By', 'ultimate-member' ); ?>">
+					<select class="um-s3 um-member-directory-sorting-options" id="um-member-directory-sorting-select-<?php echo esc_attr( $form_id ) ?>" data-placeholder="<?php esc_attr_e( 'Sort By', 'ultimate-member' ); ?>">
 						<option value=""></option>
 						<?php foreach ( $sorting_options as $value => $title ) { ?>
 							<option value="<?php echo $value ?>"><?php echo $title ?></option>
@@ -52,7 +57,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 				</div>
 				<?php if ( $filters ) { ?>
 					<div class="um-member-directory-filters">
-						<a href="javascript:void(0);" class="um-member-directory-filters-a um-tip-n" original-title="<?php _e( 'Filters', 'ultimate-member' ); ?>">
+						<a href="javascript:void(0);" class="um-member-directory-filters-a um-tip-n" original-title="<?php esc_attr_e( 'Filters', 'ultimate-member' ); ?>">
 							<i class="um-faicon-sliders"></i>
 						</a>
 					</div>
@@ -83,7 +88,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 
 			if ( $args['filters'] == 1 && is_array( $search_filters ) ) { // search on ?>
 				<div class="um-filtered-line">
-					<div class="um-clear-filters"><a href="javascript:void(0);" class="um-clear-filters-a"><?php _e( 'Clear Filters', 'ultimate-member' ); ?></a></div>
+					<div class="um-clear-filters"><a href="javascript:void(0);" class="um-clear-filters-a"><?php esc_attr_e( 'Clear Filters', 'ultimate-member' ); ?></a></div>
 				</div>
 
 				<script type="text/template" id="tmpl-um-members-filtered-line">
@@ -113,7 +118,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 						<div class="um-clear"></div>
 
 						<div class="um-search-submit">
-							<a href="javascript:void(0);" class="um-close-filter"><?php _e( 'Close Filters', 'ultimate-member' ); ?></a>
+							<a href="javascript:void(0);" class="um-close-filter"><?php esc_attr_e( 'Close Filters', 'ultimate-member' ); ?></a>
 						</div>
 						<div class="um-clear"></div>
 					</form>
@@ -125,7 +130,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 		} ?>
 
 		<div class="um-members-wrapper">
-			<?php $args['view_type'] = ! empty( $_GET['view_type'] ) ? $_GET['view_type'] : $args['view_type'];
+			<?php $args['view_type'] = $view_type;
 
 			include UM()->templates()->get_template( 'members-grid' );
 			include UM()->templates()->get_template( 'members-list' ); ?>

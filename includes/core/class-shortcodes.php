@@ -33,6 +33,13 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 			//Main shortcode
 			add_shortcode( 'ultimatemember', array( &$this, 'ultimatemember' ) );
 
+			add_shortcode( 'ultimatemember_login', array( &$this, 'ultimatemember_login' ) );
+			add_shortcode( 'ultimatemember_register', array( &$this, 'ultimatemember_register' ) );
+			add_shortcode( 'ultimatemember_profile', array( &$this, 'ultimatemember_profile' ) );
+			add_shortcode( 'ultimatemember_directory', array( &$this, 'ultimatemember_directory' ) );
+
+
+
 			//Privacy shortcodes
 			add_shortcode( 'um_loggedin', array( &$this, 'um_loggedin' ) );
 			add_shortcode( 'um_loggedout', array( &$this, 'um_loggedout' ) );
@@ -490,6 +497,54 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 		 * @return string
 		 */
 		function ultimatemember( $args = array() ) {
+			return $this->load( $args );
+		}
+
+
+		/**
+		 * Shortcode
+		 *
+		 * @param array $args
+		 *
+		 * @return string
+		 */
+		function ultimatemember_login( $args = array() ) {
+			return $this->load( $args );
+		}
+
+
+		/**
+		 * Shortcode
+		 *
+		 * @param array $args
+		 *
+		 * @return string
+		 */
+		function ultimatemember_register( $args = array() ) {
+			return $this->load( $args );
+		}
+
+
+		/**
+		 * Shortcode
+		 *
+		 * @param array $args
+		 *
+		 * @return string
+		 */
+		function ultimatemember_profile( $args = array() ) {
+			return $this->load( $args );
+		}
+
+
+		/**
+		 * Shortcode
+		 *
+		 * @param array $args
+		 *
+		 * @return string
+		 */
+		function ultimatemember_directory( $args = array() ) {
 			return $this->load( $args );
 		}
 

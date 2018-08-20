@@ -9,9 +9,10 @@ foreach( $meta as $k => $v ) {
 $roles_array = array();
 
 foreach ( UM()->roles()->get_roles() as $key => $value ) {
-    $_um_roles = UM()->query()->get_meta_value( '_um_roles', $key );
-	if ( ! empty( $_um_roles ) )
+	$_um_roles = UM()->query()->get_meta_value( '_um_roles', $key );
+	if ( ! empty( $_um_roles ) ) {
 		$roles_array[] = $_um_roles;
+	}
 }
 
 $show_these_users = get_post_meta( get_the_ID(), '_um_show_these_users', true );
@@ -23,7 +24,7 @@ $sorting_fields = UM()->members()->get_sorting_fields();
 
 $post_id = get_the_ID();
 $_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true );
-?>
+$_um_view_types = get_post_meta( $post_id, '_um_view_types', true ); ?>
 
 <div class="um-admin-metabox">
 
@@ -66,17 +67,17 @@ $_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true );
 			'value'		=> 'directory',
 		),
 		array(
-			'id'		=> '_um_view_type',
+			'id'		=> '_um_view_types',
 			'type'		=> 'select',
 			'multi'		=> true,
-			'name'		=> '_um_view_type',
+			'name'		=> '_um_view_types',
 			'label'		=> __( 'View type(s)', 'ultimate-member' ),
 			'tooltip'	=> __( 'View type a specific parameter in the directory', 'ultimate-member' ),
 			'options'	=> array(
 				'grid'      => __( 'Grid', 'ultimate-member' ),
 				'list'      => __( 'List', 'ultimate-member' ),
 			),
-			'value'		=> UM()->query()->get_meta_value( '_um_view_type' ),
+			'value'		=> $_um_view_types,
 		),
 		array(
 			'id'		=> '_um_default_view',
@@ -89,7 +90,7 @@ $_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true );
 				'list'      => __( 'List', 'ultimate-member' ),
 			),
 			'value'		=> UM()->query()->get_meta_value( '_um_default_view' ),
-			'conditional' => array( '_um_view_type', 'length', 2 )
+			'conditional' => array( '_um_view_types', 'length', 2 )
 		),
 		array(
 			'id'		=> '_um_roles',

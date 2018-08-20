@@ -60,7 +60,12 @@
 						<?php do_action( 'um_members_after_user_name', $args );
 
 						if ( $show_tagline && is_array( $tagline_fields ) ) {
-							foreach ( $tagline_fields as $key ) { ?>
+							foreach ( $tagline_fields as $key ) {
+
+								if ( empty( $key ) ) {
+									continue;
+								} ?>
+
 								<# if ( user.<?php echo $key;?> ) { #>
 									<div class="um-member-tagline um-member-tagline-<?php echo $key;?>">
 										{{{user.<?php echo $key;?>}}}
@@ -79,7 +84,10 @@
 
 								<div class="um-member-meta <?php if ( !$userinfo_animate ) { echo 'no-animate'; } ?>">
 
-									<?php foreach ( $reveal_fields as $key ) { ?>
+									<?php foreach ( $reveal_fields as $key ) {
+										if ( empty( $key ) ) {
+											continue;
+										} ?>
 										<# if ( user.<?php echo $key;?> ) { #>
 											<div class="um-member-metaline um-member-metaline-<?php echo $key; ?>">
 												<span>
