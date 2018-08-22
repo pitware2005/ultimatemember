@@ -127,7 +127,7 @@ jQuery(document).ready(function() {
 		var unique = um_members_get_unique_id( directory );
 
 		um_members_hash_data[ unique ].general_search = directory.find('.um-search-line').val();
-		um_members_hash_data[ unique ].page = 1;
+		um_members_hash_data[ unique ].page = '';
 
 		um_members_clear_hash();
 
@@ -509,7 +509,7 @@ function um_build_template( directory, data ) {
 
 	var template = wp.template( 'um-member-' + layout );
 
-	directory.find('.um-members, .um-members-list').remove();
+	directory.find('.um-members-grid, .um-members-list').remove();
 	directory.find('.um-members-wrapper').prepend( template( data ) );
 	directory.addClass('um-loaded');
 	if ( directory.find('.um-members').length ) {
@@ -530,12 +530,16 @@ function um_build_template( directory, data ) {
 function um_members_create_hash_string() {
 	var hash_array = [];
 	for ( var unique in um_members_hash_data ) {
-		for ( var index in um_members_hash_data[unique] ) {
+		for ( var index in um_members_hash_data[ unique ] ) {
 			hash_array.push( index + '_' + unique + '=' + um_members_hash_data[unique][index] );
 		}
 	}
 
-	return '#' + hash_array.join('&');
+	if ( hash_array.length ) {
+		return '#' + jQuery.base64Encode( hash_array.join('&') );
+	} else {
+		return '';
+	}
 }
 
 
@@ -554,10 +558,11 @@ function um_members_parse_hash( directory ) {
 	}
 
 	var unique = um_members_get_unique_id( directory );
+	hash = jQuery.base64Decode( hash );
 	var hash_array = hash.split('&');
 
 	for ( var index in hash_array ) {
-		var temp = hash_array[index].split('=');
+		var temp = hash_array[ index ].split('=');
 		if( temp[0].search( new RegExp( "_" + unique + "$", "g" ) ) !== -1 ) {
 			temp[0] = temp[0].replace( new RegExp( "_" + unique + "$", "g" ), '' );
 

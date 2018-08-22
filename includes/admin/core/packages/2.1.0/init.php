@@ -14,7 +14,7 @@
 			type: 'POST',
 			dataType: 'json',
 			data: {
-				action: 'um_get_users2022'
+				action: 'um_get_users210'
 			},
 			success: function( response ) {
 				if ( typeof response.data != 'undefined' ) {
@@ -42,7 +42,7 @@
 					type: 'POST',
 					dataType: 'json',
 					data: {
-						action: 'um_usermeta2022',
+						action: 'um_usermeta210',
 						page: current_page,
 						pages: users
 					},
@@ -61,8 +61,32 @@
 				});
 			} else {
 				//switch to the next package
-				um_run_upgrade();
+				member_directory();
 			}
+		}
+
+
+		function member_directory() {
+			jQuery.ajax({
+				url: '<?php echo admin_url( 'admin-ajax.php' ) ?>',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					action: 'um_member_directory210'
+				},
+				success: function( response ) {
+					if ( typeof response.data != 'undefined' ) {
+						um_add_upgrade_log( response.data.message );
+						//switch to the next package
+						um_run_upgrade();
+					} else {
+						um_wrong_ajax();
+					}
+				},
+				error: function() {
+					um_something_wrong();
+				}
+			});
 		}
 	});
 </script>

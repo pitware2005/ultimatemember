@@ -295,9 +295,9 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			}
 
 			$query_args['number'] = isset( $args['number'] ) ? $args['number'] : $profiles_per_page;
+			$query_args['number'] = ( ! empty( $max_users ) && $max_users <= $profiles_per_page ) ? $max_users : $query_args['number'];
 
 			$current_page = isset( $args['page'] ) ? $args['page'] : 1;
-
 			$query_args['paged'] = $current_page;
 
 			if ( ! um_user( 'can_view_all' ) && is_user_logged_in() ) {
@@ -382,7 +382,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				'total_pages'   => $total_pages,
 				'page'          => $current_page,
 				'no_users'      => empty( $user_ids ) ? 1 : 0,
-				'pages_to_show' => ! empty( $pages_to_show ) ? array_values( $pages_to_show ) : array()
+				'pages_to_show' => ( ! empty( $pages_to_show ) && count( $pages_to_show ) > 1 ) ? array_values( $pages_to_show ) : array()
 			);
 
 			$response['header'] = $this->convert_tags( $header, $response );

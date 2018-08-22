@@ -1,5 +1,5 @@
 <?php
-function um_upgrade_get_users2022() {
+function um_upgrade_get_users210() {
 	um_maybe_unset_time_limit();
 
 	$result = count_users();
@@ -8,7 +8,7 @@ function um_upgrade_get_users2022() {
 }
 
 
-function um_upgrade_usermeta2022() {
+function um_upgrade_usermeta210() {
 	um_maybe_unset_time_limit();
 
 	if ( ! empty( $_POST['page'] ) && ! empty( $_POST['pages'] ) ) {
@@ -108,4 +108,28 @@ function um_upgrade_usermeta2022() {
 	} else {
 		wp_send_json_error();
 	}
+}
+
+
+function um_upgrade_member_directory210() {
+	um_maybe_unset_time_limit();
+
+	$directories = get_posts( array(
+		'post_type'     => 'um_directory',
+		'numberposts'   => -1
+	) );
+
+
+	foreach ( $directories as $directory ) {
+		update_post_meta( $directory->ID, '_um_view_types', array( 'grid' ) );
+		update_post_meta( $directory->ID, '_um_sorting_fields', array() );
+
+		$search = get_post_meta( $directory->ID,'_um_search', true );
+		if ( $search ) {
+			update_post_meta( $directory->ID,'_um_filters', true );
+		}
+		update_post_meta( $directory->ID,'_um_search', false );
+	}
+
+	wp_send_json_success( array( 'message' => __( 'Member directories are ready for upgrade', 'ultimate-member' ) ) );
 }

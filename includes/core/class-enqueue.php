@@ -58,6 +58,8 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 		function register_scripts() {
 			// SCRIPTS
 			//used in social-activity plugin
+			wp_register_script( 'um-base64-js', $this->js_baseurl . 'jquery.b_64.min.js', array(), ultimatemember_version );
+
 			wp_register_script( 'um-scrollto', $this->js_baseurl . 'um-scrollto' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
 			wp_register_script( 'um-scrollbar', $this->js_baseurl . 'um-scrollbar' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
 
@@ -116,7 +118,7 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 
 			//register member directory scripts
 			//todo: Only Members Directory
-			wp_register_script( 'um-members', $this->js_baseurl . 'um-members' . $this->suffix . '.js', array( 'um-modal' ), ultimatemember_version, true );
+			wp_register_script( 'um-members', $this->js_baseurl . 'um-members' . $this->suffix . '.js', array( 'um-modal', 'um-base64-js' ), ultimatemember_version, true );
 
 
 			wp_register_script( 'um-conditional', $this->js_baseurl . 'um-conditional' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );

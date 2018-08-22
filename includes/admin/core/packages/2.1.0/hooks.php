@@ -1,6 +1,7 @@
 <?php
 
 return array(
-	'get_users2022' => 'get_users2022',
-	'usermeta2022' => 'usermeta2022',
+	'get_users210' => 'get_users210',
+	'usermeta210' => 'usermeta210',
+	'member_directory210' => 'member_directory210',
 );

@@ -1120,6 +1120,10 @@ if ( ! class_exists( 'um\core\Uploader' ) ) {
 						$new_filename = str_replace("file_","file_{$extra_hash}_", $filename );
 					}
 
+					$submitted = get_user_meta( $user_id, 'submitted', true );
+					$submitted[ $key ] = $new_filename;
+					update_user_meta( $user_id, 'submitted', $submitted );
+
 					if ( $move_only ) {
 
 						$file = $user_basedir. DIRECTORY_SEPARATOR . $filename;

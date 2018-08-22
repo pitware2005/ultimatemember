@@ -427,7 +427,50 @@ a.um-edit-profile-btn {
 
 .um-member-directory-actions {
 	float:right;
+}
+
+.um-member-directory-search-line.um-member-with-sorting.um-member-with-filters.um-member-with-view {
+	width: calc( 100% - 300px );
+}
+
+.um-member-directory-actions.um-member-with-sorting.um-member-with-filters.um-member-with-view {
 	width:300px;
+}
+
+.um-member-directory-search-line.um-member-with-filters.um-member-with-view {
+	width: calc( 100% - 68px );
+}
+
+.um-member-directory-actions.um-member-with-filters.um-member-with-view {
+	width:68px;
+}
+
+.um-member-directory-search-line.um-member-with-sorting.um-member-with-view,
+.um-member-directory-search-line.um-member-with-sorting.um-member-with-filters {
+	width: calc( 100% - 266px );
+}
+
+.um-member-directory-actions.um-member-with-sorting.um-member-with-view,
+.um-member-directory-actions.um-member-with-sorting.um-member-with-filters {
+	width:266px;
+}
+
+.um-member-directory-search-line.um-member-with-view,
+.um-member-directory-search-line.um-member-with-filters {
+	width: calc( 100% - 34px );
+}
+
+.um-member-directory-actions.um-member-with-view,
+.um-member-directory-actions.um-member-with-filters {
+	width:34px;
+}
+
+.um-member-directory-search-line.um-member-with-sorting {
+	width: calc( 100% - 232px );
+}
+
+.um-member-directory-actions.um-member-with-sorting {
+	width:232px;
 }
 
 body div.uimob340 .um-member-directory-actions,

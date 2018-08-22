@@ -32,8 +32,21 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 		<div class="um-member-directory-header">
 			<div class="um-clear"></div>
 
-			<?php if ( $search && $show_search ) { ?>
-				<div class="um-member-directory-search-line">
+			<?php $classes = '';
+			if ( ! empty( $sorting_options ) ) {
+				$classes .= ' um-member-with-sorting';
+			}
+
+			if ( $filters ) {
+				$classes .= ' um-member-with-filters';
+			}
+
+			if ( ! $single_view ) {
+				$classes .= ' um-member-with-view';
+			}
+
+			if ( $search && $show_search ) { ?>
+				<div class="um-member-directory-search-line <?php echo esc_attr( $classes ) ?>">
 					<input type="text" class="um-search-line" value="" placeholder="<?php esc_attr_e( 'Search', 'ultimate-member' ) ?>" />
 					<div class="uimob340-show uimob500-show">
 						<a href="javascript:void(0);" class="um-button um-do-search um-tip-n" original-title="<?php esc_attr_e( 'Search', 'ultimate-member' ); ?>">
@@ -46,7 +59,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 				</div>
 			<?php } ?>
 
-			<div class="um-member-directory-actions">
+			<div class="um-member-directory-actions <?php echo esc_attr( $classes ) ?>">
 				<?php if ( ! empty( $sorting_options ) ) { ?>
 					<div class="um-member-directory-sorting <?php if ( ! $filters ) { ?>hidden_filter<?php } ?> <?php if ( $single_view ) { ?>hidden_type<?php } ?>">
 						<select class="um-s3 um-member-directory-sorting-options" id="um-member-directory-sorting-select-<?php echo esc_attr( $form_id ) ?>" data-placeholder="<?php esc_attr_e( 'Sort By', 'ultimate-member' ); ?>">
