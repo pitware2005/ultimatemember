@@ -77,7 +77,7 @@ $_um_view_types = get_post_meta( $post_id, '_um_view_types', true ); ?>
 				'grid'      => __( 'Grid', 'ultimate-member' ),
 				'list'      => __( 'List', 'ultimate-member' ),
 			),
-			'value'		=> $_um_view_types,
+			'value'		=> UM()->query()->get_meta_value( '_um_default_view', null, array( 'grid' ) ),
 		),
 		array(
 			'id'		=> '_um_default_view',
