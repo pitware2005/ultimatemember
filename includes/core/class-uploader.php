@@ -1074,7 +1074,6 @@ if ( ! class_exists( 'um\core\Uploader' ) ) {
 			$ret['image']['filename'] = wp_basename( $image_path );
 
 			return $ret;
-
 		}
 
 

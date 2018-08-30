@@ -6,7 +6,7 @@ Donate link:
 Tags: community, member, membership, user-profile, user-registration
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.0.24
+Stable tag: 2.0.25
 License: GNU Version 2 or Any Later Version
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -135,6 +135,17 @@ The plugin works with popular caching plugins by automatically excluding Ultimat
 
 * Deprecated:
   - UM_TEXTDOMAIN constant please use 'ultimate-member' instead
+
+= 2.0.26: August 29, 2018 =
+
+* Bugfixes:
+  - File/Image email placeholders after registration form submitting
+  - File/Image forms fields values on submit/edit
+
+= 2.0.25: August 20, 2018 =
+
+* Enhancements:
+  - Upgrade minified scripts
 
 = 2.0.24: August 15, 2018 =
 
