@@ -21,7 +21,7 @@ jQuery( document ).ready( function() {
         jQuery( '#um-settings-wrap .um-nav-tab-wrapper a, #um-settings-wrap .subsubsub a' ).click( function() {
             if ( changed ) {
                 window.onbeforeunload = function() {
-                    return php_data.onbeforeunload_text;
+                    return um_admin_settings_data.onbeforeunload_text;
                 };
             } else {
                 window.onbeforeunload = '';

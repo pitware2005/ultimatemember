@@ -39,8 +39,6 @@ if ( ! class_exists( 'um\admin\core\Admin_Enqueue' ) ) {
 
 			add_action( 'admin_enqueue_scripts',  array( &$this, 'admin_enqueue_scripts' ) );
 
-			add_filter( 'enter_title_here', array( &$this, 'enter_title_here' ) );
-
 			add_action( 'load-user-new.php', array( &$this, 'enqueue_role_wrapper' ) );
 			add_action( 'load-user-edit.php', array( &$this, 'enqueue_role_wrapper' ) );
 		}
@@ -61,25 +59,6 @@ if ( ! class_exists( 'um\admin\core\Admin_Enqueue' ) ) {
 			$localize_roles_data =  get_option( 'um_roles' );
 
 			wp_localize_script( 'um_admin_settings', 'um_roles', $localize_roles_data );
-		}
-
-
-		/**
-		 * Enter title placeholder
-		 *
-		 * @param $title
-		 *
-		 * @return string
-		 */
-		function enter_title_here( $title ) {
-			$screen = get_current_screen();
-			if ( 'um_directory' == $screen->post_type ){
-				$title = 'e.g. Member Directory';
-			}
-			if ( 'um_form' == $screen->post_type ){
-				$title = 'e.g. New Registration Form';
-			}
-			return $title;
 		}
 
 
@@ -127,7 +106,7 @@ if ( ! class_exists( 'um\admin\core\Admin_Enqueue' ) ) {
 				)
 			);
 
-			wp_localize_script( 'um_admin_forms', 'php_data', $localize_data );
+			wp_localize_script( 'um_admin_forms', 'um_admin_forms_data', $localize_data );
 		}
 
 
@@ -161,7 +140,7 @@ if ( ! class_exists( 'um\admin\core\Admin_Enqueue' ) ) {
 				)
 			);
 
-			wp_localize_script( 'um_admin_settings', 'php_data', $localize_data );
+			wp_localize_script( 'um_admin_settings', 'um_admin_settings_data', $localize_data );
 		}
 
 

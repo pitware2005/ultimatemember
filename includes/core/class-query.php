@@ -393,26 +393,40 @@ if ( ! class_exists( 'um\core\Query' ) ) {
 		 * @param null $fallback
 		 * @return int|mixed|null|string
 		 */
+		/**
+		 * Capture selected value
+		 *
+		 * @param $key
+		 * @param null $array_key
+		 * @param null $fallback
+		 * @return int|mixed|null|string
+		 */
 		function get_meta_value( $key, $array_key = null, $fallback = null ) {
 			$post_id = get_the_ID();
-			$try = get_post_meta( $post_id, $key, true );
+			global $wpdb;
+			$metavalue = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->usermeta} WHERE meta_key = %s AND post_id = %d", $key, $post_id ) );
 
-			//old version if ( ! empty( $try ) )
-			if ( false !== $try )
-				if ( is_array( $try ) && in_array( $array_key, $try ) ) {
-					return $array_key;
-				} else if ( is_array( $try ) ) {
-					return '';
+			if ( is_null( $metavalue ) ) {
+				if ( $fallback == 'na' ) {
+					$fallback = 0;
+					$none = '';
 				} else {
-					return $try;
+					$none = 0;
 				}
-
-			if ( $fallback == 'na' ) {
-				$fallback = 0;
-				$none = '';
 			} else {
-				$none = 0;
+				$try = get_post_meta( $post_id, $key, true );
+				//old version if ( ! empty( $try ) )
+				if ( false !== $try ) {
+					if ( is_array( $try ) && in_array( $array_key, $try ) ) {
+						return $array_key;
+					} else if ( is_array( $try ) ) {
+						return '';
+					} else {
+						return $try;
+					}
+				}
 			}
+
 			return ! empty( $fallback ) ? $fallback : $none;
 		}
 
