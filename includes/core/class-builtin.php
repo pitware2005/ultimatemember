@@ -997,7 +997,17 @@ if ( ! class_exists( 'um\core\Builtin' ) ) {
 					'color' => '#2B587A',
 					'match' => 'https://vk.com/',
 				),
-
+				'role' => array(
+					'title' => __('Role','ultimate-member'),
+					'metakey' => 'role',
+					'type' => 'select',
+					'label' => __('Account Type','ultimate-member'),
+					'placeholder' => 'Choose account type',
+					'required' => 0,
+					'public' => 1,
+					'editable' => 1,
+					'options' => $um_roles,
+				),
 				'role_select' => array(
 					'title' => __('Roles (Dropdown)','ultimate-member'),
 					'metakey' => 'role_select',

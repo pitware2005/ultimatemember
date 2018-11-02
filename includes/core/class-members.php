@@ -254,12 +254,12 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 * @return mixed|void
 		 */
 		function get_members( $args ) {
-
-			global $wpdb, $post;
+			global $wpdb;
 
 			/**
 			 * @var $profiles_per_page
 			 * @var $profiles_per_page_mobile
+			 * @var $header
 			 */
 			extract( $args );
 
@@ -288,29 +288,21 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			$query_args = apply_filters( 'um_prepare_user_query_args', array(), $args );
 
 			// Prepare for BIG SELECT query
-			$wpdb->query('SET SQL_BIG_SELECTS=1');
+			$wpdb->query( 'SET SQL_BIG_SELECTS=1' );
 
 			// number of profiles for mobile
-			if ( UM()->mobile()->isMobile() && isset( $profiles_per_page_mobile ) ){
-				$profiles_per_page = $profiles_per_page_mobile;
+			$profiles_per_page = $args['profiles_per_page'];
+			if ( UM()->mobile()->isMobile() && isset( $args['profiles_per_page_mobile'] ) ) {
+				$profiles_per_page = $args['profiles_per_page_mobile'];
 			}
 
-			$query_args['number'] = $profiles_per_page;
+			$query_args['number'] = isset( $args['number'] ) ? $args['number'] : $profiles_per_page;
+			$query_args['number'] = ( ! empty( $max_users ) && $max_users <= $profiles_per_page ) ? $max_users : $query_args['number'];
 
-			if( isset( $args['number'] ) ){
-				$query_args['number'] = $args['number'];
-			}
-
-			if(  isset( $args['page'] ) ){
-				$members_page = $args['page'];
-			}else{
-				$members_page = isset( $_REQUEST['members_page'] ) ? $_REQUEST['members_page'] : 1;
-			}
-
-			$query_args['paged'] = $members_page;
+			$current_page = isset( $args['page'] ) ? $args['page'] : 1;
+			$query_args['paged'] = $current_page;
 
 			if ( ! UM()->roles()->um_user_can( 'can_view_all' ) && is_user_logged_in() ) {
-				//unset( $query_args );
 				$query_args = array();
 			}
 
@@ -335,7 +327,12 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 */
 			do_action( 'um_user_before_query', $query_args );
 
+			add_filter( 'get_meta_sql', array( &$this, 'change_meta_sql' ), 10 );
+
 			$users = new \WP_User_Query( $query_args );
+
+			remove_filter( 'get_meta_sql', array( &$this, 'change_meta_sql' ), 10 );
+
 			/**
 			 * UM hook
 			 *
@@ -358,104 +355,40 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 */
 			do_action( 'um_user_after_query', $query_args, $users );
 
+			$user_ids = ! empty( $users->results ) ? array_unique( $users->results ) : array();
+			$total_users = ( ! empty( $max_users ) && $max_users <= $users->total_users ) ? $max_users : $users->total_users;
+			$total_pages = ceil( $total_users / $profiles_per_page );
 
-			$array['users'] = isset( $users->results ) && ! empty( $users->results ) ? array_unique( $users->results ) : array();
+			if ( ! empty( $total_pages ) ) {
+				$index1 = 0 - ( $current_page - 2 ) + 1;
+				$to = $current_page + 2;
+				if ( $index1 > 0 ) {
+					$to += $index1;
+				}
 
-			$array['total_users'] = (isset( $max_users ) && $max_users && $max_users <= $users->total_users ) ? $max_users : $users->total_users;
+				$index2 = $total_pages - ( $current_page + 2 );
+				$from = $current_page - 2;
+				if ( $index2 < 0 ) {
+					$from += $index2;
+				}
 
-			$array['page'] = $members_page;
-
-			if ( isset( $profiles_per_page ) && $profiles_per_page > 0 ) {
-				$array['total_pages'] = ceil( $array['total_users'] / $profiles_per_page );
-			} else {
-				$array['total_pages'] = 1;
+				$pages_to_show = range(
+					( $from > 0 ) ? $from : 1,
+					( $to <= $total_pages ) ? $to : $total_pages
+				);
 			}
 
-			$array['header'] = $this->convert_tags( $header, $array );
-			$array['header_single'] = $this->convert_tags( $header_single, $array );
+			$response = array(
+				'users'         => $user_ids,
+				'total_users'   => $total_users,
+				'total_pages'   => $total_pages,
+				'page'          => $current_page,
+				'no_users'      => empty( $user_ids ) ? 1 : 0,
+				'pages_to_show' => ( ! empty( $pages_to_show ) && count( $pages_to_show ) > 1 ) ? array_values( $pages_to_show ) : array()
+			);
 
-			$array['users_per_page'] = $array['users'];
-
-			for( $i = $array['page']; $i <= $array['page'] + 2; $i++ ) {
-				if ( $i <= $array['total_pages'] ) {
-					$pages_to_show[] = $i;
-				}
-			}
-
-			if ( isset( $pages_to_show ) && count( $pages_to_show ) < 5 ) {
-				$pages_needed = 5 - count( $pages_to_show );
-
-				for ( $c = $array['page']; $c >= $array['page'] - 2; $c-- ) {
-					if ( !in_array( $c, $pages_to_show ) && $c > 0 ) {
-						$pages_to_add[] = $c;
-					}
-				}
-			}
-
-			if ( isset( $pages_to_add ) ) {
-
-				asort( $pages_to_add );
-				$pages_to_show = array_merge( (array)$pages_to_add, $pages_to_show );
-
-				if ( count( $pages_to_show ) < 5 ) {
-					if ( max($pages_to_show) - $array['page'] >= 2 ) {
-						$pages_to_show[] = max($pages_to_show) + 1;
-						if ( count( $pages_to_show ) < 5 ) {
-							$pages_to_show[] = max($pages_to_show) + 1;
-						}
-					} else if ( $array['page'] - min($pages_to_show) >= 2 ) {
-						$pages_to_show[] = min($pages_to_show) - 1;
-						if ( count( $pages_to_show ) < 5 ) {
-							$pages_to_show[] = min($pages_to_show) - 1;
-						}
-					}
-				}
-
-				asort( $pages_to_show );
-
-				$array['pages_to_show'] = $pages_to_show;
-
-			} else {
-
-				if ( isset( $pages_to_show ) && count( $pages_to_show ) < 5 ) {
-					if ( max($pages_to_show) - $array['page'] >= 2 ) {
-						$pages_to_show[] = max($pages_to_show) + 1;
-						if ( count( $pages_to_show ) < 5 ) {
-							$pages_to_show[] = max($pages_to_show) + 1;
-						}
-					} else if ( $array['page'] - min($pages_to_show) >= 2 ) {
-						$pages_to_show[] = min($pages_to_show) - 1;
-						if ( count( $pages_to_show ) < 5 ) {
-							$pages_to_show[] = min($pages_to_show) - 1;
-						}
-					}
-				}
-
-				if ( isset( $pages_to_show ) && is_array( $pages_to_show ) ) {
-
-					asort( $pages_to_show );
-
-					$array['pages_to_show'] = $pages_to_show;
-
-				}
-
-			}
-
-			if ( isset( $array['pages_to_show'] ) ) {
-
-				if ( $array['total_pages'] < count( $array['pages_to_show'] ) ) {
-					foreach( $array['pages_to_show'] as $k => $v ) {
-						if ( $v > $array['total_pages'] ) unset( $array['pages_to_show'][$k] );
-					}
-				}
-
-				foreach( $array['pages_to_show'] as $k => $v ) {
-					if ( (int)$v <= 0 ) {
-						unset( $array['pages_to_show'][$k] );
-					}
-				}
-
-			}
+			$response['header'] = $this->convert_tags( $header, $response );
+			$response['header_single'] = $this->convert_tags( $header_single, $response );
 
 			/**
 			 * UM hook
@@ -478,58 +411,38 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 * }
 			 * ?>
 			 */
-			return apply_filters( 'um_prepare_user_results_array', $array );
+			return apply_filters( 'um_prepare_user_results_array', $response );
 		}
 
 
 		/**
-		 * Optimizes Member directory with multiple LEFT JOINs
-		 * @param  object $vars
-		 * @return object $var
+		 * Change mySQL meta query join attribute
+		 * for search only by UM user meta fields
+		 *
+		 * @param array $sql Array containing the query's JOIN and WHERE clauses.
+		 * @return mixed
 		 */
-		public function um_optimize_member_query( $vars ) {
+		function change_meta_sql( $sql ) {
 
-			global $wpdb;
+			if ( ! empty( $_POST['general_search'] ) ) {
+				global $wpdb;
 
-			$arr_where = explode("\n", $vars->query_where );
-			$arr_left_join = explode("LEFT JOIN", $vars->query_from );
-			$arr_user_photo_key = array('synced_profile_photo','profile_photo','synced_gravatar_hashed_id');
+				preg_match(
+					'/^(.*).meta_value LIKE \'%' . esc_attr( $_POST['general_search'] ) . '%\' [^\)]/im',
+					$sql['where'],
+					$join_matches
+				);
 
-			foreach ( $arr_where as $where ) {
+				$meta_join_for_search = trim( $join_matches[1] );
 
-				foreach( $arr_user_photo_key as $key ){
-
-					if( strpos( $where  , "'".$key."'" ) > -1 ){
-
-						// find usermeta key
-						preg_match("#mt[0-9]+.#",  $where, $meta_key );
-
-						// remove period from found meta_key
-						$meta_key = str_replace(".","", current( $meta_key ) );
-
-						// remove matched LEFT JOIN clause
-						$vars->query_from = str_replace('LEFT JOIN wp_usermeta AS '.$meta_key.' ON ( wp_users.ID = '.$meta_key.'.user_id )', '',  $vars->query_from );
-
-						// prepare EXISTS replacement for LEFT JOIN clauses
-						$where_exists = 'um_exist EXISTS( SELECT '.$wpdb->usermeta.'.umeta_id FROM '.$wpdb->usermeta.' WHERE '.$wpdb->usermeta.'.user_id = '.$wpdb->users.'.ID AND '.$wpdb->usermeta.'.meta_key IN("'.implode('","',  $arr_user_photo_key ).'") AND '.$wpdb->usermeta.'.meta_value != "" )';
-
-						// Replace LEFT JOIN clauses with EXISTS and remove duplicates
-						if( strpos( $vars->query_where, 'um_exist' ) === FALSE ){
-							$vars->query_where = str_replace( $where , $where_exists,  $vars->query_where );
-						}else{
-							$vars->query_where = str_replace( $where , '1=0',  $vars->query_where );
-						}
-					}
-
-				}
-
+				$sql['join'] = preg_replace(
+					'/(' . $meta_join_for_search . ' ON \( ' . $wpdb->users . '\.ID = ' . $meta_join_for_search . '\.user_id )(\))/im',
+					"$1 AND " . $meta_join_for_search . ".meta_key IN( '" . implode( "','", array_keys( UM()->builtin()->all_user_fields ) ) . "' ) $2",
+					$sql['join']
+				);
 			}
 
-			$vars->query_where = str_replace("\n", "", $vars->query_where );
-			$vars->query_where = str_replace("um_exist", "", $vars->query_where );
-
-			return $vars;
-
+			return $sql;
 		}
 
 
