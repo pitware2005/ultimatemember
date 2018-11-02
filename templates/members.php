@@ -101,16 +101,16 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 
 			$search_filters = apply_filters( 'um_frontend_member_search_filters', $search_filters );
 
-			if ( $args['filters'] == 1 && is_array( $search_filters ) ) { // search on ?>
+			if ( $args['filters'] == 1 && is_array( $search_filters ) ) { ?>
 				<div class="um-filtered-line">
 					<div class="um-clear-filters"><a href="javascript:void(0);" class="um-clear-filters-a"><?php esc_attr_e( 'Clear Filters', 'ultimate-member' ); ?></a></div>
 				</div>
 
 				<script type="text/template" id="tmpl-um-members-filtered-line">
 					<# if ( data.filters.length > 0 ) { #>
-					<# _.each( data.filters, function( filter, key, list ) { #>
-					<div class="um-members-filter-tag"><strong>{{{filter.label}}}</strong>: {{{filter.value_label}}}<div class="um-members-filter-remove" data-name="{{{filter.name}}}" data-value="{{{filter.value}}}">&times;</div></div>
-					<# }); #>
+						<# _.each( data.filters, function( filter, key, list ) { #>
+							<div class="um-members-filter-tag"><strong>{{{filter.label}}}</strong>: {{{filter.value_label}}}<div class="um-members-filter-remove" data-name="{{{filter.name}}}" data-value="{{{filter.value}}}">&times;</div></div>
+						<# }); #>
 					<# } #>
 				</script>
 
@@ -158,26 +158,26 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 
 		<script type="text/template" id="tmpl-um-members-pagination">
 			<# if ( data.pagi.pages_to_show.length > 0 ) { #>
-			<div class="um-members-pagidrop uimob340-show uimob500-show">
-				<?php _e( 'Jump to page:','ultimate-member' ); ?>
-				<select class="um-s2 um-members-pagi-dropdown" style="width: 100px;display:inline-block;">
+				<div class="um-members-pagidrop uimob340-show uimob500-show">
+					<?php _e( 'Jump to page:','ultimate-member' ); ?>
+					<select class="um-s2 um-members-pagi-dropdown" style="width: 100px;display:inline-block;">
+						<# _.each( data.pagi.pages_to_show, function( page, key, list ) { #>
+							<option value="{{{page}}}" <# if ( page == data.pagi.current_page ) { #>selected<# } #>>{{{page}}} <?php _e( 'of','ultimate-member' ) ?> {{{data.pagi.total_pages}}}</option>
+						<# }); #>
+					</select>
+				</div>
+
+				<div class="um-members-pagi uimob340-hide uimob500-hide">
+					<span class="pagi pagi-arrow <# if ( data.pagi.current_page == 1 ) { #>disabled<# } #>" data-page="first"><i class="um-faicon-angle-double-left"></i></span>
+					<span class="pagi pagi-arrow <# if ( data.pagi.current_page == 1 ) { #>disabled<# } #>" data-page="prev"><i class="um-faicon-angle-left"></i></span>
+
 					<# _.each( data.pagi.pages_to_show, function( page, key, list ) { #>
-					<option value="{{{page}}}" <# if ( page == data.pagi.current_page ) { #>selected<# } #>>{{{page}}} <?php _e( 'of','ultimate-member' ) ?> {{{data.pagi.total_pages}}}</option>
+						<span class="pagi <# if ( page == data.pagi.current_page ) { #>current<# } #>" data-page="{{{page}}}">{{{page}}}</span>
 					<# }); #>
-				</select>
-			</div>
 
-			<div class="um-members-pagi uimob340-hide uimob500-hide">
-				<span class="pagi pagi-arrow <# if ( data.pagi.current_page == 1 ) { #>disabled<# } #>" data-page="first"><i class="um-faicon-angle-double-left"></i></span>
-				<span class="pagi pagi-arrow <# if ( data.pagi.current_page == 1 ) { #>disabled<# } #>" data-page="prev"><i class="um-faicon-angle-left"></i></span>
-
-				<# _.each( data.pagi.pages_to_show, function( page, key, list ) { #>
-				<span class="pagi <# if ( page == data.pagi.current_page ) { #>current<# } #>" data-page="{{{page}}}">{{{page}}}</span>
-				<# }); #>
-
-				<span class="pagi pagi-arrow <# if ( data.pagi.current_page == data.pagi.total_pages ) { #>disabled<# } #>" data-page="next"><i class="um-faicon-angle-right"></i></span>
-				<span class="pagi pagi-arrow <# if ( data.pagi.current_page == data.pagi.total_pages ) { #>disabled<# } #>" data-page="last"><i class="um-faicon-angle-double-right"></i></span>
-			</div>
+					<span class="pagi pagi-arrow <# if ( data.pagi.current_page == data.pagi.total_pages ) { #>disabled<# } #>" data-page="next"><i class="um-faicon-angle-right"></i></span>
+					<span class="pagi pagi-arrow <# if ( data.pagi.current_page == data.pagi.total_pages ) { #>disabled<# } #>" data-page="last"><i class="um-faicon-angle-double-right"></i></span>
+				</div>
 			<# } #>
 		</script>
 

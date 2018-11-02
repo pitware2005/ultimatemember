@@ -216,39 +216,3 @@ function um_members_directory_pagination( $args ) {
 
 }
 add_action( 'um_members_directory_footer', 'um_members_directory_pagination' );
-
-
-/**
- * Member Directory Display
- *
- * @param $args
- */
-function um_members_directory_display( $args ) {
-	extract( $args );
-
-	if ( isset( $args['search'] ) && $args['search'] == 1 && isset( $args['must_search'] ) && $args['must_search'] == 1 && !isset( $_REQUEST['um_search'] ) )
-		return;
-
-	if ( um_members('no_users') ) {
-
-		?>
-
-        <div class="um-members-none">
-            <p><?php echo $args['no_users']; ?></p>
-        </div>
-
-		<?php
-
-	}
-
-	$file = um_path . 'templates/members-grid.php';
-	$theme_file = get_stylesheet_directory() . '/ultimate-member/templates/members-grid.php';
-
-	if ( file_exists( $theme_file )  ){
-		$file = $theme_file;
-	}
-
-	include $file;
-
-}
-add_action( 'um_members_directory_display', 'um_members_directory_display' );

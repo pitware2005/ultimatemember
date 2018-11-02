@@ -13,6 +13,7 @@
 		</div>
 
 		<div class="um-clear"></div>
+
 		<# if ( data.users.length > 0 ) { #>
 			<# _.each( data.users, function( user, key, list ) { #>
 
@@ -31,7 +32,6 @@
 							</a>
 						</div>
 					<?php } ?>
-
 
 					<div class="um-member-card <?php echo ! $profile_photo ? 'no-photo' : '' ?>">
 
@@ -52,15 +52,14 @@
 							<?php if ( $show_tagline && is_array( $tagline_fields ) ) {
 
 								foreach ( $tagline_fields as $key ) {
-
 									if ( empty( $key ) ) {
 										continue;
 									} ?>
 
 									<# if ( user.<?php echo $key;?> ) { #>
-										<div class="um-member-tagline um-member-tagline-<?php echo $key;?>">
-											{{{user.<?php echo $key;?>}}}
-										</div>
+									<div class="um-member-tagline um-member-tagline-<?php echo $key;?>">
+										{{{user.<?php echo $key;?>}}}
+									</div>
 									<# } #>
 								<?php }
 							} ?>
@@ -70,7 +69,6 @@
 						<?php if ( $show_userinfo ) { ?>
 
 							<div class="um-member-meta-main">
-
 								<div class="um-member-meta no-animate">
 
 									<?php foreach ( $reveal_fields as $key ) {
@@ -103,11 +101,11 @@
 					<# if ( user.actions.length > 0 ) { #>
 						<div class="um-member-card-actions">
 							<# _.each( user.actions, function( action, action_key, action_list ) { #>
-								<div class="{{{action.wrapper_class}}}">
-									<a href="{{{action.url}}}" class="{{{action.class}}}">
-										{{{action.title}}}
-									</a>
-								</div>
+							<div class="{{{action.wrapper_class}}}">
+								<a href="{{{action.url}}}" class="{{{action.class}}}">
+									{{{action.title}}}
+								</a>
+							</div>
 							<# }); #>
 
 							<?php do_action( 'um_members_just_after_name', $args ); ?>
@@ -115,6 +113,7 @@
 					<# } #>
 					<div class="um-clear"></div>
 				</div>
+
 				<div class="um-clear"></div>
 			<# }); #>
 		<# } else { #>
