@@ -575,24 +575,6 @@ if ( ! class_exists( 'um\core\Builtin' ) ) {
 						),
 					)
 				),
-
-				/*'group' => array(
-                    'name' => 'Field Group',
-                    'col1' => array('_title','_max_entries'),
-                    'col2' => array('_label','_public','_roles'),
-                    'form_only' => true,
-                    'validate' => array(
-                        '_title' => array(
-                            'mode' => 'required',
-                            'error' => 'You must provide a title'
-                        ),
-                        '_label' => array(
-                            'mode' => 'required',
-                            'error' => 'You must provide a label'
-                        ),
-                    )
-                ),*/
-
 			);
 
 			/**
@@ -734,15 +716,15 @@ if ( ! class_exists( 'um\core\Builtin' ) ) {
 				),
 
 				'user_url' => array(
-                    'title' => __('Website URL','ultimate-member'),
-                    'metakey' => 'user_url',
-                    'type' => 'url',
-                    'label' => __('Website URL','ultimate-member'),
-                    'required' => 1,
-                    'public' => 1,
-                    'editable' => 1,
-                    'validate' => 'url'
-                ),
+					'title' => __('Website URL','ultimate-member'),
+					'metakey' => 'user_url',
+					'type' => 'url',
+					'label' => __('Website URL','ultimate-member'),
+					'required' => 1,
+					'public' => 1,
+					'editable' => 1,
+					'validate' => 'url'
+				),
 
 				'user_registered' => array(
 					'title' => __('Registration Date','ultimate-member'),

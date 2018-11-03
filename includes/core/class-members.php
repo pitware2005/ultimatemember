@@ -160,21 +160,11 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 * @param $filter
 		 */
 		function show_filter( $filter ) {
-			$fields = UM()->builtin()->all_user_fields;
-
-			if ( isset( $fields[ $filter ] ) ) {
-				$attrs = $fields[ $filter ];
-			} else {
-				$attrs = apply_filters( "um_custom_search_field_{$filter}", array() );
-			}
-
-			// additional filter for search field attributes
-			$attrs = apply_filters( "um_search_field_{$filter}", $attrs );
-
-			// filter all search fields
-			$attrs = apply_filters( 'um_search_fields', $attrs );
-
-			$attrs = apply_filters( 'um_search_select_fields', $attrs );
+			/**
+			 * @var $type
+			 * @var $attrs
+			 */
+			extract( $this->prepare_filter( $filter ) );
 
 			if ( $filter == 'age' ) {
 
@@ -562,6 +552,146 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 		}
 
+
+		/**
+		 * Prepare filter data
+		 *
+		 * @param $filter
+		 * @return array
+		 */
+		function prepare_filter( $filter ) {
+			$fields = UM()->builtin()->all_user_fields;
+
+			if ( isset( $fields[ $filter ] ) ) {
+				$attrs = $fields[ $filter ];
+			} else {
+				/**
+				 * UM hook
+				 *
+				 * @type filter
+				 * @title um_custom_search_field_{$filter}
+				 * @description Custom search settings by $filter
+				 * @input_vars
+				 * [{"var":"$settings","type":"array","desc":"Search Settings"}]
+				 * @change_log
+				 * ["Since: 2.0"]
+				 * @usage
+				 * <?php add_filter( 'um_custom_search_field_{$filter}', 'function_name', 10, 1 ); ?>
+				 * @example
+				 * <?php
+				 * add_filter( 'um_custom_search_field_{$filter}', 'my_custom_search_field', 10, 1 );
+				 * function my_change_email_template_file( $settings ) {
+				 *     // your code here
+				 *     return $settings;
+				 * }
+				 * ?>
+				 */
+				$attrs = apply_filters( "um_custom_search_field_{$filter}", array() );
+			}
+
+			// additional filter for search field attributes
+			/**
+			 * UM hook
+			 *
+			 * @type filter
+			 * @title um_search_field_{$filter}
+			 * @description Extend search settings by $filter
+			 * @input_vars
+			 * [{"var":"$settings","type":"array","desc":"Search Settings"}]
+			 * @change_log
+			 * ["Since: 2.0"]
+			 * @usage
+			 * <?php add_filter( 'um_search_field_{$filter}', 'function_name', 10, 1 ); ?>
+			 * @example
+			 * <?php
+			 * add_filter( 'um_search_field_{$filter}', 'my_search_field', 10, 1 );
+			 * function my_change_email_template_file( $settings ) {
+			 *     // your code here
+			 *     return $settings;
+			 * }
+			 * ?>
+			 */
+			$attrs = apply_filters( "um_search_field_{$filter}", $attrs );
+
+			$type = UM()->builtin()->is_dropdown_field( $filter, $attrs ) ? 'select' : 'text';
+
+			/**
+			 * UM hook
+			 *
+			 * @type filter
+			 * @title um_search_field_type
+			 * @description Change search field type
+			 * @input_vars
+			 * [{"var":"$type","type":"string","desc":"Search field type"},
+			 * {"var":"$settings","type":"array","desc":"Search Settings"}]
+			 * @change_log
+			 * ["Since: 2.0"]
+			 * @usage
+			 * <?php add_filter( 'um_search_field_type', 'function_name', 10, 2 ); ?>
+			 * @example
+			 * <?php
+			 * add_filter( 'um_search_field_type', 'my_search_field_type', 10, 2 );
+			 * function my_search_field_type( $type, $settings ) {
+			 *     // your code here
+			 *     return $type;
+			 * }
+			 * ?>
+			 */
+			$type = apply_filters( 'um_search_field_type', $type, $attrs );
+
+			/**
+			 * UM hook
+			 *
+			 * @type filter
+			 * @title um_search_fields
+			 * @description Filter all search fields
+			 * @input_vars
+			 * [{"var":"$settings","type":"array","desc":"Search Fields"}]
+			 * @change_log
+			 * ["Since: 2.0"]
+			 * @usage
+			 * <?php add_filter( 'um_search_fields', 'function_name', 10, 1 ); ?>
+			 * @example
+			 * <?php
+			 * add_filter( 'um_search_fields', 'my_search_fields', 10, 1 );
+			 * function my_search_fields( $settings ) {
+			 *     // your code here
+			 *     return $settings;
+			 * }
+			 * ?>
+			 */
+			$attrs = apply_filters( 'um_search_fields', $attrs );
+
+			if ( $type == 'select' ) {
+				if( isset($attrs) && is_array( $attrs['options'] ) ){
+					asort( $attrs['options'] );
+				}
+				/**
+				 * UM hook
+				 *
+				 * @type filter
+				 * @title um_search_select_fields
+				 * @description Filter all search fields for select field type
+				 * @input_vars
+				 * [{"var":"$settings","type":"array","desc":"Search Fields"}]
+				 * @change_log
+				 * ["Since: 2.0"]
+				 * @usage
+				 * <?php add_filter( 'um_search_select_fields', 'function_name', 10, 1 ); ?>
+				 * @example
+				 * <?php
+				 * add_filter( 'um_search_select_fields', 'my_search_select_fields', 10, 1 );
+				 * function my_search_select_fields( $settings ) {
+				 *     // your code here
+				 *     return $settings;
+				 * }
+				 * ?>
+				 */
+				$attrs = apply_filters( 'um_search_select_fields', $attrs );
+			}
+
+			return compact( 'type', 'attrs' );
+		}
 
 	}
 }

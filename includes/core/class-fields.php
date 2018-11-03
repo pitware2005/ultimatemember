@@ -124,13 +124,13 @@ if ( ! class_exists( 'um\core\Fields' ) ) {
 		function globally_update_field( $id, $args ) {
 			$fields = UM()->builtin()->saved_fields;
 
-			$fields[$id] = $args;
+			$fields[ $id ] = $args;
 
-			unset( $fields[$id]['in_row'] );
-			unset( $fields[$id]['in_sub_row'] );
-			unset( $fields[$id]['in_column'] );
-			unset( $fields[$id]['in_group'] );
-			unset( $fields[$id]['position'] );
+			unset( $fields[ $id ]['in_row'] );
+			unset( $fields[ $id ]['in_sub_row'] );
+			unset( $fields[ $id ]['in_column'] );
+			unset( $fields[ $id ]['in_group'] );
+			unset( $fields[ $id ]['position'] );
 
 			update_option( 'um_fields', $fields );
 		}
@@ -4059,21 +4059,32 @@ if ( ! class_exists( 'um\core\Fields' ) ) {
 		 *
 		 */
 		function do_ajax_action() {
-			if (!is_user_logged_in() || !current_user_can( 'manage_options' )) die( __( 'Please login as administrator', 'ultimate-member' ) );
+			if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+				die( __( 'Please login as administrator', 'ultimate-member' ) );
+			}
 
+			/**
+			 * @var $act_id
+			 * @var $in_row
+			 * @var $in_sub_row
+			 * @var $in_column
+			 * @var $in_group
+			 * @var $arg1
+			 * @var $arg2
+			 */
 			extract( $_POST );
 
 			$output = null;
 
 			$position = array();
-			if (!empty( $in_column )) {
+			if ( ! empty( $in_column ) ) {
 				$position['in_row'] = '_um_row_' . ( (int)$in_row + 1 );
 				$position['in_sub_row'] = $in_sub_row;
 				$position['in_column'] = $in_column;
 				$position['in_group'] = $in_group;
 			}
 
-			switch ($act_id) {
+			switch ( $act_id ) {
 
 				case 'um_admin_duplicate_field':
 					$this->duplicate_field( $arg1, $arg2 );

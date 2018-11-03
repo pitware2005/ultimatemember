@@ -62,7 +62,6 @@ $_um_view_types = get_post_meta( $post_id, '_um_view_types', true ); ?>
 			'id'		=> '_um_view_types',
 			'type'		=> 'select',
 			'multi'		=> true,
-			'name'		=> '_um_view_types',
 			'label'		=> __( 'View type(s)', 'ultimate-member' ),
 			'tooltip'	=> __( 'View type a specific parameter in the directory', 'ultimate-member' ),
 			'options'	=> array(
@@ -74,7 +73,6 @@ $_um_view_types = get_post_meta( $post_id, '_um_view_types', true ); ?>
 		array(
 			'id'		=> '_um_default_view',
 			'type'		=> 'select',
-			'name'		=> '_um_default_view',
 			'label'		=> __( 'Default view type', 'ultimate-member' ),
 			'tooltip'	=> __( 'Default directory view type', 'ultimate-member' ),
 			'options'	=> array(
@@ -109,7 +107,6 @@ $_um_view_types = get_post_meta( $post_id, '_um_view_types', true ); ?>
 		array(
 			'id'		=> '_um_sorting_fields',
 			'type'		=> 'multi_selects',
-			'name'		=> '_um_sorting_fields',
 			'label'		=> __( 'Choose field(s) to enable in sorting', 'ultimate-member' ),
 			'value'		=> $_um_sorting_fields,
 			'options'   => $sorting_fields,

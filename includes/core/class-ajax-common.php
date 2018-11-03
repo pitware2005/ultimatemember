@@ -54,6 +54,8 @@ if ( ! class_exists( 'um\core\AJAX_Common' ) ) {
 			add_action( 'wp_ajax_nopriv_um_resize_image', array( UM()->files(), 'ajax_resize_image' ) );
 			add_action( 'wp_ajax_um_resize_image', array( UM()->files(), 'ajax_resize_image' ) );
 
+			add_action( 'wp_ajax_um_get_members', array( UM()->members(), 'ajax_get_members' ) );
+			add_action( 'wp_ajax_nopriv_um_get_members', array( UM()->members(), 'ajax_get_members' ) );
 
 			/**
 			 * Fallback for ajax urls

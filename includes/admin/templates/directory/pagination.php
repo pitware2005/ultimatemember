@@ -30,7 +30,6 @@
 			array(
 				'id'		=> '_um_directory_header',
 				'type'		=> 'text',
-				'name'		=> '_um_directory_header',
 				'label'		=> __( 'Results Text', 'ultimate-member' ),
 				'tooltip'	=> __( 'Customize the search result text . e.g. Found 3,000 Members. Leave this blank to not show result text', 'ultimate-member' ),
 				'value'		=> UM()->query()->get_meta_value('_um_directory_header', null, __('{total_users} Members','ultimate-member') ),
@@ -38,7 +37,6 @@
 			array(
 				'id'		=> '_um_directory_header_single',
 				'type'		=> 'text',
-				'name'		=> '_um_directory_header_single',
 				'label'		=> __( 'Single Result Text', 'ultimate-member' ),
 				'tooltip'	=> __( 'Same as above but in case of 1 user found only', 'ultimate-member' ),
 				'value'		=> UM()->query()->get_meta_value('_um_directory_header_single', null, __('{total_users} Member','ultimate-member') ),
@@ -46,7 +44,6 @@
 			array(
 				'id'		=> '_um_directory_no_users',
 				'type'		=> 'text',
-				'name'		=> '_um_directory_no_users',
 				'label'		=> __( 'Custom text if no users were found', 'ultimate-member' ),
 				'tooltip'	=> __( 'This is the text that is displayed if no users are found during a search', 'ultimate-member' ),
 				'value'		=> UM()->query()->get_meta_value('_um_directory_no_users', null, __('We are sorry. We cannot find any users who match your search criteria.','ultimate-member') ),

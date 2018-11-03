@@ -3,9 +3,9 @@
 		<div class="um-members-intro">
 			<div class="um-members-total">
 				<# if ( data.users.length == 1 ) { #>
-				{{{data.pagi.header_single}}}
+					{{{data.pagi.header_single}}}
 				<# } else if ( data.users.length > 1 ) { #>
-				{{{data.pagi.header}}}
+					{{{data.pagi.header}}}
 				<# } #>
 			</div>
 		</div>

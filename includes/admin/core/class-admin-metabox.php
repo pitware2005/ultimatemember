@@ -21,6 +21,12 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 
 
 		/**
+		 * @var bool
+		 */
+		private $directory_nonce_added = false;
+
+
+		/**
 		 * Admin_Metabox constructor.
 		 */
 		function __construct() {
@@ -30,13 +36,13 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 			$this->in_edit = false;
 			$this->edit_mode_value = null;
 
-			add_action('admin_head', array(&$this, 'admin_head'), 9);
-			add_action('admin_footer', array(&$this, 'load_modal_content'), 9);
+			add_action( 'admin_head', array( &$this, 'admin_head' ), 9 );
+			add_action( 'admin_footer', array( &$this, 'load_modal_content' ), 9 );
 
-			add_action( 'load-post.php', array(&$this, 'add_metabox'), 9 );
-			add_action( 'load-post-new.php', array(&$this, 'add_metabox'), 9 );
+			add_action( 'load-post.php', array( &$this, 'add_metabox' ), 9 );
+			add_action( 'load-post-new.php', array( &$this, 'add_metabox' ), 9 );
 
-			add_action( 'admin_init', array(&$this, 'add_taxonomy_metabox'), 9 );
+			add_action( 'admin_init', array( &$this, 'add_taxonomy_metabox' ), 9 );
 
 			//roles metaboxes
 			add_action( 'um_roles_add_meta_boxes', array( &$this, 'add_metabox_role' ) );
@@ -169,10 +175,10 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 		/**
 		 * Runs on admin head
 		 */
-		function admin_head(){
+		function admin_head() {
 			global $post;
-			if ( UM()->admin()->is_plugin_post_type() && isset($post->ID) ){
-				$this->postmeta = $this->get_custom_post_meta($post->ID);
+			if ( UM()->admin()->is_plugin_post_type() && isset( $post->ID ) ) {
+				$this->postmeta = $this->get_custom_post_meta( $post->ID );
 			}
 		}
 
@@ -729,9 +735,28 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 		 * @param $box
 		 */
 		function load_metabox_directory( $object, $box ) {
+			global $post;
+
 			$box['id'] = str_replace( 'um-admin-form-', '', $box['id'] );
-			include_once UM()->admin()->templates_path . 'directory/'. $box['id'] . '.php';
-			wp_nonce_field( basename( __FILE__ ), 'um_admin_save_metabox_directory_nonce' );
+
+			preg_match( '#\{.*?\}#s', $box['id'], $matches );
+
+			if ( isset( $matches[0] ) ) {
+				$path = $matches[0];
+				$box['id'] = preg_replace( '~(\\{[^}]+\\})~', '', $box['id'] );
+			} else {
+				$path = um_path;
+			}
+
+			$path = str_replace( '{', '', $path );
+			$path = str_replace( '}', '', $path );
+
+			include_once $path . 'includes/admin/templates/directory/'. $box['id'] . '.php';
+
+			if ( ! $this->directory_nonce_added ) {
+				$this->directory_nonce_added = true;
+				wp_nonce_field( basename( __FILE__ ), 'um_admin_save_metabox_directory_nonce' );
+			}
 		}
 
 
@@ -750,20 +775,19 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 				UM()->builder()->form_id = get_the_ID();
 			}
 
-			preg_match('#\{.*?\}#s', $box['id'], $matches);
+			preg_match( '#\{.*?\}#s', $box['id'], $matches );
 
-			if ( isset($matches[0]) ){
+			if ( isset( $matches[0] ) ) {
 				$path = $matches[0];
-				$box['id'] = preg_replace('~(\\{[^}]+\\})~','', $box['id'] );
+				$box['id'] = preg_replace( '~(\\{[^}]+\\})~', '', $box['id'] );
 			} else {
 				$path = um_path;
 			}
 
-			$path = str_replace('{','', $path );
-			$path = str_replace('}','', $path );
+			$path = str_replace( '{', '', $path );
+			$path = str_replace( '}', '', $path );
 
 			include_once $path . 'includes/admin/templates/role/'. $box['id'] . '.php';
-			//wp_nonce_field( basename( __FILE__ ), 'um_admin_save_metabox_role_nonce' );
 		}
 
 
@@ -782,17 +806,17 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 				UM()->builder()->form_id = get_the_ID();
 			}
 
-			preg_match('#\{.*?\}#s', $box['id'], $matches);
+			preg_match( '#\{.*?\}#s', $box['id'], $matches );
 
 			if ( isset( $matches[0] ) ) {
 				$path = $matches[0];
-				$box['id'] = preg_replace('~(\\{[^}]+\\})~','', $box['id'] );
+				$box['id'] = preg_replace( '~(\\{[^}]+\\})~', '', $box['id'] );
 			} else {
 				$path = um_path;
 			}
 
-			$path = str_replace('{','', $path );
-			$path = str_replace('}','', $path );
+			$path = str_replace( '{', '', $path );
+			$path = str_replace( '}', '', $path );
 
 			include_once $path . 'includes/admin/templates/form/'. $box['id'] . '.php';
 
@@ -835,12 +859,69 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 		 * Add directory metabox
 		 */
 		function add_metabox_directory() {
-			add_meta_box( 'um-admin-form-general', __( 'General Options', 'ultimate-member' ), array( &$this, 'load_metabox_directory' ), 'um_directory', 'normal', 'default' );
-			add_meta_box( 'um-admin-form-profile', __( 'Profile Card', 'ultimate-member' ), array( &$this, 'load_metabox_directory' ), 'um_directory', 'normal', 'default' );
-			add_meta_box( 'um-admin-form-search', __( 'Search Options', 'ultimate-member' ), array( &$this, 'load_metabox_directory' ), 'um_directory', 'normal', 'default' );
-			add_meta_box( 'um-admin-form-pagination', __( 'Results &amp; Pagination', 'ultimate-member' ), array( &$this, 'load_metabox_directory' ), 'um_directory', 'normal', 'default' );
-			add_meta_box( 'um-admin-form-shortcode', __( 'Shortcode', 'ultimate-member' ), array( &$this, 'load_metabox_directory' ), 'um_directory', 'side', 'default' );
-			add_meta_box( 'um-admin-form-appearance', __( 'Styling: General', 'ultimate-member' ), array( &$this, 'load_metabox_directory'), 'um_directory', 'side', 'default' );
+			$callback = array( &$this, 'load_metabox_directory' );
+			$directory_metaboxes = array(
+				array(
+					'id'        => 'um-admin-form-general',
+					'title'     => __( 'General Options', 'ultimate-member' ),
+					'callback'  => $callback,
+					'screen'    => 'um_directory',
+					'context'   => 'normal',
+					'priority'  => 'default'
+				),
+				array(
+					'id'        => 'um-admin-form-profile',
+					'title'     => __( 'Profile Card', 'ultimate-member' ),
+					'callback'  => $callback,
+					'screen'    => 'um_directory',
+					'context'   => 'normal',
+					'priority'  => 'default'
+				),
+				array(
+					'id'        => 'um-admin-form-search',
+					'title'     => __( 'Search &amp; Filters Options', 'ultimate-member' ),
+					'callback'  => $callback,
+					'screen'    => 'um_directory',
+					'context'   => 'normal',
+					'priority'  => 'default'
+				),
+				array(
+					'id'        => 'um-admin-form-pagination',
+					'title'     => __( 'Results &amp; Pagination', 'ultimate-member' ),
+					'callback'  => $callback,
+					'screen'    => 'um_directory',
+					'context'   => 'normal',
+					'priority'  => 'default'
+				),
+				array(
+					'id'        => 'um-admin-form-shortcode',
+					'title'     => __( 'Shortcode', 'ultimate-member' ),
+					'callback'  => $callback,
+					'screen'    => 'um_directory',
+					'context'   => 'side',
+					'priority'  => 'default'
+				),
+				array(
+					'id'        => 'um-admin-form-appearance',
+					'title'     => __( 'Styling: General', 'ultimate-member' ),
+					'callback'  => $callback,
+					'screen'    => 'um_directory',
+					'context'   => 'side',
+					'priority'  => 'default'
+				),
+			);
+
+			$directory_metaboxes = apply_filters( 'um_admin_directory_metaboxes', $directory_metaboxes );
+			foreach ( $directory_metaboxes as $metabox ) {
+				add_meta_box(
+					$metabox['id'],
+					$metabox['title'],
+					$metabox['callback'],
+					$metabox['screen'],
+					$metabox['context'],
+					$metabox['priority']
+				);
+			}
 		}
 
 
@@ -1074,26 +1155,31 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 		 *
 		 * @param $post_id
 		 * @param $post
-		 *
-		 * @return mixed
 		 */
 		function save_metabox_directory( $post_id, $post ) {
 			global $wpdb;
 
 			// validate nonce
-			if ( !isset( $_POST['um_admin_save_metabox_directory_nonce'] ) || !wp_verify_nonce( $_POST['um_admin_save_metabox_directory_nonce'], basename( __FILE__ ) ) ) return $post_id;
+			if ( ! isset( $_POST['um_admin_save_metabox_directory_nonce'] ) || ! wp_verify_nonce( $_POST['um_admin_save_metabox_directory_nonce'], basename( __FILE__ ) ) ) {
+				return;
+			}
 
 			// validate post type
-			if ( $post->post_type != 'um_directory' ) return $post_id;
+			if ( $post->post_type != 'um_directory' ) {
+				return;
+			}
 
 			// validate user
 			$post_type = get_post_type_object( $post->post_type );
-			if ( !current_user_can( $post_type->cap->edit_post, $post_id ) ) return $post_id;
+			if ( ! current_user_can( $post_type->cap->edit_post, $post_id ) ) {
+				return;
+			}
 
 			$where = array( 'ID' => $post_id );
 
-			if ( empty( $_POST['post_title'] ) )
-				$_POST['post_title'] = 'Directory #'.$post_id;
+			if ( empty( $_POST['post_title'] ) ) {
+				$_POST['post_title'] = sprintf( __( 'Directory #%s', 'ultimate-member' ), $post_id );
+			}
 
 			$wpdb->update( $wpdb->posts, array( 'post_title' => $_POST['post_title'] ), $where );
 
@@ -1124,6 +1210,20 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 								delete_post_meta( $p_id, '_um_is_default' );
 							}
 						}
+					}
+
+					if ( $k == '_um_tagline_fields' || $k == '_um_reveal_fields' ) {
+						$remove = array_keys( $v, '0' );
+						$v = array_values( array_diff_key( $v, array_flip( $remove ) ) );
+					}
+
+					if ( $k == '_um_sorting_fields' ) {
+						unset( $v[0] );
+						$v = array_values( $v );
+					}
+
+					if ( is_array( $v ) ) {
+						$v = array_unique( $v );
 					}
 
 					update_post_meta( $post_id, $k, $v );

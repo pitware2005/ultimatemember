@@ -1,8 +1,10 @@
 <?php
 namespace um\core;
 
+
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
+
 
 if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 
@@ -15,14 +17,32 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 
 
 		/**
+		 * @var array
+		 */
+		var $emoji = array();
+
+		/**
+		 * @var bool
+		 */
+		var $message_mode = false;
+
+
+		/**
+		 * @var string
+		 */
+		var $custom_message = '';
+
+
+		/**
+		 * @var array
+		 */
+		var $loop = array();
+
+
+		/**
 		 * Shortcodes constructor.
 		 */
 		function __construct() {
-
-			$this->message_mode = false;
-			$this->custom_message = '';
-
-			$this->loop = array();
 
 			add_shortcode( 'ultimatemember', array( &$this, 'ultimatemember' ) );
 
@@ -42,6 +62,19 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 
 			add_filter( 'um_shortcode_args_filter', array( &$this, 'display_logout_form' ), 99 );
 			add_filter( 'um_shortcode_args_filter', array( &$this, 'parse_shortcode_args' ), 99 );
+
+			$this->init_variables();
+		}
+
+
+		/**
+		 *
+		 */
+		function init_variables() {
+			$this->message_mode = false;
+			$this->custom_message = '';
+
+			$this->loop = array();
 
 			/**
 			 * UM hook
@@ -124,7 +157,6 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 			$this->emoji[':innocent:'] = $base_uri . '72x72/1f607.png';
 			$this->emoji[':smirk:'] = $base_uri . '72x72/1f60f.png';
 			$this->emoji[':expressionless:'] = $base_uri . '72x72/1f611.png';
-
 		}
 
 
@@ -245,10 +277,17 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 		/**
 		 * Retrieve core login form
 		 *
+		 * @todo remove this strange function
+		 *
 		 * @return int
 		 */
 		function core_login_form() {
-			$forms = get_posts(array('post_type' => 'um_form', 'posts_per_page' => 1, 'meta_key' => '_um_core', 'meta_value' => 'login'));
+			$forms = get_posts( array(
+				'post_type'         => 'um_form',
+				'posts_per_page'    => 1,
+				'meta_key'          => '_um_core',
+				'meta_value'        => 'login'
+			) );
 			$form_id = isset( $forms[0]->ID ) ? $forms[0]->ID: 0;
 
 			return $form_id;
@@ -295,27 +334,27 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 		 *
 		 * @return mixed|string|void
 		 */
-		function get_class($mode, $args = array()) {
+		function get_class( $mode, $args = array() ) {
 
 			$classes = 'um-' . $mode;
 
-			if (is_admin()) {
+			if ( is_admin() ) {
 				$classes .= ' um-in-admin';
 			}
 
-			if (isset(UM()->form()->errors) && UM()->form()->errors) {
+			if ( isset( UM()->form()->errors ) && UM()->form()->errors ) {
 				$classes .= ' um-err';
 			}
 
-			if (UM()->fields()->editing == true) {
+			if ( UM()->fields()->editing == true ) {
 				$classes .= ' um-editing';
 			}
 
-			if (UM()->fields()->viewing == true) {
+			if ( UM()->fields()->viewing == true ) {
 				$classes .= ' um-viewing';
 			}
 
-			if (isset($args['template']) && $args['template'] != $args['mode']) {
+			if ( isset( $args['template'] ) && $args['template'] != $args['mode'] ) {
 				$classes .= ' um-' . $args['template'];
 			}
 
@@ -389,7 +428,7 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 		 *
 		 * @return string
 		 */
-		function um_loggedout($args = array(), $content = "") {
+		function um_loggedout( $args = array(), $content = "" ) {
 			ob_start();
 
 			// Hide for logged in users
@@ -401,6 +440,76 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 
 			$output = ob_get_clean();
 			return $output;
+		}
+
+
+		/**
+		 * Shortcode: Show custom content to specific role
+		 *
+		 * Show content to specific roles
+		 * [um_show_content roles='member'] <!-- insert content here -->  [/um_show_content]
+		 * You can add multiple target roles, just use ',' e.g.  [um_show_content roles='member,candidates,pets']
+		 *
+		 * Hide content from specific roles
+		 * [um_show_content not='contributors'] <!-- insert content here -->  [/um_show_content]
+		 * You can add multiple target roles, just use ',' e.g.  [um_show_content roles='member,candidates,pets']
+		 *
+		 * @param  array $atts
+		 * @param  string $content
+		 * @return string
+		 */
+		function um_shortcode_show_content_for_role( $atts = array() , $content = '' ) {
+			global $user_ID;
+
+			if ( ! is_user_logged_in() ) {
+				return '';
+			}
+
+			$a = shortcode_atts( array(
+				'roles' => '',
+				'not' => '',
+				'is_profile' => false,
+			), $atts );
+
+			if ( $a['is_profile'] ) {
+				um_fetch_user( um_profile_id() );
+			} else {
+				um_fetch_user( $user_ID );
+			}
+
+			$current_user_roles = um_user( 'roles' );
+
+			if ( ! empty( $a['not'] ) && ! empty( $a['roles'] ) ) {
+				return do_shortcode( $this->convert_locker_tags( $content ) );
+			}
+
+			if ( ! empty( $a['not'] ) ) {
+				$not_in_roles = explode( ",", $a['not'] );
+
+				if ( is_array( $not_in_roles ) && ( empty( $current_user_roles ) || count( array_intersect( $current_user_roles, $not_in_roles ) ) <= 0 ) ) {
+					return do_shortcode( $this->convert_locker_tags( $content ) );
+				}
+			} else {
+				$roles = explode( ",", $a['roles'] );
+
+				if ( ! empty( $current_user_roles ) && is_array( $roles ) && count( array_intersect( $current_user_roles, $roles ) ) > 0 ) {
+					return do_shortcode( $this->convert_locker_tags( $content ) );
+				}
+			}
+
+			return '';
+		}
+
+
+		/**
+		 * Shortcode
+		 *
+		 * @param array $args
+		 *
+		 * @return string
+		 */
+		function ultimatemember( $args = array() ) {
+			return $this->load( $args );
 		}
 
 
@@ -523,18 +632,6 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 
 
 		/**
-		 * Shortcode
-		 *
-		 * @param array $args
-		 *
-		 * @return string
-		 */
-		function ultimatemember( $args = array() ) {
-			return $this->load( $args );
-		}
-
-
-		/**
 		 * Load a module with global function
 		 *
 		 * @param $args
@@ -543,21 +640,21 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 		 */
 		function load( $args ) {
 			$defaults = array();
-			$args = wp_parse_args($args, $defaults);
+			$args = wp_parse_args( $args, $defaults );
 
 			// when to not continue
-			$this->form_id = (isset($args['form_id'])) ? $args['form_id'] : null;
-			if (!$this->form_id) {
-				return;
+			$this->form_id = isset( $args['form_id'] ) ? $args['form_id'] : null;
+			if ( ! $this->form_id ) {
+				return '';
 			}
 
-			$this->form_status = get_post_status($this->form_id);
-			if ($this->form_status != 'publish') {
-				return;
+			$this->form_status = get_post_status( $this->form_id );
+			if ( $this->form_status != 'publish' ) {
+				return '';
 			}
 
 			// get data into one global array
-			$post_data = UM()->query()->post_data($this->form_id);
+			$post_data = UM()->query()->post_data( $this->form_id );
 
 			ob_start();
 
@@ -588,23 +685,23 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 				$args['template'] = '';
 			}
 
-			if (isset($post_data['template']) && $post_data['template'] != $args['template']) {
+			if ( isset( $post_data['template'] ) && $post_data['template'] != $args['template'] ) {
 				$args['template'] = $post_data['template'];
 			}
 
-			if (!$this->template_exists($args['template'])) {
+			if ( ! $this->template_exists( $args['template'] ) ) {
 				$args['template'] = $post_data['mode'];
 			}
 
-			if (!isset($post_data['template'])) {
+			if ( ! isset( $post_data['template'] ) ) {
 				$post_data['template'] = $post_data['mode'];
 			}
 
-			if( 'directory' != $args['mode'] ) {
+			if ( 'directory' != $args['mode'] ) {
 
 				$args = array_merge( $post_data, $args );
 
-				if (empty( $args['use_custom_settings'] )) {
+				if ( empty( $args['use_custom_settings'] ) ) {
 					$args = array_merge( $args, $this->get_css_args( $args ) );
 				} else {
 					$args = array_merge( $this->get_css_args( $args ), $args );
@@ -635,7 +732,11 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 			 */
 			$args = apply_filters( 'um_shortcode_args_filter', $args );
 
-			extract($args, EXTR_SKIP);
+			/**
+			 * @var $mode
+			 * @var $template
+			 */
+			extract( $args, EXTR_SKIP );
 
 			//not display on admin preview
 			if ( empty( $_POST['act_id'] ) || $_POST['act_id'] != 'um_admin_preview_form' ) {
@@ -846,7 +947,7 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 		 *
 		 * @return bool
 		 */
-		function template_exists($template) {
+		function template_exists( $template ) {
 
 			$file = um_path . 'templates/' . $template . '.php';
 			$theme_file = get_stylesheet_directory() . '/ultimate-member/templates/' . $template . '.php';
@@ -1079,64 +1180,6 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 			}
 
 			return $str;
-		}
-
-
-		/**
-		 * Shortcode: Show custom content to specific role
-		 *
-		 * Show content to specific roles
-		 * [um_show_content roles='member'] <!-- insert content here -->  [/um_show_content]
-		 * You can add multiple target roles, just use ',' e.g.  [um_show_content roles='member,candidates,pets']
-		 *
-		 * Hide content from specific roles
-		 * [um_show_content not='contributors'] <!-- insert content here -->  [/um_show_content]
-		 * You can add multiple target roles, just use ',' e.g.  [um_show_content roles='member,candidates,pets']
-		 *
-		 * @param  array $atts
-		 * @param  string $content
-		 * @return string
-		 */
-		function um_shortcode_show_content_for_role( $atts = array() , $content = '' ) {
-			global $user_ID;
-
-			if ( ! is_user_logged_in() ) {
-				return;
-			}
-
-			$a = shortcode_atts( array(
-				'roles' => '',
-				'not' => '',
-				'is_profile' => false,
-			), $atts );
-
-			if ( $a['is_profile'] ) {
-				um_fetch_user( um_profile_id() );
-			} else {
-				um_fetch_user( $user_ID );
-			}
-
-			$current_user_roles = um_user( 'roles' );
-
-			if ( ! empty( $a['not'] ) && ! empty( $a['roles'] ) ) {
-				return do_shortcode( $this->convert_locker_tags( $content ) );
-			}
-
-			if ( ! empty( $a['not'] ) ) {
-				$not_in_roles = explode( ",", $a['not'] );
-
-				if ( is_array( $not_in_roles ) && ( empty( $current_user_roles ) || count( array_intersect( $current_user_roles, $not_in_roles ) ) <= 0 ) ) {
-					return do_shortcode( $this->convert_locker_tags( $content ) );
-				}
-			} else {
-				$roles = explode( ",", $a['roles'] );
-
-				if ( ! empty( $current_user_roles ) && is_array( $roles ) && count( array_intersect( $current_user_roles, $roles ) ) > 0 ) {
-					return do_shortcode( $this->convert_locker_tags( $content ) );
-				}
-			}
-
-			return '';
 		}
 
 
