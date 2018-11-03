@@ -134,7 +134,8 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 			$localize_data = apply_filters( 'um_enqueue_localize_data', array() );
 			wp_localize_script( 'um_scripts', 'um_scripts', $localize_data );
 
-			wp_register_script( 'um_members', $this->js_baseurl . 'um-members' . $this->suffix . '.js', array( 'jquery', 'wp-util', 'jquery-ui-slider' ), ultimatemember_version, true );
+			wp_register_script( 'um_b64', $this->js_baseurl . 'jquery.b_64' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
+			wp_register_script( 'um_members', $this->js_baseurl . 'um-members' . $this->suffix . '.js', array( 'jquery', 'wp-util', 'jquery-ui-slider', 'um_b64' ), ultimatemember_version, true );
 			wp_register_script( 'um_profile', $this->js_baseurl . 'um-profile' . $this->suffix . '.js', array( 'jquery', 'wp-util' ), ultimatemember_version, true );
 			wp_register_script( 'um_account', $this->js_baseurl . 'um-account' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
 

@@ -87,7 +87,7 @@
 				'type'          => 'text',
 				'label'         => __( 'Additional search filters', 'ultimate-member' ),
 				'tooltip'       => __( 'Additional search filters like URL parameters', 'ultimate-member' ),
-				'value'         => UM()->query()->get_meta_value('_um_search_filters', null, '' ),
+				'value'         => UM()->query()->get_meta_value('_um_search_filters', null, 'na' ),
 				'conditional'   => array( '_um_filters', '=', 1 ),
 				'placeholder'   => 'field1=val1&field2=val2'
 			),

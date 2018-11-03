@@ -68,7 +68,7 @@ $_um_view_types = get_post_meta( $post_id, '_um_view_types', true ); ?>
 				'grid'      => __( 'Grid', 'ultimate-member' ),
 				'list'      => __( 'List', 'ultimate-member' ),
 			),
-			'value'		=> UM()->query()->get_meta_value( '_um_default_view', null, array( 'grid' ) ),
+			'value'		=> $_um_view_types,
 		),
 		array(
 			'id'		=> '_um_default_view',
@@ -79,7 +79,7 @@ $_um_view_types = get_post_meta( $post_id, '_um_view_types', true ); ?>
 				'grid'      => __( 'Grid', 'ultimate-member' ),
 				'list'      => __( 'List', 'ultimate-member' ),
 			),
-			'value'		=> UM()->query()->get_meta_value( '_um_default_view' ),
+			'value'		=> UM()->query()->get_meta_value( '_um_default_view', null, '' ),
 			'conditional' => array( '_um_view_types', 'length', 2 )
 		),
 		array(
