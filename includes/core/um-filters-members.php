@@ -460,7 +460,7 @@ function um_add_filter_to_query( $query_args, $args ) {
 	if ( $query && is_array( $query ) ) {
 		foreach ( $query as $field => $value ) {
 
-			if ( in_array( $field, array( 'members_page', 'general_search', 'action', 'nonce' ) ) ) {
+			if ( in_array( $field, array( 'members_page', 'general_search', 'action', 'nonce', 'referrer_url' ) ) ) {
 				continue;
 			}
 

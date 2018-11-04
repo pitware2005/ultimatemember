@@ -181,6 +181,28 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 			<# } #>
 		</script>
 
+		<?php
+		/**
+		* UM hook
+		*
+		* @type action
+		* @title um_members_directory_footer
+		* @description Member directory display footer
+		* @input_vars
+		* [{"var":"$args","type":"array","desc":"Member directory shortcode arguments"}]
+		* @change_log
+		* ["Since: 2.0"]
+		* @usage add_action( 'um_members_directory_footer', 'function_name', 10, 1 );
+		* @example
+		* <?php
+		 * add_action( 'um_members_directory_footer', 'my_members_directory_footer', 10, 1 );
+		 * function my_members_directory_footer( $args ) {
+		 *     // your code here
+		 * }
+		 * ?>
+		*/
+		do_action( 'um_members_directory_footer', $args ); ?>
+
 		<div class="um-clear"></div>
 	</div>
 </div>

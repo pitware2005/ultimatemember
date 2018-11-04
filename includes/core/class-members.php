@@ -500,7 +500,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				$data_array = apply_filters( 'um_ajax_get_members_data', $data_array, $user_id );
 
 				$users_data[] = $data_array;
-
 				um_reset_user_clean();
 			}
 

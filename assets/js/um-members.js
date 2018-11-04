@@ -479,6 +479,7 @@ function um_ajax_get_members( directory ) {
 	var temp_hash = um_members_parse_hash( directory );
 	temp_hash.args = um_members_args;
 	temp_hash.nonce = um_scripts.nonce;
+	temp_hash.referrer_url = window.location.href;
 
 	wp.ajax.send( 'um_get_members', {
 		data: temp_hash,
