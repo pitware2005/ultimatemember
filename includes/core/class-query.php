@@ -404,7 +404,7 @@ if ( ! class_exists( 'um\core\Query' ) ) {
 		function get_meta_value( $key, $array_key = null, $fallback = null ) {
 			$post_id = get_the_ID();
 			global $wpdb;
-			$metavalue = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->usermeta} WHERE meta_key = %s AND post_id = %d", $key, $post_id ) );
+			$metavalue = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s AND post_id = %d", $key, $post_id ) );
 
 			if ( is_null( $metavalue ) ) {
 				if ( $fallback == 'na' ) {
