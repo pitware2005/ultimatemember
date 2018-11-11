@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Ultimate Member\n"
-"POT-Creation-Date: 2018-11-09 16:19+0200\n"
-"PO-Revision-Date: 2018-11-09 16:19+0200\n"
+"POT-Creation-Date: 2018-11-11 22:37+0200\n"
+"PO-Revision-Date: 2018-11-11 22:37+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -115,7 +115,7 @@ msgstr ""
 
 #: includes/admin/core/class-admin-builder.php:609
 #: includes/admin/core/class-admin-builder.php:763
-#: includes/core/class-fields.php:4062
+#: includes/core/class-fields.php:4063
 msgid "Please login as administrator"
 msgstr ""
 
@@ -132,7 +132,7 @@ msgid "Predefined Fields"
 msgstr ""
 
 #: includes/admin/core/class-admin-builder.php:874
-#: includes/core/class-builtin.php:1308
+#: includes/core/class-builtin.php:1300
 msgid "None"
 msgstr ""
 
@@ -185,8 +185,8 @@ msgstr ""
 
 #: includes/admin/core/class-admin-columns.php:97
 #: includes/admin/core/class-admin-columns.php:116
-#: includes/admin/core/class-admin-metabox.php:818
-#: includes/admin/core/class-admin-metabox.php:979
+#: includes/admin/core/class-admin-metabox.php:898
+#: includes/admin/core/class-admin-metabox.php:1084
 msgid "Shortcode"
 msgstr ""
 
@@ -213,8 +213,8 @@ msgstr ""
 #: includes/admin/templates/form/register_customize.php:20
 #: includes/admin/templates/form/register_customize.php:76
 #: includes/admin/templates/form/register_gdpr.php:23
-#: includes/core/class-builtin.php:1130 includes/core/class-builtin.php:1144
-#: includes/core/class-builtin.php:1145
+#: includes/core/class-builtin.php:1122 includes/core/class-builtin.php:1136
+#: includes/core/class-builtin.php:1137
 #: includes/core/um-actions-account.php:251
 msgid "No"
 msgstr ""
@@ -237,13 +237,13 @@ msgstr ""
 #: includes/admin/templates/form/register_customize.php:21
 #: includes/admin/templates/form/register_customize.php:77
 #: includes/admin/templates/form/register_gdpr.php:24
-#: includes/core/class-builtin.php:1130 includes/core/class-builtin.php:1145
+#: includes/core/class-builtin.php:1122 includes/core/class-builtin.php:1137
 #: includes/core/um-filters-members.php:68
 msgid "Yes"
 msgstr ""
 
-#: includes/admin/core/class-admin-enqueue.php:125
-#: includes/admin/core/class-admin-enqueue.php:159
+#: includes/admin/core/class-admin-enqueue.php:104
+#: includes/admin/core/class-admin-enqueue.php:138
 #: includes/admin/core/class-admin-forms.php:813
 #: includes/admin/core/class-admin-forms.php:827
 #: includes/admin/core/class-admin-forms.php:932
@@ -253,13 +253,13 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: includes/admin/core/class-admin-enqueue.php:126
-#: includes/admin/core/class-admin-enqueue.php:160
+#: includes/admin/core/class-admin-enqueue.php:105
+#: includes/admin/core/class-admin-enqueue.php:139
 #: includes/admin/core/class-admin-forms.php:1009
 msgid "Select"
 msgstr ""
 
-#: includes/admin/core/class-admin-enqueue.php:157
+#: includes/admin/core/class-admin-enqueue.php:136
 msgid "Are sure, maybe some settings not saved"
 msgstr ""
 
@@ -439,556 +439,569 @@ msgstr ""
 msgid "Upgrade's Manual Request"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:72
+#: includes/admin/core/class-admin-metabox.php:69
+msgid "e.g. Member Directory"
+msgstr ""
+
+#: includes/admin/core/class-admin-metabox.php:73
+msgid "e.g. New Registration Form"
+msgstr ""
+
+#: includes/admin/core/class-admin-metabox.php:102
 msgid "This is a translation of UM profile page?"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:79
+#: includes/admin/core/class-admin-metabox.php:109
 msgid "This is a translation of UM account page?"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:259
+#: includes/admin/core/class-admin-metabox.php:289
 msgid "UM Content Restriction"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:415
-#: includes/admin/core/class-admin-metabox.php:565
+#: includes/admin/core/class-admin-metabox.php:445
+#: includes/admin/core/class-admin-metabox.php:595
 #: includes/admin/templates/access/restrict_content.php:47
 msgid "Restrict access to this content?"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:416
-#: includes/admin/core/class-admin-metabox.php:423
-#: includes/admin/core/class-admin-metabox.php:436
-#: includes/admin/core/class-admin-metabox.php:566
-#: includes/admin/core/class-admin-metabox.php:574
-#: includes/admin/core/class-admin-metabox.php:588
+#: includes/admin/core/class-admin-metabox.php:446
+#: includes/admin/core/class-admin-metabox.php:453
+#: includes/admin/core/class-admin-metabox.php:466
+#: includes/admin/core/class-admin-metabox.php:596
+#: includes/admin/core/class-admin-metabox.php:604
+#: includes/admin/core/class-admin-metabox.php:618
 #: includes/admin/templates/access/restrict_content.php:48
 #: includes/admin/templates/access/restrict_content.php:55
 #: includes/admin/templates/access/restrict_content.php:68
 msgid "Activate content restriction for this post"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:422
-#: includes/admin/core/class-admin-metabox.php:573
+#: includes/admin/core/class-admin-metabox.php:452
+#: includes/admin/core/class-admin-metabox.php:603
 #: includes/admin/templates/access/restrict_content.php:54
 msgid "Who can access this content?"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:426
-#: includes/admin/core/class-admin-metabox.php:577
+#: includes/admin/core/class-admin-metabox.php:456
+#: includes/admin/core/class-admin-metabox.php:607
 #: includes/admin/core/class-admin-navmenu.php:141
 #: includes/admin/templates/access/restrict_content.php:58
-#: includes/core/class-builtin.php:662
+#: includes/core/class-builtin.php:644
 msgid "Everyone"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:427
-#: includes/admin/core/class-admin-metabox.php:578
+#: includes/admin/core/class-admin-metabox.php:457
+#: includes/admin/core/class-admin-metabox.php:608
 #: includes/admin/templates/access/restrict_content.php:59
 msgid "Logged out users"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:428
-#: includes/admin/core/class-admin-metabox.php:579
+#: includes/admin/core/class-admin-metabox.php:458
+#: includes/admin/core/class-admin-metabox.php:609
 #: includes/admin/templates/access/restrict_content.php:60
 msgid "Logged in users"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:435
-#: includes/admin/core/class-admin-metabox.php:587
+#: includes/admin/core/class-admin-metabox.php:465
+#: includes/admin/core/class-admin-metabox.php:617
 #: includes/admin/templates/access/restrict_content.php:67
 msgid "Select which roles can access this content"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:444
-#: includes/admin/core/class-admin-metabox.php:598
+#: includes/admin/core/class-admin-metabox.php:474
+#: includes/admin/core/class-admin-metabox.php:628
 #: includes/admin/templates/access/restrict_content.php:77
 msgid "What happens when users without access tries to view the content?"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:445
-#: includes/admin/core/class-admin-metabox.php:457
-#: includes/admin/core/class-admin-metabox.php:599
-#: includes/admin/core/class-admin-metabox.php:612
+#: includes/admin/core/class-admin-metabox.php:475
+#: includes/admin/core/class-admin-metabox.php:487
+#: includes/admin/core/class-admin-metabox.php:629
+#: includes/admin/core/class-admin-metabox.php:642
 #: includes/admin/templates/access/restrict_content.php:78
 #: includes/admin/templates/access/restrict_content.php:90
 msgid "Action when users without access tries to view the content"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:448
-#: includes/admin/core/class-admin-metabox.php:602
+#: includes/admin/core/class-admin-metabox.php:478
+#: includes/admin/core/class-admin-metabox.php:632
 #: includes/admin/templates/access/restrict_content.php:81
 msgid "Show access restricted message"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:449
-#: includes/admin/core/class-admin-metabox.php:603
+#: includes/admin/core/class-admin-metabox.php:479
+#: includes/admin/core/class-admin-metabox.php:633
 #: includes/admin/templates/access/restrict_content.php:82
 msgid "Redirect user"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:456
-#: includes/admin/core/class-admin-metabox.php:611
+#: includes/admin/core/class-admin-metabox.php:486
+#: includes/admin/core/class-admin-metabox.php:641
 #: includes/admin/templates/access/restrict_content.php:89
 msgid ""
 "Would you like to use the global default message or apply a custom message "
 "to this content?"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:460
-#: includes/admin/core/class-admin-metabox.php:615
+#: includes/admin/core/class-admin-metabox.php:490
+#: includes/admin/core/class-admin-metabox.php:645
 #: includes/admin/templates/access/restrict_content.php:93
 msgid "Global default message (default)"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:461
-#: includes/admin/core/class-admin-metabox.php:616
+#: includes/admin/core/class-admin-metabox.php:491
+#: includes/admin/core/class-admin-metabox.php:646
 #: includes/admin/templates/access/restrict_content.php:94
 msgid "Custom message"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:468
-#: includes/admin/core/class-admin-metabox.php:624
+#: includes/admin/core/class-admin-metabox.php:498
+#: includes/admin/core/class-admin-metabox.php:654
 #: includes/admin/templates/access/restrict_content.php:101
 msgid "Custom Restrict Content message"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:469
-#: includes/admin/core/class-admin-metabox.php:489
-#: includes/admin/core/class-admin-metabox.php:625
-#: includes/admin/core/class-admin-metabox.php:647
+#: includes/admin/core/class-admin-metabox.php:499
+#: includes/admin/core/class-admin-metabox.php:519
+#: includes/admin/core/class-admin-metabox.php:655
+#: includes/admin/core/class-admin-metabox.php:677
 #: includes/admin/templates/access/restrict_content.php:102
 #: includes/admin/templates/access/restrict_content.php:122
 msgid "Changed global restrict message"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:476
-#: includes/admin/core/class-admin-metabox.php:633
+#: includes/admin/core/class-admin-metabox.php:506
+#: includes/admin/core/class-admin-metabox.php:663
 #: includes/admin/templates/access/restrict_content.php:109
 msgid "Where should users be redirected to?"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:477
-#: includes/admin/core/class-admin-metabox.php:634
+#: includes/admin/core/class-admin-metabox.php:507
+#: includes/admin/core/class-admin-metabox.php:664
 #: includes/admin/templates/access/restrict_content.php:110
 msgid "Select redirect to page when user hasn't access to content"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:481
-#: includes/admin/core/class-admin-metabox.php:638
+#: includes/admin/core/class-admin-metabox.php:511
+#: includes/admin/core/class-admin-metabox.php:668
 #: includes/admin/templates/access/restrict_content.php:114
 msgid "Login page"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:482
-#: includes/admin/core/class-admin-metabox.php:639
+#: includes/admin/core/class-admin-metabox.php:512
+#: includes/admin/core/class-admin-metabox.php:669
 #: includes/admin/templates/access/restrict_content.php:115
 msgid "Custom URL"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:488
-#: includes/admin/core/class-admin-metabox.php:646
+#: includes/admin/core/class-admin-metabox.php:518
+#: includes/admin/core/class-admin-metabox.php:676
 #: includes/admin/templates/access/restrict_content.php:121
 msgid "Redirect URL"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:496
-#: includes/admin/core/class-admin-metabox.php:655
+#: includes/admin/core/class-admin-metabox.php:526
+#: includes/admin/core/class-admin-metabox.php:685
 #: includes/admin/templates/access/restrict_content.php:129
 msgid "Hide from queries"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:497
-#: includes/admin/core/class-admin-metabox.php:656
+#: includes/admin/core/class-admin-metabox.php:527
+#: includes/admin/core/class-admin-metabox.php:686
 #: includes/admin/templates/access/restrict_content.php:130
 msgid ""
 "Hide this content from archives, RSS feeds etc for users who do not have "
 "permission to view this content"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:814
+#: includes/admin/core/class-admin-metabox.php:866
 msgid "General Options"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:815
+#: includes/admin/core/class-admin-metabox.php:874
 msgid "Profile Card"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:816
-msgid "Search Options"
+#: includes/admin/core/class-admin-metabox.php:882
+msgid "Search &amp; Filters Options"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:817
+#: includes/admin/core/class-admin-metabox.php:890
 msgid "Results &amp; Pagination"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:819
+#: includes/admin/core/class-admin-metabox.php:906
 msgid "Styling: General"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:832
+#: includes/admin/core/class-admin-metabox.php:937
 msgid "Administrative Permissions"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:840
+#: includes/admin/core/class-admin-metabox.php:945
 msgid "General Permissions"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:848
+#: includes/admin/core/class-admin-metabox.php:953
 msgid "Profile Access"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:859
+#: includes/admin/core/class-admin-metabox.php:964
 msgid "Homepage Options"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:870
+#: includes/admin/core/class-admin-metabox.php:975
 msgid "Registration Options"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:878
+#: includes/admin/core/class-admin-metabox.php:983
 msgid "Login Options"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:886
+#: includes/admin/core/class-admin-metabox.php:991
 msgid "Logout Options"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:894
+#: includes/admin/core/class-admin-metabox.php:999
 msgid "Delete Options"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:902
+#: includes/admin/core/class-admin-metabox.php:1007
 msgid "Publish"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:950
+#: includes/admin/core/class-admin-metabox.php:1055
 msgid "WP Capabilities"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:977
+#: includes/admin/core/class-admin-metabox.php:1082
 msgid "Select Form Type"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:978
+#: includes/admin/core/class-admin-metabox.php:1083
 msgid "Form Builder"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:981
-#: includes/admin/core/class-admin-metabox.php:1002
-#: includes/admin/core/class-admin-metabox.php:1024
+#: includes/admin/core/class-admin-metabox.php:1086
+#: includes/admin/core/class-admin-metabox.php:1107
+#: includes/admin/core/class-admin-metabox.php:1129
 msgid "Customize this form"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1003
+#: includes/admin/core/class-admin-metabox.php:1108
 msgid "User Meta"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1025
+#: includes/admin/core/class-admin-metabox.php:1130
 msgid "Options"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1236
+#: includes/admin/core/class-admin-metabox.php:1181
+#, php-format
+msgid "Directory #%s"
+msgstr ""
+
+#: includes/admin/core/class-admin-metabox.php:1360
 msgid ""
 "Select where this field should appear. This option should only be changed on "
 "the profile form and allows you to show a field in one mode only (edit or "
 "view) or in both modes."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1270
+#: includes/admin/core/class-admin-metabox.php:1394
 msgid "If"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1347
+#: includes/admin/core/class-admin-metabox.php:1471
 msgid "Value"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1356
+#: includes/admin/core/class-admin-metabox.php:1480
 msgid "Does this field require a special validation"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1401
+#: includes/admin/core/class-admin-metabox.php:1525
 msgid ""
 "If you want to apply your custom validation, you can use action hooks to add "
 "custom validation. Please refer to documentation for further details."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1415
-#: includes/admin/core/class-admin-metabox.php:1443
+#: includes/admin/core/class-admin-metabox.php:1539
+#: includes/admin/core/class-admin-metabox.php:1567
 msgid ""
 "Select an icon to appear in the field. Leave blank if you do not want an "
 "icon to show in the field."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1470
+#: includes/admin/core/class-admin-metabox.php:1594
 msgid "Specify a custom CSS class to be applied to this element"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1480
+#: includes/admin/core/class-admin-metabox.php:1604
 msgid "This is the width in pixels, e.g. 4 or 2, etc"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1490
+#: includes/admin/core/class-admin-metabox.php:1614
 msgid "Optional text to include with the divider"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1500
+#: includes/admin/core/class-admin-metabox.php:1624
 msgid "Set padding for this section"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1510
+#: includes/admin/core/class-admin-metabox.php:1634
 msgid "Set margin for this section"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1520
+#: includes/admin/core/class-admin-metabox.php:1644
 msgid "Set border for this section"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1530
+#: includes/admin/core/class-admin-metabox.php:1654
 msgid "Choose the border style"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1545
+#: includes/admin/core/class-admin-metabox.php:1669
 msgid "Rounded corners can be applied by setting a pixels value here. e.g. 5px"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1555
+#: includes/admin/core/class-admin-metabox.php:1679
 msgid "Give a color to this border"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1565
+#: includes/admin/core/class-admin-metabox.php:1689
 msgid "Enable Row Heading"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1565
+#: includes/admin/core/class-admin-metabox.php:1689
 msgid "Whether to enable a heading for this row"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1575
+#: includes/admin/core/class-admin-metabox.php:1699
 msgid "Enter the row heading text here"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1585
+#: includes/admin/core/class-admin-metabox.php:1709
 msgid "This will be the background of entire section"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1595
+#: includes/admin/core/class-admin-metabox.php:1719
 msgid "This will be the background of the heading section"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1605
+#: includes/admin/core/class-admin-metabox.php:1729
 msgid "This will be the text color of heading part only"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1615
+#: includes/admin/core/class-admin-metabox.php:1739
 msgid "This will be the text color of entire section"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1625
+#: includes/admin/core/class-admin-metabox.php:1749
 msgid ""
 "This will be the color of selected icon. By default It will be the same "
 "color as heading text color"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1635
+#: includes/admin/core/class-admin-metabox.php:1759
 msgid "Select a color for this divider"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1645
+#: includes/admin/core/class-admin-metabox.php:1769
 msgid "Entering custom text here will replace the url with a text link"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1655
+#: includes/admin/core/class-admin-metabox.php:1779
 msgid "Choose whether to open this link in same window or in a new window"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1668
+#: includes/admin/core/class-admin-metabox.php:1792
 msgid "Whether to follow or nofollow this link by search engines"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1681
+#: includes/admin/core/class-admin-metabox.php:1805
 msgid ""
 "Turn on to force users to create a strong password (A combination of one "
 "lowercase letter, one uppercase letter, and one number). If turned on this "
 "option is only applied to register forms and not to login forms."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1691
+#: includes/admin/core/class-admin-metabox.php:1815
 msgid ""
 "Turn on to add a confirm password field. If turned on the confirm password "
 "field will only show on register forms and not on login forms."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1701
+#: includes/admin/core/class-admin-metabox.php:1825
 msgid "This is the line-style of divider"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1717
+#: includes/admin/core/class-admin-metabox.php:1841
 msgid "Choose the minutes interval between each time in the time picker."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1730
+#: includes/admin/core/class-admin-metabox.php:1854
 msgid "The display format of the date which is visible to user."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1741
+#: includes/admin/core/class-admin-metabox.php:1865
 msgid "Choose the displayed time-format for this field"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1756
+#: includes/admin/core/class-admin-metabox.php:1880
 msgid ""
 "Whether you wish to show the date in full or only show the years e.g. 25 "
 "Years"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1775
+#: includes/admin/core/class-admin-metabox.php:1899
 msgid ""
 "Disable specific week days from being available for selection in this date "
 "picker"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1793
+#: includes/admin/core/class-admin-metabox.php:1917
 msgid ""
 "Number of years available for the date selection. Default to last 50 years"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1803
+#: includes/admin/core/class-admin-metabox.php:1927
 msgid "This decides which years should be shown relative to today date"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1817
+#: includes/admin/core/class-admin-metabox.php:1941
 msgid "Set the minimum date/day in range in the format YYYY/MM/DD"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1827
+#: includes/admin/core/class-admin-metabox.php:1951
 msgid "Set the maximum date/day in range in the format YYYY/MM/DD"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1837
+#: includes/admin/core/class-admin-metabox.php:1961
 msgid ""
 "Whether to show a specific number of years or specify a date range to be "
 "available for the date picker."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1853
+#: includes/admin/core/class-admin-metabox.php:1977
 msgid ""
 "Enter the shortcode in the following textarea and it will be displayed on "
 "the fields"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1863
+#: includes/admin/core/class-admin-metabox.php:1987
 msgid "Edit the content of this field here"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1876
+#: includes/admin/core/class-admin-metabox.php:2000
 msgid "Enable/disable crop feature for this image upload and define ratio"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1898
-#: includes/admin/core/class-admin-metabox.php:1918
+#: includes/admin/core/class-admin-metabox.php:2022
+#: includes/admin/core/class-admin-metabox.php:2042
 msgid ""
 "Select the image types that you want to allow to be uploaded via this field."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1939
+#: includes/admin/core/class-admin-metabox.php:2063
 msgid "This is the headline that appears in the upload box for this field"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1949
+#: includes/admin/core/class-admin-metabox.php:2073
 msgid ""
 "If you need to add information or secondary line below the headline of "
 "upload box, enter it here"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1959
+#: includes/admin/core/class-admin-metabox.php:2083
 msgid "The text that appears on the button. e.g. Upload"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1969
+#: includes/admin/core/class-admin-metabox.php:2093
 msgid ""
 "The maximum size for image that can be uploaded through this field. Leave "
 "empty for unlimited size."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1979
+#: includes/admin/core/class-admin-metabox.php:2103
 msgid "The height of textarea in pixels. Default is 100 pixels"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1989
+#: includes/admin/core/class-admin-metabox.php:2113
 msgid "This is the required spacing in pixels. e.g. 20px"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:1999
+#: includes/admin/core/class-admin-metabox.php:2123
 msgid "Enable/disable multiple selections for this field"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2009
+#: includes/admin/core/class-admin-metabox.php:2133
 msgid ""
 "Enter a number here to force a maximum number of selections by user for this "
 "field"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2019
+#: includes/admin/core/class-admin-metabox.php:2143
 msgid ""
 "Enter a number here to force a minimum number of selections by user for this "
 "field"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2029
+#: includes/admin/core/class-admin-metabox.php:2153
 msgid "This is the max number of entries the user can add via field group."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2039
+#: includes/admin/core/class-admin-metabox.php:2163
 msgid ""
 "If you want to enable a maximum number of words to be input in this "
 "textarea. Leave empty to disable this setting"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2049
+#: includes/admin/core/class-admin-metabox.php:2173
 msgid "Minimum number that can be entered in this field"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2059
+#: includes/admin/core/class-admin-metabox.php:2183
 msgid "Maximum number that can be entered in this field"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2069
+#: includes/admin/core/class-admin-metabox.php:2193
 msgid ""
 "If you want to enable a minimum number of characters to be input in this "
 "field. Leave empty to disable this setting"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2079
+#: includes/admin/core/class-admin-metabox.php:2203
 msgid ""
 "If you want to enable a maximum number of characters to be input in this "
 "field. Leave empty to disable this setting"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2089
+#: includes/admin/core/class-admin-metabox.php:2213
 msgid "Turn on/off HTML tags for this textarea"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2108
+#: includes/admin/core/class-admin-metabox.php:2232
 msgid ""
 "Enter one choice per line. This will represent the available choices or "
 "selections available for user."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2118
+#: includes/admin/core/class-admin-metabox.php:2242
 msgid ""
 "This is the title of the field for your reference in the backend. The title "
 "will not appear on the front-end of your website."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2143
+#: includes/admin/core/class-admin-metabox.php:2267
 msgid ""
 "The meta key cannot be changed for duplicated fields or when editing an "
 "existing field. If you require a different meta key please create a new "
 "field."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2149
+#: includes/admin/core/class-admin-metabox.php:2273
 msgid ""
 "A meta key is required to store the entered info in this field in the "
 "database. The meta key should be unique to this field and be written in "
@@ -996,7 +1009,7 @@ msgid ""
 "job_title"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2162
+#: includes/admin/core/class-admin-metabox.php:2286
 msgid ""
 "This is the text that appears in a tooltip when a user hovers over the info "
 "icon. Help text is useful for providing users with more information about "
@@ -1004,73 +1017,73 @@ msgid ""
 "for field."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2174
+#: includes/admin/core/class-admin-metabox.php:2298
 msgid "Text to display by default in this field"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2180
+#: includes/admin/core/class-admin-metabox.php:2304
 msgid ""
 "If you wish the rating field to be prefilled with a number of stars, enter "
 "it here."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2186
+#: includes/admin/core/class-admin-metabox.php:2310
 msgid ""
 "This option allows you to pre-fill the field with a default value prior to "
 "the user entering a value in the field. Leave blank to have no default value"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2198
+#: includes/admin/core/class-admin-metabox.php:2322
 msgid ""
 "The field label is the text that appears above the field on your front-end "
 "form. Leave blank to not show a label above field."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2208
+#: includes/admin/core/class-admin-metabox.php:2332
 msgid ""
 "This is the text that appears within the field e.g please enter your email "
 "address. Leave blank to not show any placeholder text."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2218
+#: includes/admin/core/class-admin-metabox.php:2342
 msgid ""
 "Field privacy allows you to select who can view this field on the front-end. "
 "The site admin can view all fields regardless of the option set here."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2241
+#: includes/admin/core/class-admin-metabox.php:2365
 msgid "Select the member roles that can view this field on the front-end."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2267
+#: includes/admin/core/class-admin-metabox.php:2391
 msgid ""
 "This option allows you to set whether the field must be filled in before the "
 "form can be processed."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2281
+#: includes/admin/core/class-admin-metabox.php:2405
 msgid ""
 "This option allows you to set whether or not the user can edit the "
 "information in this field."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2294
+#: includes/admin/core/class-admin-metabox.php:2418
 msgid "Choose whether you want a 5-stars or 10-stars ratings based here."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2307
+#: includes/admin/core/class-admin-metabox.php:2431
 msgid "Add a callback source to retrieve choices."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2318
+#: includes/admin/core/class-admin-metabox.php:2442
 msgid "Parent Option"
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2318
+#: includes/admin/core/class-admin-metabox.php:2442
 msgid "Dynamically populates the option based from selected parent option."
 msgstr ""
 
-#: includes/admin/core/class-admin-metabox.php:2320
+#: includes/admin/core/class-admin-metabox.php:2444
 msgid "No Selected"
 msgstr ""
 
@@ -1419,7 +1432,8 @@ msgstr ""
 
 #: includes/admin/core/class-admin-settings.php:252
 #: includes/admin/core/class-admin-settings.php:269
-#: includes/core/class-builtin.php:669 includes/core/class-builtin.php:672
+#: includes/core/class-builtin.php:651 includes/core/class-builtin.php:654
+#: includes/core/class-members.php:530
 msgid "Username"
 msgstr ""
 
@@ -1459,7 +1473,7 @@ msgid "Default WP Display Name"
 msgstr ""
 
 #: includes/admin/core/class-admin-settings.php:268
-#: includes/core/class-builtin.php:727 includes/core/class-builtin.php:730
+#: includes/core/class-builtin.php:709 includes/core/class-builtin.php:712
 msgid "Nickname"
 msgstr ""
 
@@ -2525,78 +2539,78 @@ msgstr ""
 msgid "Run"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:109
-#: includes/admin/core/class-admin-users.php:112
+#: includes/admin/core/class-admin-users.php:124
+#: includes/admin/core/class-admin-users.php:127
 msgid "UM Action"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:116
+#: includes/admin/core/class-admin-users.php:131
 #: includes/core/class-fields.php:2300
 msgid "Apply"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:158
+#: includes/admin/core/class-admin-users.php:173
 #: includes/core/um-filters-user.php:20 includes/core/um-filters-user.php:25
 msgid "Approve Membership"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:161
+#: includes/admin/core/class-admin-users.php:176
 #: includes/core/um-filters-user.php:21
 msgid "Reject Membership"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:164
+#: includes/admin/core/class-admin-users.php:179
 #: includes/core/um-filters-user.php:29
 msgid "Put as Pending Review"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:167
+#: includes/admin/core/class-admin-users.php:182
 #: includes/core/um-filters-user.php:33
 msgid "Resend Activation E-mail"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:170
+#: includes/admin/core/class-admin-users.php:185
 msgid "Deactivate"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:173
+#: includes/admin/core/class-admin-users.php:188
 msgid "Reactivate"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:196 templates/account.php:38
+#: includes/admin/core/class-admin-users.php:211 templates/account.php:38
 #: templates/account.php:62
 msgid "View profile"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:200
+#: includes/admin/core/class-admin-users.php:215
 msgid "Info"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:305
+#: includes/admin/core/class-admin-users.php:320
 #: includes/admin/templates/dashboard/users.php:11
 #: includes/core/class-user.php:816
 msgid "Approved"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:306
+#: includes/admin/core/class-admin-users.php:321
 msgid "Pending review"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:307
+#: includes/admin/core/class-admin-users.php:322
 msgid "Waiting e-mail confirmation"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:308
+#: includes/admin/core/class-admin-users.php:323
 #: includes/admin/templates/dashboard/users.php:37
 msgid "Inactive"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:309
+#: includes/admin/core/class-admin-users.php:324
 #: includes/admin/templates/dashboard/users.php:16
 msgid "Rejected"
 msgstr ""
 
-#: includes/admin/core/class-admin-users.php:369
+#: includes/admin/core/class-admin-users.php:384
 msgid "You do not have enough permissions to do that."
 msgstr ""
 
@@ -2634,6 +2648,7 @@ msgstr ""
 #: includes/admin/core/list-tables/roles-list-table.php:23
 #: includes/admin/core/list-tables/roles-list-table.php:88
 #: includes/admin/core/list-tables/roles-list-table.php:398
+#: includes/core/class-members.php:547
 msgid "Roles"
 msgstr ""
 
@@ -2659,6 +2674,7 @@ msgid "Reset UM Role meta"
 msgstr ""
 
 #: includes/admin/core/list-tables/roles-list-table.php:397
+#: includes/core/class-builtin.php:983
 msgid "Role"
 msgstr ""
 
@@ -2707,6 +2723,7 @@ msgid "User Roles was upgraded successfully"
 msgstr ""
 
 #: includes/admin/core/packages/2.0-beta1/functions.php:80
+#: includes/admin/core/packages/2.1.0/functions.php:107
 #, php-format
 msgid "Users from %s to %s was upgraded successfully..."
 msgstr ""
@@ -2868,6 +2885,18 @@ msgstr ""
 msgid "Purge temp files dir..."
 msgstr ""
 
+#: includes/admin/core/packages/2.1.0/functions.php:7
+msgid "Users are ready for upgrade"
+msgstr ""
+
+#: includes/admin/core/packages/2.1.0/functions.php:134
+msgid "Member directories are ready for upgrade"
+msgstr ""
+
+#: includes/admin/core/packages/2.1.0/init.php:10
+msgid "Upgrade Usermeta..."
+msgstr ""
+
 #: includes/admin/templates/dashboard/cache.php:9
 msgid "Run this task from time to time to keep your DB clean."
 msgstr ""
@@ -2958,79 +2987,116 @@ msgstr ""
 msgid "Template"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:46
+#: includes/admin/templates/directory/general.php:45
 msgid "New users first"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:47
+#: includes/admin/templates/directory/general.php:46
 msgid "Old users first"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:48
+#: includes/admin/templates/directory/general.php:47
 msgid "Last login"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:49
+#: includes/admin/templates/directory/general.php:48
 msgid "Display Name"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:50
-#: includes/core/class-builtin.php:707 includes/core/class-builtin.php:710
+#: includes/admin/templates/directory/general.php:49
+#: includes/core/class-builtin.php:689 includes/core/class-builtin.php:692
+#: includes/core/class-members.php:531
 msgid "First Name"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:51
-#: includes/core/class-builtin.php:717 includes/core/class-builtin.php:720
+#: includes/admin/templates/directory/general.php:50
+#: includes/core/class-builtin.php:699 includes/core/class-builtin.php:702
+#: includes/core/class-members.php:532
 msgid "Last Name"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:52
+#: includes/admin/templates/directory/general.php:51
 msgid "Random"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:53
+#: includes/admin/templates/directory/general.php:52
 msgid "Other (custom field)"
 msgstr ""
 
 #: includes/admin/templates/directory/general.php:65
-msgid "User Roles to Display"
+msgid "View type(s)"
 msgstr ""
 
 #: includes/admin/templates/directory/general.php:66
+msgid "View type a specific parameter in the directory"
+msgstr ""
+
+#: includes/admin/templates/directory/general.php:68
+#: includes/admin/templates/directory/general.php:79
+msgid "Grid"
+msgstr ""
+
+#: includes/admin/templates/directory/general.php:69
+#: includes/admin/templates/directory/general.php:80
+msgid "List"
+msgstr ""
+
+#: includes/admin/templates/directory/general.php:76
+msgid "Default view type"
+msgstr ""
+
+#: includes/admin/templates/directory/general.php:77
+msgid "Default directory view type"
+msgstr ""
+
+#: includes/admin/templates/directory/general.php:88
+msgid "User Roles to Display"
+msgstr ""
+
+#: includes/admin/templates/directory/general.php:89
 msgid ""
 "If you do not want to show all members, select only user roles to appear in "
 "this directory"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:74
+#: includes/admin/templates/directory/general.php:97
 msgid "Only show members who have uploaded a profile photo"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:75
+#: includes/admin/templates/directory/general.php:98
 msgid "If 'Use Gravatars' as profile photo is enabled, this option is ignored"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:81
+#: includes/admin/templates/directory/general.php:104
 msgid "Only show members who have uploaded a cover photo"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:87
-msgid "Sort users by"
+#: includes/admin/templates/directory/general.php:110
+msgid "Choose field(s) to enable in sorting"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:88
-msgid "Sort users by a specific parameter in the directory"
+#: includes/admin/templates/directory/general.php:113
+#: includes/admin/templates/form/profile_settings.php:21
+msgid "Add New Field"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:95
+#: includes/admin/templates/directory/general.php:119
+msgid "Default sort users by"
+msgstr ""
+
+#: includes/admin/templates/directory/general.php:120
+msgid "Default sorting users by a specific parameter in the directory"
+msgstr ""
+
+#: includes/admin/templates/directory/general.php:128
 msgid "Meta key"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:96
+#: includes/admin/templates/directory/general.php:129
 msgid "To sort by a custom field, enter the meta key of field here"
 msgstr ""
 
-#: includes/admin/templates/directory/general.php:103
+#: includes/admin/templates/directory/general.php:136
 msgid "Only show specific users (Enter one username per line)"
 msgstr ""
 
@@ -3060,6 +3126,48 @@ msgid ""
 "directory. Leave blank to disable this limit"
 msgstr ""
 
+#: includes/admin/templates/directory/pagination.php:33
+msgid "Results Text"
+msgstr ""
+
+#: includes/admin/templates/directory/pagination.php:34
+msgid ""
+"Customize the search result text . e.g. Found 3,000 Members. Leave this "
+"blank to not show result text"
+msgstr ""
+
+#: includes/admin/templates/directory/pagination.php:35
+#: includes/class-config.php:153 includes/class-config.php:248
+msgid "{total_users} Members"
+msgstr ""
+
+#: includes/admin/templates/directory/pagination.php:40
+msgid "Single Result Text"
+msgstr ""
+
+#: includes/admin/templates/directory/pagination.php:41
+msgid "Same as above but in case of 1 user found only"
+msgstr ""
+
+#: includes/admin/templates/directory/pagination.php:42
+#: includes/class-config.php:154 includes/class-config.php:249
+msgid "{total_users} Member"
+msgstr ""
+
+#: includes/admin/templates/directory/pagination.php:47
+msgid "Custom text if no users were found"
+msgstr ""
+
+#: includes/admin/templates/directory/pagination.php:48
+msgid ""
+"This is the text that is displayed if no users are found during a search"
+msgstr ""
+
+#: includes/admin/templates/directory/pagination.php:49
+#: includes/class-config.php:155
+msgid "We are sorry. We cannot find any users who match your search criteria."
+msgstr ""
+
 #: includes/admin/templates/directory/profile.php:19
 msgid "Enable Profile Photo"
 msgstr ""
@@ -3086,7 +3194,7 @@ msgstr ""
 
 #: includes/admin/templates/directory/profile.php:47
 #: includes/admin/templates/directory/profile.php:69
-#: includes/admin/templates/directory/search.php:78
+#: includes/admin/templates/directory/search.php:82
 msgid "Add New Custom Field"
 msgstr ""
 
@@ -3106,82 +3214,48 @@ msgstr ""
 msgid "Show social connect icons"
 msgstr ""
 
-#: includes/admin/templates/directory/search.php:49
+#: includes/admin/templates/directory/search.php:46
 msgid "Enable Search feature"
 msgstr ""
 
-#: includes/admin/templates/directory/search.php:50
+#: includes/admin/templates/directory/search.php:47
 msgid "If turned on, users will be able to search members in this directory"
 msgstr ""
 
-#: includes/admin/templates/directory/search.php:56
+#: includes/admin/templates/directory/search.php:53
 msgid "Show results only after search"
 msgstr ""
 
-#: includes/admin/templates/directory/search.php:57
+#: includes/admin/templates/directory/search.php:54
 msgid "If turned on, member results will only appear after search is performed"
 msgstr ""
 
-#: includes/admin/templates/directory/search.php:65
+#: includes/admin/templates/directory/search.php:62
 msgid "User Roles that can use search"
 msgstr ""
 
-#: includes/admin/templates/directory/search.php:66
+#: includes/admin/templates/directory/search.php:63
 msgid "If you want to allow specific user roles to be able to search only"
 msgstr ""
 
-#: includes/admin/templates/directory/search.php:74
+#: includes/admin/templates/directory/search.php:71
+msgid "Enable Filters feature"
+msgstr ""
+
+#: includes/admin/templates/directory/search.php:72
+msgid "If turned on, users will be able to filter members in this directory"
+msgstr ""
+
+#: includes/admin/templates/directory/search.php:78
 msgid "Choose field(s) to enable in search"
 msgstr ""
 
-#: includes/admin/templates/directory/search.php:84
+#: includes/admin/templates/directory/search.php:88
 msgid "Additional search filters"
 msgstr ""
 
-#: includes/admin/templates/directory/search.php:85
+#: includes/admin/templates/directory/search.php:89
 msgid "Additional search filters like URL parameters"
-msgstr ""
-
-#: includes/admin/templates/directory/search.php:93
-msgid "Results Text"
-msgstr ""
-
-#: includes/admin/templates/directory/search.php:94
-msgid ""
-"Customize the search result text . e.g. Found 3,000 Members. Leave this "
-"blank to not show result text"
-msgstr ""
-
-#: includes/admin/templates/directory/search.php:95
-#: includes/class-config.php:153 includes/class-config.php:248
-msgid "{total_users} Members"
-msgstr ""
-
-#: includes/admin/templates/directory/search.php:101
-msgid "Single Result Text"
-msgstr ""
-
-#: includes/admin/templates/directory/search.php:102
-msgid "Same as above but in case of 1 user found only"
-msgstr ""
-
-#: includes/admin/templates/directory/search.php:103
-#: includes/class-config.php:154 includes/class-config.php:249
-msgid "{total_users} Member"
-msgstr ""
-
-#: includes/admin/templates/directory/search.php:109
-msgid "Custom text if no users were found"
-msgstr ""
-
-#: includes/admin/templates/directory/search.php:110
-msgid ""
-"This is the text that is displayed if no users are found during a search"
-msgstr ""
-
-#: includes/admin/templates/directory/search.php:111
-#: includes/class-config.php:155
-msgid "We are sorry. We cannot find any users who match your search criteria."
 msgstr ""
 
 #: includes/admin/templates/extensions.php:169
@@ -3395,10 +3469,6 @@ msgstr ""
 msgid ""
 "Fields selected here will appear in the profile header area below the user's "
 "display name"
-msgstr ""
-
-#: includes/admin/templates/form/profile_settings.php:21
-msgid "Add New Field"
 msgstr ""
 
 #: includes/admin/templates/form/register_customize.php:27
@@ -4092,7 +4162,7 @@ msgid "Update Notifications"
 msgstr ""
 
 #: includes/core/class-account.php:117 includes/core/class-account.php:118
-#: includes/core/class-builtin.php:1136 includes/core/class-builtin.php:1139
+#: includes/core/class-builtin.php:1128 includes/core/class-builtin.php:1131
 msgid "Delete Account"
 msgstr ""
 
@@ -4171,1979 +4241,1982 @@ msgstr ""
 msgid "You must add a shortcode to the content area"
 msgstr ""
 
-#: includes/core/class-builtin.php:663 includes/core/class-user.php:1538
+#: includes/core/class-builtin.php:645 includes/core/class-user.php:1538
 msgid "Only me"
 msgstr ""
 
-#: includes/core/class-builtin.php:682 includes/core/class-builtin.php:685
-#: includes/core/class-builtin.php:1092
+#: includes/core/class-builtin.php:664 includes/core/class-builtin.php:667
+#: includes/core/class-builtin.php:1084
 msgid "Username or E-mail"
 msgstr ""
 
-#: includes/core/class-builtin.php:693 includes/core/class-builtin.php:696
-#: includes/core/class-builtin.php:1150 includes/core/class-builtin.php:1153
+#: includes/core/class-builtin.php:675 includes/core/class-builtin.php:678
+#: includes/core/class-builtin.php:1142 includes/core/class-builtin.php:1145
 msgid "Password"
 msgstr ""
 
-#: includes/core/class-builtin.php:737 includes/core/class-builtin.php:740
-#: includes/core/class-builtin.php:1327
+#: includes/core/class-builtin.php:719 includes/core/class-builtin.php:722
+#: includes/core/class-builtin.php:1319
 msgid "Website URL"
 msgstr ""
 
-#: includes/core/class-builtin.php:748 includes/core/class-builtin.php:751
+#: includes/core/class-builtin.php:730 includes/core/class-builtin.php:733
 msgid "Registration Date"
 msgstr ""
 
-#: includes/core/class-builtin.php:759 includes/core/class-builtin.php:762
+#: includes/core/class-builtin.php:741 includes/core/class-builtin.php:744
 msgid "Last Login"
 msgstr ""
 
-#: includes/core/class-builtin.php:770 includes/core/class-builtin.php:773
+#: includes/core/class-builtin.php:752 includes/core/class-builtin.php:755
 msgid "E-mail Address"
 msgstr ""
 
-#: includes/core/class-builtin.php:781 includes/core/class-builtin.php:784
+#: includes/core/class-builtin.php:763 includes/core/class-builtin.php:766
 msgid "Secondary E-mail Address"
 msgstr ""
 
-#: includes/core/class-builtin.php:793 includes/core/class-builtin.php:796
+#: includes/core/class-builtin.php:775 includes/core/class-builtin.php:778
 msgid "Biography"
 msgstr ""
 
-#: includes/core/class-builtin.php:802
+#: includes/core/class-builtin.php:784
 msgid "Enter a bit about yourself..."
 msgstr ""
 
-#: includes/core/class-builtin.php:806 includes/core/class-builtin.php:809
+#: includes/core/class-builtin.php:788 includes/core/class-builtin.php:791
 msgid "Birth Date"
 msgstr ""
 
-#: includes/core/class-builtin.php:820 includes/core/class-builtin.php:823
+#: includes/core/class-builtin.php:802 includes/core/class-builtin.php:805
+#: includes/core/class-members.php:545
 msgid "Gender"
 msgstr ""
 
-#: includes/core/class-builtin.php:827
+#: includes/core/class-builtin.php:809
 msgid "Male"
 msgstr ""
 
-#: includes/core/class-builtin.php:827
+#: includes/core/class-builtin.php:809
 msgid "Female"
 msgstr ""
 
-#: includes/core/class-builtin.php:831 includes/core/class-builtin.php:834
+#: includes/core/class-builtin.php:813 includes/core/class-builtin.php:816
+#: includes/core/class-members.php:544
 msgid "Country"
 msgstr ""
 
-#: includes/core/class-builtin.php:835
+#: includes/core/class-builtin.php:817
 msgid "Choose a Country"
 msgstr ""
 
-#: includes/core/class-builtin.php:843 includes/core/class-builtin.php:846
+#: includes/core/class-builtin.php:825 includes/core/class-builtin.php:828
 msgid "Facebook"
 msgstr ""
 
-#: includes/core/class-builtin.php:861 includes/core/class-builtin.php:864
+#: includes/core/class-builtin.php:843 includes/core/class-builtin.php:846
 msgid "Twitter"
 msgstr ""
 
-#: includes/core/class-builtin.php:879 includes/core/class-builtin.php:882
+#: includes/core/class-builtin.php:861 includes/core/class-builtin.php:864
 msgid "LinkedIn"
 msgstr ""
 
-#: includes/core/class-builtin.php:897 includes/core/class-builtin.php:900
+#: includes/core/class-builtin.php:879 includes/core/class-builtin.php:882
 msgid "Google+"
 msgstr ""
 
-#: includes/core/class-builtin.php:915 includes/core/class-builtin.php:918
+#: includes/core/class-builtin.php:897 includes/core/class-builtin.php:900
 msgid "Instagram"
 msgstr ""
 
-#: includes/core/class-builtin.php:933 includes/core/class-builtin.php:936
-#: includes/core/class-builtin.php:1320
+#: includes/core/class-builtin.php:915 includes/core/class-builtin.php:918
+#: includes/core/class-builtin.php:1312
 msgid "Skype ID"
 msgstr ""
 
-#: includes/core/class-builtin.php:948 includes/core/class-builtin.php:951
+#: includes/core/class-builtin.php:930 includes/core/class-builtin.php:933
 msgid "YouTube"
 msgstr ""
 
-#: includes/core/class-builtin.php:966 includes/core/class-builtin.php:969
+#: includes/core/class-builtin.php:948 includes/core/class-builtin.php:951
 msgid "SoundCloud"
 msgstr ""
 
-#: includes/core/class-builtin.php:984 includes/core/class-builtin.php:987
+#: includes/core/class-builtin.php:966 includes/core/class-builtin.php:969
 msgid "VKontakte"
 msgstr ""
 
-#: includes/core/class-builtin.php:1002
-msgid "Roles (Dropdown)"
-msgstr ""
-
-#: includes/core/class-builtin.php:1005 includes/core/class-builtin.php:1017
+#: includes/core/class-builtin.php:986 includes/core/class-builtin.php:997
+#: includes/core/class-builtin.php:1009
 msgid "Account Type"
 msgstr ""
 
-#: includes/core/class-builtin.php:1014
+#: includes/core/class-builtin.php:994
+msgid "Roles (Dropdown)"
+msgstr ""
+
+#: includes/core/class-builtin.php:1006
 msgid "Roles (Radio)"
 msgstr ""
 
-#: includes/core/class-builtin.php:1025
+#: includes/core/class-builtin.php:1017 includes/core/class-members.php:546
 msgid "Languages"
 msgstr ""
 
-#: includes/core/class-builtin.php:1028
+#: includes/core/class-builtin.php:1020
 msgid "Languages Spoken"
 msgstr ""
 
-#: includes/core/class-builtin.php:1029
+#: includes/core/class-builtin.php:1021
 msgid "Select languages"
 msgstr ""
 
-#: includes/core/class-builtin.php:1037 includes/core/class-builtin.php:1040
-#: includes/core/class-builtin.php:1319
+#: includes/core/class-builtin.php:1029 includes/core/class-builtin.php:1032
+#: includes/core/class-builtin.php:1311
 msgid "Phone Number"
 msgstr ""
 
-#: includes/core/class-builtin.php:1049 includes/core/class-builtin.php:1052
+#: includes/core/class-builtin.php:1041 includes/core/class-builtin.php:1044
 msgid "Mobile Number"
 msgstr ""
 
-#: includes/core/class-builtin.php:1063
+#: includes/core/class-builtin.php:1055
 msgid "Profile Photo"
 msgstr ""
 
-#: includes/core/class-builtin.php:1066
+#: includes/core/class-builtin.php:1058
 msgid "Change your profile photo"
 msgstr ""
 
-#: includes/core/class-builtin.php:1067
+#: includes/core/class-builtin.php:1059
 msgid "Upload your photo here"
 msgstr ""
 
-#: includes/core/class-builtin.php:1077
+#: includes/core/class-builtin.php:1069
 msgid "Cover Photo"
 msgstr ""
 
-#: includes/core/class-builtin.php:1080
+#: includes/core/class-builtin.php:1072
 #: includes/core/um-actions-profile.php:516
 msgid "Change your cover photo"
 msgstr ""
 
-#: includes/core/class-builtin.php:1081
+#: includes/core/class-builtin.php:1073
 msgid "Upload profile cover here"
 msgstr ""
 
-#: includes/core/class-builtin.php:1095
+#: includes/core/class-builtin.php:1087
 msgid "Enter your username or email"
 msgstr ""
 
-#: includes/core/class-builtin.php:1105 includes/core/class-builtin.php:1108
+#: includes/core/class-builtin.php:1097 includes/core/class-builtin.php:1100
 msgid "Profile Privacy"
 msgstr ""
 
-#: includes/core/class-builtin.php:1109
+#: includes/core/class-builtin.php:1101
 msgid "Who can see your public profile?"
 msgstr ""
 
-#: includes/core/class-builtin.php:1121 includes/core/class-builtin.php:1124
+#: includes/core/class-builtin.php:1113 includes/core/class-builtin.php:1116
 msgid "Hide my profile from directory"
 msgstr ""
 
-#: includes/core/class-builtin.php:1125
+#: includes/core/class-builtin.php:1117
 msgid "Here you can hide yourself from appearing in public directory"
 msgstr ""
 
-#: includes/core/class-builtin.php:1140
+#: includes/core/class-builtin.php:1132
 msgid ""
 "If you confirm, everything related to your profile will be deleted "
 "permanently from the site"
 msgstr ""
 
-#: includes/core/class-builtin.php:1309
+#: includes/core/class-builtin.php:1301
 msgid "Alphabetic value only"
 msgstr ""
 
-#: includes/core/class-builtin.php:1310
+#: includes/core/class-builtin.php:1302
 msgid "Alpha-numeric value"
 msgstr ""
 
-#: includes/core/class-builtin.php:1311
+#: includes/core/class-builtin.php:1303
 msgid "English letters only"
 msgstr ""
 
-#: includes/core/class-builtin.php:1312
+#: includes/core/class-builtin.php:1304
 msgid "Facebook URL"
 msgstr ""
 
-#: includes/core/class-builtin.php:1313
+#: includes/core/class-builtin.php:1305
 msgid "Google+ URL"
 msgstr ""
 
-#: includes/core/class-builtin.php:1314
+#: includes/core/class-builtin.php:1306
 msgid "Instagram URL"
 msgstr ""
 
-#: includes/core/class-builtin.php:1315
+#: includes/core/class-builtin.php:1307
 msgid "LinkedIn URL"
 msgstr ""
 
-#: includes/core/class-builtin.php:1316
+#: includes/core/class-builtin.php:1308
 msgid "VKontakte URL"
 msgstr ""
 
-#: includes/core/class-builtin.php:1317
+#: includes/core/class-builtin.php:1309
 msgid "Lowercase only"
 msgstr ""
 
-#: includes/core/class-builtin.php:1318
+#: includes/core/class-builtin.php:1310
 msgid "Numeric value only"
 msgstr ""
 
-#: includes/core/class-builtin.php:1321
+#: includes/core/class-builtin.php:1313
 msgid "SoundCloud Profile"
 msgstr ""
 
-#: includes/core/class-builtin.php:1322
+#: includes/core/class-builtin.php:1314
 msgid "Twitter URL"
 msgstr ""
 
-#: includes/core/class-builtin.php:1323
+#: includes/core/class-builtin.php:1315
 msgid "Unique E-mail"
 msgstr ""
 
-#: includes/core/class-builtin.php:1324
+#: includes/core/class-builtin.php:1316
 msgid "Unique Metakey value"
 msgstr ""
 
-#: includes/core/class-builtin.php:1325
+#: includes/core/class-builtin.php:1317
 msgid "Unique Username"
 msgstr ""
 
-#: includes/core/class-builtin.php:1326
+#: includes/core/class-builtin.php:1318
 msgid "Unique Username/E-mail"
 msgstr ""
 
-#: includes/core/class-builtin.php:1328
+#: includes/core/class-builtin.php:1320
 msgid "YouTube Profile"
 msgstr ""
 
-#: includes/core/class-builtin.php:1329
+#: includes/core/class-builtin.php:1321
 msgid "Custom Validation"
 msgstr ""
 
-#: includes/core/class-builtin.php:1368
+#: includes/core/class-builtin.php:1360
 msgid "Afar"
 msgstr ""
 
-#: includes/core/class-builtin.php:1369
+#: includes/core/class-builtin.php:1361
 msgid "Abkhazian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1370
+#: includes/core/class-builtin.php:1362
 msgid "Avestan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1371
+#: includes/core/class-builtin.php:1363
 msgid "Afrikaans"
 msgstr ""
 
-#: includes/core/class-builtin.php:1372
+#: includes/core/class-builtin.php:1364
 msgid "Akan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1373
+#: includes/core/class-builtin.php:1365
 msgid "Amharic"
 msgstr ""
 
-#: includes/core/class-builtin.php:1374
+#: includes/core/class-builtin.php:1366
 msgid "Aragonese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1375
+#: includes/core/class-builtin.php:1367
 msgid "Arabic"
 msgstr ""
 
-#: includes/core/class-builtin.php:1376
+#: includes/core/class-builtin.php:1368
 msgid "Assamese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1377
+#: includes/core/class-builtin.php:1369
 msgid "Avaric"
 msgstr ""
 
-#: includes/core/class-builtin.php:1378
+#: includes/core/class-builtin.php:1370
 msgid "Aymara"
 msgstr ""
 
-#: includes/core/class-builtin.php:1379
+#: includes/core/class-builtin.php:1371
 msgid "Azerbaijani"
 msgstr ""
 
-#: includes/core/class-builtin.php:1380
+#: includes/core/class-builtin.php:1372
 msgid "Bashkir"
 msgstr ""
 
-#: includes/core/class-builtin.php:1381
+#: includes/core/class-builtin.php:1373
 msgid "Belarusian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1382
+#: includes/core/class-builtin.php:1374
 msgid "Bulgarian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1383
+#: includes/core/class-builtin.php:1375
 msgid "Bihari"
 msgstr ""
 
-#: includes/core/class-builtin.php:1384
+#: includes/core/class-builtin.php:1376
 msgid "Bislama"
 msgstr ""
 
-#: includes/core/class-builtin.php:1385
+#: includes/core/class-builtin.php:1377
 msgid "Bambara"
 msgstr ""
 
-#: includes/core/class-builtin.php:1386
+#: includes/core/class-builtin.php:1378
 msgid "Bengali"
 msgstr ""
 
-#: includes/core/class-builtin.php:1387
+#: includes/core/class-builtin.php:1379
 msgid "Tibetan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1388
+#: includes/core/class-builtin.php:1380
 msgid "Breton"
 msgstr ""
 
-#: includes/core/class-builtin.php:1389
+#: includes/core/class-builtin.php:1381
 msgid "Bosnian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1390
+#: includes/core/class-builtin.php:1382
 msgid "Catalan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1391
+#: includes/core/class-builtin.php:1383
 msgid "Chechen"
 msgstr ""
 
-#: includes/core/class-builtin.php:1392
+#: includes/core/class-builtin.php:1384
 msgid "Chamorro"
 msgstr ""
 
-#: includes/core/class-builtin.php:1393
+#: includes/core/class-builtin.php:1385
 msgid "Corsican"
 msgstr ""
 
-#: includes/core/class-builtin.php:1394
+#: includes/core/class-builtin.php:1386
 msgid "Cree"
 msgstr ""
 
-#: includes/core/class-builtin.php:1395
+#: includes/core/class-builtin.php:1387
 msgid "Czech"
 msgstr ""
 
-#: includes/core/class-builtin.php:1396
+#: includes/core/class-builtin.php:1388
 msgid "Church Slavic"
 msgstr ""
 
-#: includes/core/class-builtin.php:1397
+#: includes/core/class-builtin.php:1389
 msgid "Chuvash"
 msgstr ""
 
-#: includes/core/class-builtin.php:1398
+#: includes/core/class-builtin.php:1390
 msgid "Welsh"
 msgstr ""
 
-#: includes/core/class-builtin.php:1399
+#: includes/core/class-builtin.php:1391
 msgid "Danish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1400
+#: includes/core/class-builtin.php:1392
 msgid "German"
 msgstr ""
 
-#: includes/core/class-builtin.php:1401
+#: includes/core/class-builtin.php:1393
 msgid "Divehi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1402
+#: includes/core/class-builtin.php:1394
 msgid "Dzongkha"
 msgstr ""
 
-#: includes/core/class-builtin.php:1403
+#: includes/core/class-builtin.php:1395
 msgid "Ewe"
 msgstr ""
 
-#: includes/core/class-builtin.php:1404
+#: includes/core/class-builtin.php:1396
 msgid "Greek"
 msgstr ""
 
-#: includes/core/class-builtin.php:1405
+#: includes/core/class-builtin.php:1397
 msgid "English"
 msgstr ""
 
-#: includes/core/class-builtin.php:1406
+#: includes/core/class-builtin.php:1398
 msgid "Esperanto"
 msgstr ""
 
-#: includes/core/class-builtin.php:1407
+#: includes/core/class-builtin.php:1399
 msgid "Spanish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1408
+#: includes/core/class-builtin.php:1400
 msgid "Estonian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1409
+#: includes/core/class-builtin.php:1401
 msgid "Basque"
 msgstr ""
 
-#: includes/core/class-builtin.php:1410
+#: includes/core/class-builtin.php:1402
 msgid "Persian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1411
+#: includes/core/class-builtin.php:1403
 msgid "Fulah"
 msgstr ""
 
-#: includes/core/class-builtin.php:1412
+#: includes/core/class-builtin.php:1404
 msgid "Finnish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1413
+#: includes/core/class-builtin.php:1405
 msgid "Fijian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1414
+#: includes/core/class-builtin.php:1406
 msgid "Faroese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1415
+#: includes/core/class-builtin.php:1407
 msgid "French"
 msgstr ""
 
-#: includes/core/class-builtin.php:1416
+#: includes/core/class-builtin.php:1408
 msgid "Western Frisian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1417
+#: includes/core/class-builtin.php:1409
 msgid "Irish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1418
+#: includes/core/class-builtin.php:1410
 msgid "Scottish Gaelic"
 msgstr ""
 
-#: includes/core/class-builtin.php:1419
+#: includes/core/class-builtin.php:1411
 msgid "Galician"
 msgstr ""
 
-#: includes/core/class-builtin.php:1420
+#: includes/core/class-builtin.php:1412
 msgid "Guarani"
 msgstr ""
 
-#: includes/core/class-builtin.php:1421
+#: includes/core/class-builtin.php:1413
 msgid "Gujarati"
 msgstr ""
 
-#: includes/core/class-builtin.php:1422
+#: includes/core/class-builtin.php:1414
 msgid "Manx"
 msgstr ""
 
-#: includes/core/class-builtin.php:1423
+#: includes/core/class-builtin.php:1415
 msgid "Hausa"
 msgstr ""
 
-#: includes/core/class-builtin.php:1424
+#: includes/core/class-builtin.php:1416
 msgid "Hebrew"
 msgstr ""
 
-#: includes/core/class-builtin.php:1425
+#: includes/core/class-builtin.php:1417
 msgid "Hindi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1426
+#: includes/core/class-builtin.php:1418
 msgid "Hiri Motu"
 msgstr ""
 
-#: includes/core/class-builtin.php:1427
+#: includes/core/class-builtin.php:1419
 msgid "Croatian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1428
+#: includes/core/class-builtin.php:1420
 msgid "Haitian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1429
+#: includes/core/class-builtin.php:1421
 msgid "Hungarian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1430
+#: includes/core/class-builtin.php:1422
 msgid "Armenian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1431
+#: includes/core/class-builtin.php:1423
 msgid "Herero"
 msgstr ""
 
-#: includes/core/class-builtin.php:1432
+#: includes/core/class-builtin.php:1424
 msgid "Interlingua (International Auxiliary Language Association)"
 msgstr ""
 
-#: includes/core/class-builtin.php:1433
+#: includes/core/class-builtin.php:1425
 msgid "Indonesian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1434
+#: includes/core/class-builtin.php:1426
 msgid "Interlingue"
 msgstr ""
 
-#: includes/core/class-builtin.php:1435
+#: includes/core/class-builtin.php:1427
 msgid "Igbo"
 msgstr ""
 
-#: includes/core/class-builtin.php:1436
+#: includes/core/class-builtin.php:1428
 msgid "Sichuan Yi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1437
+#: includes/core/class-builtin.php:1429
 msgid "Inupiaq"
 msgstr ""
 
-#: includes/core/class-builtin.php:1438
+#: includes/core/class-builtin.php:1430
 msgid "Ido"
 msgstr ""
 
-#: includes/core/class-builtin.php:1439
+#: includes/core/class-builtin.php:1431
 msgid "Icelandic"
 msgstr ""
 
-#: includes/core/class-builtin.php:1440
+#: includes/core/class-builtin.php:1432
 msgid "Italian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1441
+#: includes/core/class-builtin.php:1433
 msgid "Inuktitut"
 msgstr ""
 
-#: includes/core/class-builtin.php:1442
+#: includes/core/class-builtin.php:1434
 msgid "Japanese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1443
+#: includes/core/class-builtin.php:1435
 msgid "Javanese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1444
+#: includes/core/class-builtin.php:1436
 msgid "Georgian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1445
+#: includes/core/class-builtin.php:1437
 msgid "Kongo"
 msgstr ""
 
-#: includes/core/class-builtin.php:1446
+#: includes/core/class-builtin.php:1438
 msgid "Kikuyu"
 msgstr ""
 
-#: includes/core/class-builtin.php:1447
+#: includes/core/class-builtin.php:1439
 msgid "Kwanyama"
 msgstr ""
 
-#: includes/core/class-builtin.php:1448
+#: includes/core/class-builtin.php:1440
 msgid "Kazakh"
 msgstr ""
 
-#: includes/core/class-builtin.php:1449
+#: includes/core/class-builtin.php:1441
 msgid "Kalaallisut"
 msgstr ""
 
-#: includes/core/class-builtin.php:1450
+#: includes/core/class-builtin.php:1442
 msgid "Khmer"
 msgstr ""
 
-#: includes/core/class-builtin.php:1451
+#: includes/core/class-builtin.php:1443
 msgid "Kannada"
 msgstr ""
 
-#: includes/core/class-builtin.php:1452
+#: includes/core/class-builtin.php:1444
 msgid "Korean"
 msgstr ""
 
-#: includes/core/class-builtin.php:1453
+#: includes/core/class-builtin.php:1445
 msgid "Kanuri"
 msgstr ""
 
-#: includes/core/class-builtin.php:1454
+#: includes/core/class-builtin.php:1446
 msgid "Kashmiri"
 msgstr ""
 
-#: includes/core/class-builtin.php:1455
+#: includes/core/class-builtin.php:1447
 msgid "Kurdish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1456
+#: includes/core/class-builtin.php:1448
 msgid "Komi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1457
+#: includes/core/class-builtin.php:1449
 msgid "Cornish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1458
+#: includes/core/class-builtin.php:1450
 msgid "Kirghiz"
 msgstr ""
 
-#: includes/core/class-builtin.php:1459
+#: includes/core/class-builtin.php:1451
 msgid "Latin"
 msgstr ""
 
-#: includes/core/class-builtin.php:1460
+#: includes/core/class-builtin.php:1452
 msgid "Luxembourgish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1461
+#: includes/core/class-builtin.php:1453
 msgid "Ganda"
 msgstr ""
 
-#: includes/core/class-builtin.php:1462
+#: includes/core/class-builtin.php:1454
 msgid "Limburgish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1463
+#: includes/core/class-builtin.php:1455
 msgid "Lingala"
 msgstr ""
 
-#: includes/core/class-builtin.php:1464
+#: includes/core/class-builtin.php:1456
 msgid "Lao"
 msgstr ""
 
-#: includes/core/class-builtin.php:1465
+#: includes/core/class-builtin.php:1457
 msgid "Lithuanian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1466
+#: includes/core/class-builtin.php:1458
 msgid "Luba-Katanga"
 msgstr ""
 
-#: includes/core/class-builtin.php:1467
+#: includes/core/class-builtin.php:1459
 msgid "Latvian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1468
+#: includes/core/class-builtin.php:1460
 msgid "Malagasy"
 msgstr ""
 
-#: includes/core/class-builtin.php:1469
+#: includes/core/class-builtin.php:1461
 msgid "Marshallese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1470
+#: includes/core/class-builtin.php:1462
 msgid "Maori"
 msgstr ""
 
-#: includes/core/class-builtin.php:1471
+#: includes/core/class-builtin.php:1463
 msgid "Macedonian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1472
+#: includes/core/class-builtin.php:1464
 msgid "Malayalam"
 msgstr ""
 
-#: includes/core/class-builtin.php:1473
+#: includes/core/class-builtin.php:1465
 msgid "Mongolian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1474
+#: includes/core/class-builtin.php:1466
 msgid "Marathi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1475
+#: includes/core/class-builtin.php:1467
 msgid "Malay"
 msgstr ""
 
-#: includes/core/class-builtin.php:1476
+#: includes/core/class-builtin.php:1468
 msgid "Maltese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1477
+#: includes/core/class-builtin.php:1469
 msgid "Burmese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1478 includes/core/class-builtin.php:1709
+#: includes/core/class-builtin.php:1470 includes/core/class-builtin.php:1701
 msgid "Nauru"
 msgstr ""
 
-#: includes/core/class-builtin.php:1479
+#: includes/core/class-builtin.php:1471
 msgid "Norwegian Bokmal"
 msgstr ""
 
-#: includes/core/class-builtin.php:1480
+#: includes/core/class-builtin.php:1472
 msgid "North Ndebele"
 msgstr ""
 
-#: includes/core/class-builtin.php:1481
+#: includes/core/class-builtin.php:1473
 msgid "Nepali"
 msgstr ""
 
-#: includes/core/class-builtin.php:1482
+#: includes/core/class-builtin.php:1474
 msgid "Ndonga"
 msgstr ""
 
-#: includes/core/class-builtin.php:1483
+#: includes/core/class-builtin.php:1475
 msgid "Dutch"
 msgstr ""
 
-#: includes/core/class-builtin.php:1484
+#: includes/core/class-builtin.php:1476
 msgid "Norwegian Nynorsk"
 msgstr ""
 
-#: includes/core/class-builtin.php:1485
+#: includes/core/class-builtin.php:1477
 msgid "Norwegian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1486
+#: includes/core/class-builtin.php:1478
 msgid "South Ndebele"
 msgstr ""
 
-#: includes/core/class-builtin.php:1487
+#: includes/core/class-builtin.php:1479
 msgid "Navajo"
 msgstr ""
 
-#: includes/core/class-builtin.php:1488
+#: includes/core/class-builtin.php:1480
 msgid "Chichewa"
 msgstr ""
 
-#: includes/core/class-builtin.php:1489
+#: includes/core/class-builtin.php:1481
 msgid "Occitan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1490
+#: includes/core/class-builtin.php:1482
 msgid "Ojibwa"
 msgstr ""
 
-#: includes/core/class-builtin.php:1491
+#: includes/core/class-builtin.php:1483
 msgid "Oromo"
 msgstr ""
 
-#: includes/core/class-builtin.php:1492
+#: includes/core/class-builtin.php:1484
 msgid "Oriya"
 msgstr ""
 
-#: includes/core/class-builtin.php:1493
+#: includes/core/class-builtin.php:1485
 msgid "Ossetian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1494
+#: includes/core/class-builtin.php:1486
 msgid "Panjabi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1495
+#: includes/core/class-builtin.php:1487
 msgid "Pali"
 msgstr ""
 
-#: includes/core/class-builtin.php:1496
+#: includes/core/class-builtin.php:1488
 msgid "Polish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1497
+#: includes/core/class-builtin.php:1489
 msgid "Pashto"
 msgstr ""
 
-#: includes/core/class-builtin.php:1498
+#: includes/core/class-builtin.php:1490
 msgid "Portuguese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1499
+#: includes/core/class-builtin.php:1491
 msgid "Quechua"
 msgstr ""
 
-#: includes/core/class-builtin.php:1500
+#: includes/core/class-builtin.php:1492
 msgid "Raeto-Romance"
 msgstr ""
 
-#: includes/core/class-builtin.php:1501
+#: includes/core/class-builtin.php:1493
 msgid "Kirundi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1502
+#: includes/core/class-builtin.php:1494
 msgid "Romanian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1503
+#: includes/core/class-builtin.php:1495
 msgid "Russian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1504
+#: includes/core/class-builtin.php:1496
 msgid "Kinyarwanda"
 msgstr ""
 
-#: includes/core/class-builtin.php:1505
+#: includes/core/class-builtin.php:1497
 msgid "Sanskrit"
 msgstr ""
 
-#: includes/core/class-builtin.php:1506
+#: includes/core/class-builtin.php:1498
 msgid "Sardinian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1507
+#: includes/core/class-builtin.php:1499
 msgid "Sindhi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1508
+#: includes/core/class-builtin.php:1500
 msgid "Northern Sami"
 msgstr ""
 
-#: includes/core/class-builtin.php:1509
+#: includes/core/class-builtin.php:1501
 msgid "Sango"
 msgstr ""
 
-#: includes/core/class-builtin.php:1510
+#: includes/core/class-builtin.php:1502
 msgid "Sinhala"
 msgstr ""
 
-#: includes/core/class-builtin.php:1511
+#: includes/core/class-builtin.php:1503
 msgid "Slovak"
 msgstr ""
 
-#: includes/core/class-builtin.php:1512
+#: includes/core/class-builtin.php:1504
 msgid "Slovenian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1513
+#: includes/core/class-builtin.php:1505
 msgid "Samoan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1514
+#: includes/core/class-builtin.php:1506
 msgid "Shona"
 msgstr ""
 
-#: includes/core/class-builtin.php:1515
+#: includes/core/class-builtin.php:1507
 msgid "Somali"
 msgstr ""
 
-#: includes/core/class-builtin.php:1516
+#: includes/core/class-builtin.php:1508
 msgid "Albanian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1517
+#: includes/core/class-builtin.php:1509
 msgid "Serbian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1518
+#: includes/core/class-builtin.php:1510
 msgid "Swati"
 msgstr ""
 
-#: includes/core/class-builtin.php:1519
+#: includes/core/class-builtin.php:1511
 msgid "Southern Sotho"
 msgstr ""
 
-#: includes/core/class-builtin.php:1520
+#: includes/core/class-builtin.php:1512
 msgid "Sundanese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1521
+#: includes/core/class-builtin.php:1513
 msgid "Swedish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1522
+#: includes/core/class-builtin.php:1514
 msgid "Swahili"
 msgstr ""
 
-#: includes/core/class-builtin.php:1523
+#: includes/core/class-builtin.php:1515
 msgid "Tamil"
 msgstr ""
 
-#: includes/core/class-builtin.php:1524
+#: includes/core/class-builtin.php:1516
 msgid "Telugu"
 msgstr ""
 
-#: includes/core/class-builtin.php:1525
+#: includes/core/class-builtin.php:1517
 msgid "Tajik"
 msgstr ""
 
-#: includes/core/class-builtin.php:1526
+#: includes/core/class-builtin.php:1518
 msgid "Thai"
 msgstr ""
 
-#: includes/core/class-builtin.php:1527
+#: includes/core/class-builtin.php:1519
 msgid "Tigrinya"
 msgstr ""
 
-#: includes/core/class-builtin.php:1528
+#: includes/core/class-builtin.php:1520
 msgid "Turkmen"
 msgstr ""
 
-#: includes/core/class-builtin.php:1529
+#: includes/core/class-builtin.php:1521
 msgid "Tagalog"
 msgstr ""
 
-#: includes/core/class-builtin.php:1530
+#: includes/core/class-builtin.php:1522
 msgid "Tswana"
 msgstr ""
 
-#: includes/core/class-builtin.php:1531 includes/core/class-builtin.php:1779
+#: includes/core/class-builtin.php:1523 includes/core/class-builtin.php:1771
 msgid "Tonga"
 msgstr ""
 
-#: includes/core/class-builtin.php:1532
+#: includes/core/class-builtin.php:1524
 msgid "Turkish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1533
+#: includes/core/class-builtin.php:1525
 msgid "Tsonga"
 msgstr ""
 
-#: includes/core/class-builtin.php:1534
+#: includes/core/class-builtin.php:1526
 msgid "Tatar"
 msgstr ""
 
-#: includes/core/class-builtin.php:1535
+#: includes/core/class-builtin.php:1527
 msgid "Twi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1536
+#: includes/core/class-builtin.php:1528
 msgid "Tahitian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1537
+#: includes/core/class-builtin.php:1529
 msgid "Uighur"
 msgstr ""
 
-#: includes/core/class-builtin.php:1538
+#: includes/core/class-builtin.php:1530
 msgid "Ukrainian"
 msgstr ""
 
-#: includes/core/class-builtin.php:1539
+#: includes/core/class-builtin.php:1531
 msgid "Urdu"
 msgstr ""
 
-#: includes/core/class-builtin.php:1540
+#: includes/core/class-builtin.php:1532
 msgid "Uzbek"
 msgstr ""
 
-#: includes/core/class-builtin.php:1541
+#: includes/core/class-builtin.php:1533
 msgid "Venda"
 msgstr ""
 
-#: includes/core/class-builtin.php:1542
+#: includes/core/class-builtin.php:1534
 msgid "Vietnamese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1543
+#: includes/core/class-builtin.php:1535
 msgid "Volapuk"
 msgstr ""
 
-#: includes/core/class-builtin.php:1544
+#: includes/core/class-builtin.php:1536
 msgid "Walloon"
 msgstr ""
 
-#: includes/core/class-builtin.php:1545
+#: includes/core/class-builtin.php:1537
 msgid "Wolof"
 msgstr ""
 
-#: includes/core/class-builtin.php:1546
+#: includes/core/class-builtin.php:1538
 msgid "Xhosa"
 msgstr ""
 
-#: includes/core/class-builtin.php:1547
+#: includes/core/class-builtin.php:1539
 msgid "Yiddish"
 msgstr ""
 
-#: includes/core/class-builtin.php:1548
+#: includes/core/class-builtin.php:1540
 msgid "Yoruba"
 msgstr ""
 
-#: includes/core/class-builtin.php:1549
+#: includes/core/class-builtin.php:1541
 msgid "Zhuang"
 msgstr ""
 
-#: includes/core/class-builtin.php:1550
+#: includes/core/class-builtin.php:1542
 msgid "Chinese"
 msgstr ""
 
-#: includes/core/class-builtin.php:1551
+#: includes/core/class-builtin.php:1543
 msgid "Zulu"
 msgstr ""
 
-#: includes/core/class-builtin.php:1557
+#: includes/core/class-builtin.php:1549
 msgid "Afghanistan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1558
+#: includes/core/class-builtin.php:1550
 msgid "Åland Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1559
+#: includes/core/class-builtin.php:1551
 msgid "Albania"
 msgstr ""
 
-#: includes/core/class-builtin.php:1560
+#: includes/core/class-builtin.php:1552
 msgid "Algeria"
 msgstr ""
 
-#: includes/core/class-builtin.php:1561
+#: includes/core/class-builtin.php:1553
 msgid "American Samoa"
 msgstr ""
 
-#: includes/core/class-builtin.php:1562
+#: includes/core/class-builtin.php:1554
 msgid "Andorra"
 msgstr ""
 
-#: includes/core/class-builtin.php:1563
+#: includes/core/class-builtin.php:1555
 msgid "Angola"
 msgstr ""
 
-#: includes/core/class-builtin.php:1564
+#: includes/core/class-builtin.php:1556
 msgid "Anguilla"
 msgstr ""
 
-#: includes/core/class-builtin.php:1565
+#: includes/core/class-builtin.php:1557
 msgid "Antarctica"
 msgstr ""
 
-#: includes/core/class-builtin.php:1566
+#: includes/core/class-builtin.php:1558
 msgid "Antigua and Barbuda"
 msgstr ""
 
-#: includes/core/class-builtin.php:1567
+#: includes/core/class-builtin.php:1559
 msgid "Argentina"
 msgstr ""
 
-#: includes/core/class-builtin.php:1568
+#: includes/core/class-builtin.php:1560
 msgid "Armenia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1569
+#: includes/core/class-builtin.php:1561
 msgid "Aruba"
 msgstr ""
 
-#: includes/core/class-builtin.php:1570
+#: includes/core/class-builtin.php:1562
 msgid "Australia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1571
+#: includes/core/class-builtin.php:1563
 msgid "Austria"
 msgstr ""
 
-#: includes/core/class-builtin.php:1572
+#: includes/core/class-builtin.php:1564
 msgid "Azerbaijan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1573
+#: includes/core/class-builtin.php:1565
 msgid "Bahamas"
 msgstr ""
 
-#: includes/core/class-builtin.php:1574
+#: includes/core/class-builtin.php:1566
 msgid "Bahrain"
 msgstr ""
 
-#: includes/core/class-builtin.php:1575
+#: includes/core/class-builtin.php:1567
 msgid "Bangladesh"
 msgstr ""
 
-#: includes/core/class-builtin.php:1576
+#: includes/core/class-builtin.php:1568
 msgid "Barbados"
 msgstr ""
 
-#: includes/core/class-builtin.php:1577
+#: includes/core/class-builtin.php:1569
 msgid "Belarus"
 msgstr ""
 
-#: includes/core/class-builtin.php:1578
+#: includes/core/class-builtin.php:1570
 msgid "Belgium"
 msgstr ""
 
-#: includes/core/class-builtin.php:1579
+#: includes/core/class-builtin.php:1571
 msgid "Belize"
 msgstr ""
 
-#: includes/core/class-builtin.php:1580
+#: includes/core/class-builtin.php:1572
 msgid "Benin"
 msgstr ""
 
-#: includes/core/class-builtin.php:1581
+#: includes/core/class-builtin.php:1573
 msgid "Bermuda"
 msgstr ""
 
-#: includes/core/class-builtin.php:1582
+#: includes/core/class-builtin.php:1574
 msgid "Bhutan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1583
+#: includes/core/class-builtin.php:1575
 msgid "Bolivia, Plurinational State of"
 msgstr ""
 
-#: includes/core/class-builtin.php:1584
+#: includes/core/class-builtin.php:1576
 msgid "Bosnia and Herzegovina"
 msgstr ""
 
-#: includes/core/class-builtin.php:1585
+#: includes/core/class-builtin.php:1577
 msgid "Botswana"
 msgstr ""
 
-#: includes/core/class-builtin.php:1586
+#: includes/core/class-builtin.php:1578
 msgid "Bouvet Island"
 msgstr ""
 
-#: includes/core/class-builtin.php:1587
+#: includes/core/class-builtin.php:1579
 msgid "Brazil"
 msgstr ""
 
-#: includes/core/class-builtin.php:1588
+#: includes/core/class-builtin.php:1580
 msgid "British Indian Ocean Territory"
 msgstr ""
 
-#: includes/core/class-builtin.php:1589
+#: includes/core/class-builtin.php:1581
 msgid "Brunei Darussalam"
 msgstr ""
 
-#: includes/core/class-builtin.php:1590
+#: includes/core/class-builtin.php:1582
 msgid "Bulgaria"
 msgstr ""
 
-#: includes/core/class-builtin.php:1591
+#: includes/core/class-builtin.php:1583
 msgid "Burkina Faso"
 msgstr ""
 
-#: includes/core/class-builtin.php:1592
+#: includes/core/class-builtin.php:1584
 msgid "Burundi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1593
+#: includes/core/class-builtin.php:1585
 msgid "Cambodia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1594
+#: includes/core/class-builtin.php:1586
 msgid "Cameroon"
 msgstr ""
 
-#: includes/core/class-builtin.php:1595
+#: includes/core/class-builtin.php:1587
 msgid "Canada"
 msgstr ""
 
-#: includes/core/class-builtin.php:1596
+#: includes/core/class-builtin.php:1588
 msgid "Cape Verde"
 msgstr ""
 
-#: includes/core/class-builtin.php:1597
+#: includes/core/class-builtin.php:1589
 msgid "Cayman Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1598
+#: includes/core/class-builtin.php:1590
 msgid "Central African Republic"
 msgstr ""
 
-#: includes/core/class-builtin.php:1599
+#: includes/core/class-builtin.php:1591
 msgid "Chad"
 msgstr ""
 
-#: includes/core/class-builtin.php:1600
+#: includes/core/class-builtin.php:1592
 msgid "Chile"
 msgstr ""
 
-#: includes/core/class-builtin.php:1601
+#: includes/core/class-builtin.php:1593
 msgid "China"
 msgstr ""
 
-#: includes/core/class-builtin.php:1602
+#: includes/core/class-builtin.php:1594
 msgid "Christmas Island"
 msgstr ""
 
-#: includes/core/class-builtin.php:1603
+#: includes/core/class-builtin.php:1595
 msgid "Cocos (Keeling) Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1604
+#: includes/core/class-builtin.php:1596
 msgid "Colombia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1605
+#: includes/core/class-builtin.php:1597
 msgid "Comoros"
 msgstr ""
 
-#: includes/core/class-builtin.php:1606
+#: includes/core/class-builtin.php:1598
 msgid "Congo"
 msgstr ""
 
-#: includes/core/class-builtin.php:1607
+#: includes/core/class-builtin.php:1599
 msgid "Congo, the Democratic Republic of the"
 msgstr ""
 
-#: includes/core/class-builtin.php:1608
+#: includes/core/class-builtin.php:1600
 msgid "Cook Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1609
+#: includes/core/class-builtin.php:1601
 msgid "Costa Rica"
 msgstr ""
 
-#: includes/core/class-builtin.php:1610
+#: includes/core/class-builtin.php:1602
 msgid "Côte d'Ivoire"
 msgstr ""
 
-#: includes/core/class-builtin.php:1611
+#: includes/core/class-builtin.php:1603
 msgid "Croatia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1612
+#: includes/core/class-builtin.php:1604
 msgid "Cuba"
 msgstr ""
 
-#: includes/core/class-builtin.php:1613
+#: includes/core/class-builtin.php:1605
 msgid "Cyprus"
 msgstr ""
 
-#: includes/core/class-builtin.php:1614
+#: includes/core/class-builtin.php:1606
 msgid "Czech Republic"
 msgstr ""
 
-#: includes/core/class-builtin.php:1615
+#: includes/core/class-builtin.php:1607
 msgid "Denmark"
 msgstr ""
 
-#: includes/core/class-builtin.php:1616
+#: includes/core/class-builtin.php:1608
 msgid "Djibouti"
 msgstr ""
 
-#: includes/core/class-builtin.php:1617
+#: includes/core/class-builtin.php:1609
 msgid "Dominica"
 msgstr ""
 
-#: includes/core/class-builtin.php:1618
+#: includes/core/class-builtin.php:1610
 msgid "Dominican Republic"
 msgstr ""
 
-#: includes/core/class-builtin.php:1619
+#: includes/core/class-builtin.php:1611
 msgid "Ecuador"
 msgstr ""
 
-#: includes/core/class-builtin.php:1620
+#: includes/core/class-builtin.php:1612
 msgid "Egypt"
 msgstr ""
 
-#: includes/core/class-builtin.php:1621
+#: includes/core/class-builtin.php:1613
 msgid "El Salvador"
 msgstr ""
 
-#: includes/core/class-builtin.php:1622
+#: includes/core/class-builtin.php:1614
 msgid "Equatorial Guinea"
 msgstr ""
 
-#: includes/core/class-builtin.php:1623
+#: includes/core/class-builtin.php:1615
 msgid "Eritrea"
 msgstr ""
 
-#: includes/core/class-builtin.php:1624
+#: includes/core/class-builtin.php:1616
 msgid "Estonia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1625
+#: includes/core/class-builtin.php:1617
 msgid "Ethiopia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1626
+#: includes/core/class-builtin.php:1618
 msgid "Falkland Islands (Malvinas)"
 msgstr ""
 
-#: includes/core/class-builtin.php:1627
+#: includes/core/class-builtin.php:1619
 msgid "Faroe Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1628
+#: includes/core/class-builtin.php:1620
 msgid "Fiji"
 msgstr ""
 
-#: includes/core/class-builtin.php:1629
+#: includes/core/class-builtin.php:1621
 msgid "Finland"
 msgstr ""
 
-#: includes/core/class-builtin.php:1630
+#: includes/core/class-builtin.php:1622
 msgid "France"
 msgstr ""
 
-#: includes/core/class-builtin.php:1631
+#: includes/core/class-builtin.php:1623
 msgid "French Guiana"
 msgstr ""
 
-#: includes/core/class-builtin.php:1632
+#: includes/core/class-builtin.php:1624
 msgid "French Polynesia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1633
+#: includes/core/class-builtin.php:1625
 msgid "French Southern Territories"
 msgstr ""
 
-#: includes/core/class-builtin.php:1634
+#: includes/core/class-builtin.php:1626
 msgid "Gabon"
 msgstr ""
 
-#: includes/core/class-builtin.php:1635
+#: includes/core/class-builtin.php:1627
 msgid "Gambia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1636
+#: includes/core/class-builtin.php:1628
 msgid "Georgia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1637
+#: includes/core/class-builtin.php:1629
 msgid "Germany"
 msgstr ""
 
-#: includes/core/class-builtin.php:1638
+#: includes/core/class-builtin.php:1630
 msgid "Ghana"
 msgstr ""
 
-#: includes/core/class-builtin.php:1639
+#: includes/core/class-builtin.php:1631
 msgid "Gibraltar"
 msgstr ""
 
-#: includes/core/class-builtin.php:1640
+#: includes/core/class-builtin.php:1632
 msgid "Greece"
 msgstr ""
 
-#: includes/core/class-builtin.php:1641
+#: includes/core/class-builtin.php:1633
 msgid "Greenland"
 msgstr ""
 
-#: includes/core/class-builtin.php:1642
+#: includes/core/class-builtin.php:1634
 msgid "Grenada"
 msgstr ""
 
-#: includes/core/class-builtin.php:1643
+#: includes/core/class-builtin.php:1635
 msgid "Guadeloupe"
 msgstr ""
 
-#: includes/core/class-builtin.php:1644
+#: includes/core/class-builtin.php:1636
 msgid "Guam"
 msgstr ""
 
-#: includes/core/class-builtin.php:1645
+#: includes/core/class-builtin.php:1637
 msgid "Guatemala"
 msgstr ""
 
-#: includes/core/class-builtin.php:1646
+#: includes/core/class-builtin.php:1638
 msgid "Guernsey"
 msgstr ""
 
-#: includes/core/class-builtin.php:1647
+#: includes/core/class-builtin.php:1639
 msgid "Guinea"
 msgstr ""
 
-#: includes/core/class-builtin.php:1648
+#: includes/core/class-builtin.php:1640
 msgid "Guinea-Bissau"
 msgstr ""
 
-#: includes/core/class-builtin.php:1649
+#: includes/core/class-builtin.php:1641
 msgid "Guyana"
 msgstr ""
 
-#: includes/core/class-builtin.php:1650
+#: includes/core/class-builtin.php:1642
 msgid "Haiti"
 msgstr ""
 
-#: includes/core/class-builtin.php:1651
+#: includes/core/class-builtin.php:1643
 msgid "Heard Island and McDonald Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1652
+#: includes/core/class-builtin.php:1644
 msgid "Holy See (Vatican City State)"
 msgstr ""
 
-#: includes/core/class-builtin.php:1653
+#: includes/core/class-builtin.php:1645
 msgid "Honduras"
 msgstr ""
 
-#: includes/core/class-builtin.php:1654
+#: includes/core/class-builtin.php:1646
 msgid "Hong Kong"
 msgstr ""
 
-#: includes/core/class-builtin.php:1655
+#: includes/core/class-builtin.php:1647
 msgid "Hungary"
 msgstr ""
 
-#: includes/core/class-builtin.php:1656
+#: includes/core/class-builtin.php:1648
 msgid "Iceland"
 msgstr ""
 
-#: includes/core/class-builtin.php:1657
+#: includes/core/class-builtin.php:1649
 msgid "India"
 msgstr ""
 
-#: includes/core/class-builtin.php:1658
+#: includes/core/class-builtin.php:1650
 msgid "Indonesia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1659
+#: includes/core/class-builtin.php:1651
 msgid "Iran, Islamic Republic of"
 msgstr ""
 
-#: includes/core/class-builtin.php:1660
+#: includes/core/class-builtin.php:1652
 msgid "Iraq"
 msgstr ""
 
-#: includes/core/class-builtin.php:1661
+#: includes/core/class-builtin.php:1653
 msgid "Ireland"
 msgstr ""
 
-#: includes/core/class-builtin.php:1662
+#: includes/core/class-builtin.php:1654
 msgid "Isle of Man"
 msgstr ""
 
-#: includes/core/class-builtin.php:1663
+#: includes/core/class-builtin.php:1655
 msgid "Israel"
 msgstr ""
 
-#: includes/core/class-builtin.php:1664
+#: includes/core/class-builtin.php:1656
 msgid "Italy"
 msgstr ""
 
-#: includes/core/class-builtin.php:1665
+#: includes/core/class-builtin.php:1657
 msgid "Jamaica"
 msgstr ""
 
-#: includes/core/class-builtin.php:1666
+#: includes/core/class-builtin.php:1658
 msgid "Japan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1667
+#: includes/core/class-builtin.php:1659
 msgid "Jersey"
 msgstr ""
 
-#: includes/core/class-builtin.php:1668
+#: includes/core/class-builtin.php:1660
 msgid "Jordan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1669
+#: includes/core/class-builtin.php:1661
 msgid "Kazakhstan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1670
+#: includes/core/class-builtin.php:1662
 msgid "Kenya"
 msgstr ""
 
-#: includes/core/class-builtin.php:1671
+#: includes/core/class-builtin.php:1663
 msgid "Kiribati"
 msgstr ""
 
-#: includes/core/class-builtin.php:1672
+#: includes/core/class-builtin.php:1664
 msgid "Korea, Democratic People's Republic of"
 msgstr ""
 
-#: includes/core/class-builtin.php:1673
+#: includes/core/class-builtin.php:1665
 msgid "Korea, Republic of"
 msgstr ""
 
-#: includes/core/class-builtin.php:1674
+#: includes/core/class-builtin.php:1666
 msgid "Kuwait"
 msgstr ""
 
-#: includes/core/class-builtin.php:1675
+#: includes/core/class-builtin.php:1667
 msgid "Kyrgyzstan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1676
+#: includes/core/class-builtin.php:1668
 msgid "Lao People's Democratic Republic"
 msgstr ""
 
-#: includes/core/class-builtin.php:1677
+#: includes/core/class-builtin.php:1669
 msgid "Latvia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1678
+#: includes/core/class-builtin.php:1670
 msgid "Lebanon"
 msgstr ""
 
-#: includes/core/class-builtin.php:1679
+#: includes/core/class-builtin.php:1671
 msgid "Lesotho"
 msgstr ""
 
-#: includes/core/class-builtin.php:1680
+#: includes/core/class-builtin.php:1672
 msgid "Liberia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1681
+#: includes/core/class-builtin.php:1673
 msgid "Libyan Arab Jamahiriya"
 msgstr ""
 
-#: includes/core/class-builtin.php:1682
+#: includes/core/class-builtin.php:1674
 msgid "Liechtenstein"
 msgstr ""
 
-#: includes/core/class-builtin.php:1683
+#: includes/core/class-builtin.php:1675
 msgid "Lithuania"
 msgstr ""
 
-#: includes/core/class-builtin.php:1684
+#: includes/core/class-builtin.php:1676
 msgid "Luxembourg"
 msgstr ""
 
-#: includes/core/class-builtin.php:1685
+#: includes/core/class-builtin.php:1677
 msgid "Macao"
 msgstr ""
 
-#: includes/core/class-builtin.php:1686
+#: includes/core/class-builtin.php:1678
 msgid "Macedonia, the former Yugoslav Republic of"
 msgstr ""
 
-#: includes/core/class-builtin.php:1687
+#: includes/core/class-builtin.php:1679
 msgid "Madagascar"
 msgstr ""
 
-#: includes/core/class-builtin.php:1688
+#: includes/core/class-builtin.php:1680
 msgid "Malawi"
 msgstr ""
 
-#: includes/core/class-builtin.php:1689
+#: includes/core/class-builtin.php:1681
 msgid "Malaysia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1690
+#: includes/core/class-builtin.php:1682
 msgid "Maldives"
 msgstr ""
 
-#: includes/core/class-builtin.php:1691
+#: includes/core/class-builtin.php:1683
 msgid "Mali"
 msgstr ""
 
-#: includes/core/class-builtin.php:1692
+#: includes/core/class-builtin.php:1684
 msgid "Malta"
 msgstr ""
 
-#: includes/core/class-builtin.php:1693
+#: includes/core/class-builtin.php:1685
 msgid "Marshall Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1694
+#: includes/core/class-builtin.php:1686
 msgid "Martinique"
 msgstr ""
 
-#: includes/core/class-builtin.php:1695
+#: includes/core/class-builtin.php:1687
 msgid "Mauritania"
 msgstr ""
 
-#: includes/core/class-builtin.php:1696
+#: includes/core/class-builtin.php:1688
 msgid "Mauritius"
 msgstr ""
 
-#: includes/core/class-builtin.php:1697
+#: includes/core/class-builtin.php:1689
 msgid "Mayotte"
 msgstr ""
 
-#: includes/core/class-builtin.php:1698
+#: includes/core/class-builtin.php:1690
 msgid "Mexico"
 msgstr ""
 
-#: includes/core/class-builtin.php:1699
+#: includes/core/class-builtin.php:1691
 msgid "Micronesia, Federated States of"
 msgstr ""
 
-#: includes/core/class-builtin.php:1700
+#: includes/core/class-builtin.php:1692
 msgid "Moldova, Republic of"
 msgstr ""
 
-#: includes/core/class-builtin.php:1701
+#: includes/core/class-builtin.php:1693
 msgid "Monaco"
 msgstr ""
 
-#: includes/core/class-builtin.php:1702
+#: includes/core/class-builtin.php:1694
 msgid "Mongolia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1703
+#: includes/core/class-builtin.php:1695
 msgid "Montenegro"
 msgstr ""
 
-#: includes/core/class-builtin.php:1704
+#: includes/core/class-builtin.php:1696
 msgid "Montserrat"
 msgstr ""
 
-#: includes/core/class-builtin.php:1705
+#: includes/core/class-builtin.php:1697
 msgid "Morocco"
 msgstr ""
 
-#: includes/core/class-builtin.php:1706
+#: includes/core/class-builtin.php:1698
 msgid "Mozambique"
 msgstr ""
 
-#: includes/core/class-builtin.php:1707
+#: includes/core/class-builtin.php:1699
 msgid "Myanmar"
 msgstr ""
 
-#: includes/core/class-builtin.php:1708
+#: includes/core/class-builtin.php:1700
 msgid "Namibia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1710
+#: includes/core/class-builtin.php:1702
 msgid "Nepal"
 msgstr ""
 
-#: includes/core/class-builtin.php:1711
+#: includes/core/class-builtin.php:1703
 msgid "Netherlands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1712
+#: includes/core/class-builtin.php:1704
 msgid "Netherlands Antilles"
 msgstr ""
 
-#: includes/core/class-builtin.php:1713
+#: includes/core/class-builtin.php:1705
 msgid "New Caledonia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1714
+#: includes/core/class-builtin.php:1706
 msgid "New Zealand"
 msgstr ""
 
-#: includes/core/class-builtin.php:1715
+#: includes/core/class-builtin.php:1707
 msgid "Nicaragua"
 msgstr ""
 
-#: includes/core/class-builtin.php:1716
+#: includes/core/class-builtin.php:1708
 msgid "Niger"
 msgstr ""
 
-#: includes/core/class-builtin.php:1717
+#: includes/core/class-builtin.php:1709
 msgid "Nigeria"
 msgstr ""
 
-#: includes/core/class-builtin.php:1718
+#: includes/core/class-builtin.php:1710
 msgid "Niue"
 msgstr ""
 
-#: includes/core/class-builtin.php:1719
+#: includes/core/class-builtin.php:1711
 msgid "Norfolk Island"
 msgstr ""
 
-#: includes/core/class-builtin.php:1720
+#: includes/core/class-builtin.php:1712
 msgid "Northern Mariana Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1721
+#: includes/core/class-builtin.php:1713
 msgid "Norway"
 msgstr ""
 
-#: includes/core/class-builtin.php:1722
+#: includes/core/class-builtin.php:1714
 msgid "Oman"
 msgstr ""
 
-#: includes/core/class-builtin.php:1723
+#: includes/core/class-builtin.php:1715
 msgid "Pakistan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1724
+#: includes/core/class-builtin.php:1716
 msgid "Palau"
 msgstr ""
 
-#: includes/core/class-builtin.php:1725
+#: includes/core/class-builtin.php:1717
 msgid "Palestine"
 msgstr ""
 
-#: includes/core/class-builtin.php:1726
+#: includes/core/class-builtin.php:1718
 msgid "Panama"
 msgstr ""
 
-#: includes/core/class-builtin.php:1727
+#: includes/core/class-builtin.php:1719
 msgid "Papua New Guinea"
 msgstr ""
 
-#: includes/core/class-builtin.php:1728
+#: includes/core/class-builtin.php:1720
 msgid "Paraguay"
 msgstr ""
 
-#: includes/core/class-builtin.php:1729
+#: includes/core/class-builtin.php:1721
 msgid "Peru"
 msgstr ""
 
-#: includes/core/class-builtin.php:1730
+#: includes/core/class-builtin.php:1722
 msgid "Philippines"
 msgstr ""
 
-#: includes/core/class-builtin.php:1731
+#: includes/core/class-builtin.php:1723
 msgid "Pitcairn"
 msgstr ""
 
-#: includes/core/class-builtin.php:1732
+#: includes/core/class-builtin.php:1724
 msgid "Poland"
 msgstr ""
 
-#: includes/core/class-builtin.php:1733
+#: includes/core/class-builtin.php:1725
 msgid "Portugal"
 msgstr ""
 
-#: includes/core/class-builtin.php:1734
+#: includes/core/class-builtin.php:1726
 msgid "Puerto Rico"
 msgstr ""
 
-#: includes/core/class-builtin.php:1735
+#: includes/core/class-builtin.php:1727
 msgid "Qatar"
 msgstr ""
 
-#: includes/core/class-builtin.php:1736
+#: includes/core/class-builtin.php:1728
 msgid "Réunion"
 msgstr ""
 
-#: includes/core/class-builtin.php:1737
+#: includes/core/class-builtin.php:1729
 msgid "Romania"
 msgstr ""
 
-#: includes/core/class-builtin.php:1738
+#: includes/core/class-builtin.php:1730
 msgid "Russian Federation"
 msgstr ""
 
-#: includes/core/class-builtin.php:1739
+#: includes/core/class-builtin.php:1731
 msgid "Rwanda"
 msgstr ""
 
-#: includes/core/class-builtin.php:1740
+#: includes/core/class-builtin.php:1732
 msgid "Saint Barthélemy"
 msgstr ""
 
-#: includes/core/class-builtin.php:1741
+#: includes/core/class-builtin.php:1733
 msgid "Saint Helena"
 msgstr ""
 
-#: includes/core/class-builtin.php:1742
+#: includes/core/class-builtin.php:1734
 msgid "Saint Kitts and Nevis"
 msgstr ""
 
-#: includes/core/class-builtin.php:1743
+#: includes/core/class-builtin.php:1735
 msgid "Saint Lucia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1744
+#: includes/core/class-builtin.php:1736
 msgid "Saint Martin (French part)"
 msgstr ""
 
-#: includes/core/class-builtin.php:1745
+#: includes/core/class-builtin.php:1737
 msgid "Saint Pierre and Miquelon"
 msgstr ""
 
-#: includes/core/class-builtin.php:1746
+#: includes/core/class-builtin.php:1738
 msgid "Saint Vincent and the Grenadines"
 msgstr ""
 
-#: includes/core/class-builtin.php:1747
+#: includes/core/class-builtin.php:1739
 msgid "Samoa"
 msgstr ""
 
-#: includes/core/class-builtin.php:1748
+#: includes/core/class-builtin.php:1740
 msgid "San Marino"
 msgstr ""
 
-#: includes/core/class-builtin.php:1749
+#: includes/core/class-builtin.php:1741
 msgid "Sao Tome and Principe"
 msgstr ""
 
-#: includes/core/class-builtin.php:1750
+#: includes/core/class-builtin.php:1742
 msgid "Saudi Arabia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1751
+#: includes/core/class-builtin.php:1743
 msgid "Senegal"
 msgstr ""
 
-#: includes/core/class-builtin.php:1752
+#: includes/core/class-builtin.php:1744
 msgid "Serbia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1753
+#: includes/core/class-builtin.php:1745
 msgid "Seychelles"
 msgstr ""
 
-#: includes/core/class-builtin.php:1754
+#: includes/core/class-builtin.php:1746
 msgid "Sierra Leone"
 msgstr ""
 
-#: includes/core/class-builtin.php:1755
+#: includes/core/class-builtin.php:1747
 msgid "Singapore"
 msgstr ""
 
-#: includes/core/class-builtin.php:1756
+#: includes/core/class-builtin.php:1748
 msgid "Slovakia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1757
+#: includes/core/class-builtin.php:1749
 msgid "Slovenia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1758
+#: includes/core/class-builtin.php:1750
 msgid "Solomon Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1759
+#: includes/core/class-builtin.php:1751
 msgid "Somalia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1760
+#: includes/core/class-builtin.php:1752
 msgid "South Africa"
 msgstr ""
 
-#: includes/core/class-builtin.php:1761
+#: includes/core/class-builtin.php:1753
 msgid "South Georgia and the South Sandwich Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1762
+#: includes/core/class-builtin.php:1754
 msgid "South Sudan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1763
+#: includes/core/class-builtin.php:1755
 msgid "Spain"
 msgstr ""
 
-#: includes/core/class-builtin.php:1764
+#: includes/core/class-builtin.php:1756
 msgid "Sri Lanka"
 msgstr ""
 
-#: includes/core/class-builtin.php:1765
+#: includes/core/class-builtin.php:1757
 msgid "Sudan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1766
+#: includes/core/class-builtin.php:1758
 msgid "Suriname"
 msgstr ""
 
-#: includes/core/class-builtin.php:1767
+#: includes/core/class-builtin.php:1759
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
-#: includes/core/class-builtin.php:1768
+#: includes/core/class-builtin.php:1760
 msgid "Swaziland"
 msgstr ""
 
-#: includes/core/class-builtin.php:1769
+#: includes/core/class-builtin.php:1761
 msgid "Sweden"
 msgstr ""
 
-#: includes/core/class-builtin.php:1770
+#: includes/core/class-builtin.php:1762
 msgid "Switzerland"
 msgstr ""
 
-#: includes/core/class-builtin.php:1771
+#: includes/core/class-builtin.php:1763
 msgid "Syrian Arab Republic"
 msgstr ""
 
-#: includes/core/class-builtin.php:1772
+#: includes/core/class-builtin.php:1764
 msgid "Taiwan, Province of China"
 msgstr ""
 
-#: includes/core/class-builtin.php:1773
+#: includes/core/class-builtin.php:1765
 msgid "Tajikistan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1774
+#: includes/core/class-builtin.php:1766
 msgid "Tanzania, United Republic of"
 msgstr ""
 
-#: includes/core/class-builtin.php:1775
+#: includes/core/class-builtin.php:1767
 msgid "Thailand"
 msgstr ""
 
-#: includes/core/class-builtin.php:1776
+#: includes/core/class-builtin.php:1768
 msgid "Timor-Leste"
 msgstr ""
 
-#: includes/core/class-builtin.php:1777
+#: includes/core/class-builtin.php:1769
 msgid "Togo"
 msgstr ""
 
-#: includes/core/class-builtin.php:1778
+#: includes/core/class-builtin.php:1770
 msgid "Tokelau"
 msgstr ""
 
-#: includes/core/class-builtin.php:1780
+#: includes/core/class-builtin.php:1772
 msgid "Trinidad and Tobago"
 msgstr ""
 
-#: includes/core/class-builtin.php:1781
+#: includes/core/class-builtin.php:1773
 msgid "Tunisia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1782
+#: includes/core/class-builtin.php:1774
 msgid "Turkey"
 msgstr ""
 
-#: includes/core/class-builtin.php:1783
+#: includes/core/class-builtin.php:1775
 msgid "Turkmenistan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1784
+#: includes/core/class-builtin.php:1776
 msgid "Turks and Caicos Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1785
+#: includes/core/class-builtin.php:1777
 msgid "Tuvalu"
 msgstr ""
 
-#: includes/core/class-builtin.php:1786
+#: includes/core/class-builtin.php:1778
 msgid "Uganda"
 msgstr ""
 
-#: includes/core/class-builtin.php:1787
+#: includes/core/class-builtin.php:1779
 msgid "Ukraine"
 msgstr ""
 
-#: includes/core/class-builtin.php:1788
+#: includes/core/class-builtin.php:1780
 msgid "United Arab Emirates"
 msgstr ""
 
-#: includes/core/class-builtin.php:1789
+#: includes/core/class-builtin.php:1781
 msgid "United Kingdom"
 msgstr ""
 
-#: includes/core/class-builtin.php:1790
+#: includes/core/class-builtin.php:1782
 msgid "United States"
 msgstr ""
 
-#: includes/core/class-builtin.php:1791
+#: includes/core/class-builtin.php:1783
 msgid "United States Minor Outlying Islands"
 msgstr ""
 
-#: includes/core/class-builtin.php:1792
+#: includes/core/class-builtin.php:1784
 msgid "Uruguay"
 msgstr ""
 
-#: includes/core/class-builtin.php:1793
+#: includes/core/class-builtin.php:1785
 msgid "Uzbekistan"
 msgstr ""
 
-#: includes/core/class-builtin.php:1794
+#: includes/core/class-builtin.php:1786
 msgid "Vanuatu"
 msgstr ""
 
-#: includes/core/class-builtin.php:1795
+#: includes/core/class-builtin.php:1787
 msgid "Venezuela, Bolivarian Republic of"
 msgstr ""
 
-#: includes/core/class-builtin.php:1796
+#: includes/core/class-builtin.php:1788
 msgid "Viet Nam"
 msgstr ""
 
-#: includes/core/class-builtin.php:1797
+#: includes/core/class-builtin.php:1789
 msgid "Virgin Islands, British"
 msgstr ""
 
-#: includes/core/class-builtin.php:1798
+#: includes/core/class-builtin.php:1790
 msgid "Virgin Islands, U.S."
 msgstr ""
 
-#: includes/core/class-builtin.php:1799
+#: includes/core/class-builtin.php:1791
 msgid "Wallis and Futuna"
 msgstr ""
 
-#: includes/core/class-builtin.php:1800
+#: includes/core/class-builtin.php:1792
 msgid "Western Sahara"
 msgstr ""
 
-#: includes/core/class-builtin.php:1801
+#: includes/core/class-builtin.php:1793
 msgid "Yemen"
 msgstr ""
 
-#: includes/core/class-builtin.php:1802
+#: includes/core/class-builtin.php:1794
 msgid "Zambia"
 msgstr ""
 
-#: includes/core/class-builtin.php:1803
+#: includes/core/class-builtin.php:1795
 msgid "Zimbabwe"
 msgstr ""
 
@@ -6367,6 +6440,26 @@ msgstr ""
 msgid "You can not edit this user"
 msgstr ""
 
+#: includes/core/class-members.php:460 templates/members-grid.php:56
+msgid "Edit profile"
+msgstr ""
+
+#: includes/core/class-members.php:528
+msgid "Newest Members"
+msgstr ""
+
+#: includes/core/class-members.php:529
+msgid "Oldest Members"
+msgstr ""
+
+#: includes/core/class-members.php:548
+msgid "Age"
+msgstr ""
+
+#: includes/core/class-members.php:549
+msgid "myCRED Rank"
+msgstr ""
+
 #: includes/core/class-password.php:443
 msgid "Please provide your username or email"
 msgstr ""
@@ -6518,17 +6611,17 @@ msgstr ""
 msgid "Wrong nonce"
 msgstr ""
 
-#: includes/core/class-shortcodes.php:360
+#: includes/core/class-shortcodes.php:399
 msgid ""
 "This content has been restricted to logged in users only. Please <a href="
 "\"{login_referrer}\">login</a> to view this content."
 msgstr ""
 
-#: includes/core/class-shortcodes.php:645
+#: includes/core/class-shortcodes.php:746
 msgid "You are already registered"
 msgstr ""
 
-#: includes/core/class-shortcodes.php:887
+#: includes/core/class-shortcodes.php:988
 msgid "Default Template"
 msgstr ""
 
@@ -6803,39 +6896,6 @@ msgstr ""
 msgid "Forgot your password?"
 msgstr ""
 
-#: includes/core/um-actions-members.php:83
-msgid "Search"
-msgstr ""
-
-#: includes/core/um-actions-members.php:84
-msgid "Reset"
-msgstr ""
-
-#: includes/core/um-actions-members.php:159
-msgid "Jump to page:"
-msgstr ""
-
-#: includes/core/um-actions-members.php:164
-#, php-format
-msgid "%s of %d"
-msgstr ""
-
-#: includes/core/um-actions-members.php:174
-msgid "First Page"
-msgstr ""
-
-#: includes/core/um-actions-members.php:180
-msgid "Previous"
-msgstr ""
-
-#: includes/core/um-actions-members.php:200
-msgid "Next"
-msgstr ""
-
-#: includes/core/um-actions-members.php:206
-msgid "Last Page"
-msgstr ""
-
 #: includes/core/um-actions-misc.php:115
 msgid "Your account was updated successfully."
 msgstr ""
@@ -6993,8 +7053,32 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: templates/members-grid.php:65
-msgid "Edit profile"
+#: templates/members.php:50 templates/members.php:52 templates/members.php:57
+msgid "Search"
+msgstr ""
+
+#: templates/members.php:65
+msgid "Sort By"
+msgstr ""
+
+#: templates/members.php:75
+msgid "Filters"
+msgstr ""
+
+#: templates/members.php:106
+msgid "Clear Filters"
+msgstr ""
+
+#: templates/members.php:136
+msgid "Close Filters"
+msgstr ""
+
+#: templates/members.php:162
+msgid "Jump to page:"
+msgstr ""
+
+#: templates/members.php:165
+msgid "of"
 msgstr ""
 
 #: templates/password-change.php:43
