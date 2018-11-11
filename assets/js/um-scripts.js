@@ -120,9 +120,10 @@ jQuery(document).ready(function() {
 		click: function(score, evt) {
 			live_field = this.id;
 			live_value = score;
-			um_conditional();
+			um_apply_conditions( jQuery(this), false );
 		}
 	});
+
 
 	jQuery('.um-rating-readonly').um_raty({
 		half: 		false,
