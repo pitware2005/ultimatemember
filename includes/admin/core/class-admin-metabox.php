@@ -870,6 +870,14 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 					'priority'  => 'default'
 				),
 				array(
+					'id'        => 'um-admin-form-sorting',
+					'title'     => __( 'Sorting Options', 'ultimate-member' ),
+					'callback'  => $callback,
+					'screen'    => 'um_directory',
+					'context'   => 'normal',
+					'priority'  => 'default'
+				),
+				array(
 					'id'        => 'um-admin-form-profile',
 					'title'     => __( 'Profile Card', 'ultimate-member' ),
 					'callback'  => $callback,

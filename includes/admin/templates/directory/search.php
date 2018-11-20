@@ -3,8 +3,9 @@
 	$can_search_array = array();
 	foreach ( UM()->roles()->get_roles() as $key => $value ) {
 	    $_um_roles_can_search = UM()->query()->get_meta_value( '_um_roles_can_search', $key );
-		if ( ! empty( $_um_roles_can_search ) )
+		if ( ! empty( $_um_roles_can_search ) ) {
 			$can_search_array[] = $_um_roles_can_search;
+		}
 	}
 
 	/**
