@@ -795,7 +795,9 @@ function um_is_temp_image( $url ) {
  */
 function um_is_file_owner( $url, $user_id = null, $image_path = false ) {
 
-	if ( strpos( $url, UM()->uploader()->get_upload_base_url() . $user_id . '/' ) !== false && is_user_logged_in() ) {
+	if ( strpos( $url, UM()->uploader()->get_upload_base_url() . "$user_id/temp/" ) !== false && is_user_logged_in() ) {
+		$user_basedir = UM()->uploader()->get_upload_base_dir() . "$user_id/temp/";
+	} elseif ( strpos( $url, UM()->uploader()->get_upload_base_url() . $user_id . '/' ) !== false && is_user_logged_in() ) {
 		$user_basedir = UM()->uploader()->get_upload_user_base_dir( $user_id );
 	} else {
 		$user_basedir = UM()->uploader()->get_upload_user_base_dir( 'temp' );
@@ -818,17 +820,17 @@ function um_is_file_owner( $url, $user_id = null, $image_path = false ) {
 
 /**
  * Check if file is temporary
- * @param  string $filename 
- * @return bool       
+ * @param  string $filename
+ * @return bool
  */
 function um_is_temp_file( $filename ) {
 	$user_basedir = UM()->uploader()->get_upload_user_base_dir( 'temp' );
-	
+
 	$file = $user_basedir . '/' . $filename;
-	
+
 	if ( file_exists( $file ) ) {
 		return true;
-	}	
+	}
 	return false;
 }
 
@@ -1326,7 +1328,7 @@ function um_can_view_profile( $user_id ) {
 	if ( um_user( 'can_view_roles' ) && $user_id != get_current_user_id() ) {
 
 		$can_view_roles = um_user( 'can_view_roles' );
- 		
+
  		if( ! is_array( $can_view_roles ) ) $can_view_roles = array();
 
 		if ( count( array_intersect( UM()->roles()->get_all_user_roles( $user_id ), $can_view_roles ) ) <= 0 ) {

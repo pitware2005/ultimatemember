@@ -256,12 +256,23 @@ if ( ! class_exists( 'um\core\Uploader' ) ) {
 			$this->upload_basedir = $args['basedir'] . $this->core_upload_dir;
 
 			if ( 'image' == $this->upload_type && is_user_logged_in() ) {
-				if ( 'stream_photo' == $this->upload_image_type ) {
-					$this->upload_user_baseurl = $this->upload_baseurl . $this->temp_upload_dir;
-					$this->upload_user_basedir = $this->upload_basedir . $this->temp_upload_dir;
-				} else {
-					$this->upload_user_baseurl = $this->upload_baseurl . $this->user_id;
-					$this->upload_user_basedir = $this->upload_basedir . $this->user_id;
+				switch ( $this->upload_image_type ) {
+
+					case 'cover_photo':
+					case 'profile_photo':
+						$this->upload_user_baseurl = $this->upload_baseurl . $this->user_id . DIRECTORY_SEPARATOR . $this->temp_upload_dir;
+						$this->upload_user_basedir = $this->upload_basedir . $this->user_id . DIRECTORY_SEPARATOR . $this->temp_upload_dir;
+						break;
+
+					case 'stream_photo':
+						$this->upload_user_baseurl = $this->upload_baseurl . $this->temp_upload_dir;
+						$this->upload_user_basedir = $this->upload_basedir . $this->temp_upload_dir;
+						break;
+
+					default:
+						$this->upload_user_baseurl = $this->upload_baseurl . $this->user_id;
+						$this->upload_user_basedir = $this->upload_basedir . $this->user_id;
+						break;
 				}
 			} else {
 				$this->upload_user_baseurl = $this->upload_baseurl . $this->temp_upload_dir;
@@ -447,10 +458,6 @@ if ( ! class_exists( 'um\core\Uploader' ) ) {
 				 * ?>
 				 */
 				do_action( "um_after_upload_db_meta_{$field_key}", $this->user_id );
-
-				if ( 'stream_photo' !== $this->upload_image_type ) {
-					update_user_meta( $this->user_id, $field_key, wp_basename( $movefile['url'] ) );
-				}
 
 				$filename = wp_basename( $movefile['url'] );
 
@@ -1117,6 +1124,26 @@ if ( ! class_exists( 'um\core\Uploader' ) ) {
 
 			$user_basedir = UM()->uploader()->get_upload_user_base_dir( $user_id, true );
 
+
+			// Temporary cover_photo and profile_photo
+			if ( is_dir( $user_basedir . DIRECTORY_SEPARATOR . 'temp' ) ) {
+				$tempfiles = scandir( $user_basedir . DIRECTORY_SEPARATOR . 'temp' );
+				foreach ( $tempfiles as $k => $tempfile ) {
+					if ( preg_match( '/^(cover_photo|profile_photo)(\.|\-)/i', $tempfile, $matches ) ) {
+						if( empty( $_REQUEST[$matches[1]] ) ){
+							continue;
+						}
+						if ( '.' === $matches[2] ) {
+							$files[$matches[1]] = $tempfile;
+						}
+						else {
+							$files[$matches[1] . $k] = $tempfile;
+						}
+					}
+				}
+			}
+
+
 			foreach ( $files as $key => $filename ) {
 
 				if ( empty( $filename ) || 'empty_file' == $filename ) {
@@ -1138,10 +1165,15 @@ if ( ! class_exists( 'um\core\Uploader' ) ) {
 
 				//move temporary file from temp directory to the correct user directory
 				$temp_file_path = UM()->uploader()->get_core_temp_dir() . DIRECTORY_SEPARATOR . $filename;
+				if ( !file_exists( $temp_file_path ) ) {
+					$temp_file_path = $user_basedir . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . $filename;
+				}
 				if ( file_exists( $temp_file_path ) ) {
 					$extra_hash = hash( 'crc32b', current_time('timestamp') );
 
-					if ( strpos( $filename , 'stream_photo_' ) !== false ) {
+					if ( preg_match( '/^(cover_photo|profile_photo)/i', $filename )  ) {
+						$new_filename = $filename;
+					} elseif ( strpos( $filename , 'stream_photo_' ) !== false ) {
 						$new_filename = str_replace("stream_photo_","stream_photo_{$extra_hash}_", $filename );
 					} else {
 						$new_filename = str_replace("file_","file_{$extra_hash}_", $filename );
@@ -1164,6 +1196,18 @@ if ( ! class_exists( 'um\core\Uploader' ) ) {
 						$file = $user_basedir. DIRECTORY_SEPARATOR . $new_filename;
 
 						$new_files[ $key ] = $new_filename;
+
+
+						// Remove old cover_photo and profile_photo
+						if ( preg_match( '/^(cover_photo|profile_photo)/i', $filename )  ) {
+							$oldfiles = glob( preg_replace( '/[^\.]+$/i', '*', $file ), GLOB_BRACE );
+							foreach ( $oldfiles as $oldfile ) {
+								if ( is_file( $oldfile ) ) {
+									unlink( $oldfile );
+								}
+							}
+						}
+
 
 						if ( rename( $temp_file_path, $file ) ) {
 							update_user_meta( $user_id, $key, $new_filename );
@@ -1215,9 +1259,19 @@ if ( ! class_exists( 'um\core\Uploader' ) ) {
 				foreach ( $files as $file ) {
 					$str = basename( $file );
 
-					if ( ! strstr( $str, 'profile_photo' ) && ! strstr( $str, 'cover_photo' ) &&
-					     ! strstr( $str, 'stream_photo' ) && ! preg_grep( '/' . $str . '/', $_array ) ) {
+					if ( ! strstr( $str, 'profile_photo' ) && ! strstr( $str, 'cover_photo' ) && ! strstr( $str, 'stream_photo' ) && ! preg_grep( '/' . $str . '/', $_array ) && !is_dir( $file ) ) {
 						$error[] = $str;
+						unlink( $file );
+					}
+				}
+			}
+
+
+			// Temporary cover_photo and profile_photo
+			if ( is_dir( $this->get_upload_user_base_dir( $user_id ) . DIRECTORY_SEPARATOR . 'temp' ) ) {
+				$tempfiles = glob( $this->get_upload_user_base_dir( $user_id ) . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . '*', GLOB_BRACE );
+				foreach ( $tempfiles as $file ) {
+					if ( is_file( $file ) ) {
 						unlink( $file );
 					}
 				}
