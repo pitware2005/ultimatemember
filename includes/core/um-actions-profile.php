@@ -343,6 +343,27 @@ function um_user_edit_profile( $args ) {
 		do_action( 'um_after_user_updated', um_user( 'ID' ), $args, $to_update );
 	}
 
+
+	// Temporary cover_photo and profile_photo
+	if ( !empty( $_REQUEST['cover_photo'] ) || !empty( $_REQUEST['profile_photo'] ) ) {
+		$user_basedir = UM()->uploader()->get_upload_user_base_dir( um_user( 'ID' ), true );
+		$tempfiles = scandir( $user_basedir . DIRECTORY_SEPARATOR . 'temp' );
+		foreach ( $tempfiles as $k => $tempfile ) {
+			if ( preg_match( '/^(cover_photo|profile_photo)(\.|\-)([^\.]*)/i', $tempfile, $matches ) ) {
+				if ( empty( $_REQUEST[$matches[1]] ) ) {
+					continue;
+				}
+				if ( '.' === $matches[2] ) {
+					$files[$matches[1]] = $tempfile;
+				}
+				else {
+					$files[$matches[1] . $matches[3]] = $tempfile;
+				}
+			}
+		}
+	}
+
+
 	/**
 	 * UM hook
 	 *

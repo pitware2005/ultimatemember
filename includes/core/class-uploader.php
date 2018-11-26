@@ -1124,26 +1124,6 @@ if ( ! class_exists( 'um\core\Uploader' ) ) {
 
 			$user_basedir = UM()->uploader()->get_upload_user_base_dir( $user_id, true );
 
-
-			// Temporary cover_photo and profile_photo
-			if ( is_dir( $user_basedir . DIRECTORY_SEPARATOR . 'temp' ) ) {
-				$tempfiles = scandir( $user_basedir . DIRECTORY_SEPARATOR . 'temp' );
-				foreach ( $tempfiles as $k => $tempfile ) {
-					if ( preg_match( '/^(cover_photo|profile_photo)(\.|\-)/i', $tempfile, $matches ) ) {
-						if( empty( $_REQUEST[$matches[1]] ) ){
-							continue;
-						}
-						if ( '.' === $matches[2] ) {
-							$files[$matches[1]] = $tempfile;
-						}
-						else {
-							$files[$matches[1] . $k] = $tempfile;
-						}
-					}
-				}
-			}
-
-
 			foreach ( $files as $key => $filename ) {
 
 				if ( empty( $filename ) || 'empty_file' == $filename ) {
