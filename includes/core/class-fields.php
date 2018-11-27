@@ -4059,8 +4059,10 @@ if ( ! class_exists( 'um\core\Fields' ) ) {
 		 *
 		 */
 		function do_ajax_action() {
+			UM()->admin()->check_ajax_nonce();
+
 			if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
-				die( __( 'Please login as administrator', 'ultimate-member' ) );
+				wp_send_json_error( __( 'Please login as administrator', 'ultimate-member' ) );
 			}
 
 			/**

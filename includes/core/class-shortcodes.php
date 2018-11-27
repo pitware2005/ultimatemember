@@ -699,7 +699,6 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 			}
 
 			if ( 'directory' != $args['mode'] ) {
-
 				$args = array_merge( $post_data, $args );
 
 				if ( empty( $args['use_custom_settings'] ) ) {
@@ -749,8 +748,7 @@ if ( ! class_exists( 'um\core\Shortcodes' ) ) {
 
 			// for profiles only
 			if ( $mode == 'profile' && um_profile_id() ) {
-				$use_custom = get_post_meta( $this->form_id, "_um_{$mode}_use_custom_settings", true );
-				if ( $use_custom ) { // Custom Form settings
+				if ( ! empty( $args['use_custom_settings'] ) ) { // Custom Form settings
 					$current_user_roles = UM()->roles()->get_all_user_roles( um_profile_id() );
 
 					//backward compatibility between single/multi role form's setting

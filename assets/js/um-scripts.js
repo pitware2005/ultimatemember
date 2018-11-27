@@ -1,10 +1,16 @@
+/*jQuery('body').on('error', '.um-avatar', function() {
+	if( jQuery(this).data('load-error') != undefined ) return;
+	jQuery(this).data('load-error', '1').attr('src', jQuery(this).data('default'));
+});*/
 jQuery(document).ready(function() {
 
 	jQuery(document).on('click', '.um-dropdown a', function(e){
+
 		return false;
 	});
 
 	jQuery(document).on('click', '.um-dropdown a.real_url', function(e){
+
 		window.location = jQuery(this).attr('href');
 	});
 
@@ -16,6 +22,7 @@ jQuery(document).ready(function() {
 	});
 
 	jQuery(document).on('click', '.um-dropdown-hide', function(e){
+
 		UM_hide_menus();
 	});
 
@@ -117,13 +124,12 @@ jQuery(document).ready(function() {
 		score: 		function() {return jQuery(this).attr('data-score');},
 		scoreName: 	function(){return jQuery(this).attr('data-key');},
 		hints: 		false,
-		click: function(score, evt) {
+		click: function( score, evt ) {
 			live_field = this.id;
 			live_value = score;
 			um_apply_conditions( jQuery(this), false );
 		}
 	});
-
 
 	jQuery('.um-rating-readonly').um_raty({
 		half: 		false,
@@ -149,7 +155,8 @@ jQuery(document).ready(function() {
 			type: 'post',
 			data: {
 				action: 'um_remove_file',
-				src: src
+				src: src,
+				nonce: um_scripts.nonce
 			}
 		});
 
@@ -169,7 +176,8 @@ jQuery(document).ready(function() {
 			type: 'post',
 			data: {
 				action: 'um_remove_file',
-				src: src
+				src: src,
+				nonce: um_scripts.nonce
 			}
 		});
 
@@ -179,7 +187,7 @@ jQuery(document).ready(function() {
 	jQuery('.um-s1,.um-s2').css({'display':'block'});
 
 	jQuery(".um-s1").select2({
-		allowClear: true
+		allowClear: true,
 	});
 
 	jQuery(".um-s2").select2({
@@ -264,7 +272,8 @@ jQuery(document).ready(function() {
 				data: {
 					action: 'um_ajax_paginate_posts',
 					author: jQuery(this).data('author'),
-					page:   next_page
+					page:   next_page,
+					nonce: um_scripts.nonce
 				},
 				complete: function() {
 					parent.removeClass( 'loading' );
@@ -288,7 +297,8 @@ jQuery(document).ready(function() {
 				data: {
 					action: 'um_ajax_paginate',
 					hook: hook,
-					args: args
+					args: args,
+					nonce: um_scripts.nonce
 				},
 				complete: function() {
 					parent.removeClass( 'loading' );
@@ -319,7 +329,8 @@ jQuery(document).ready(function() {
 				action: 'um_muted_action',
 				hook: hook,
 				user_id: user_id,
-				arguments: arguments
+				arguments: arguments,
+				nonce: um_scripts.nonce
 			},
 			success: function(data){
 
@@ -374,7 +385,8 @@ jQuery(document).ready(function() {
 						child_callback: um_ajax_source,
 						child_name:  me.attr('name'),
 						members_directory:  me.attr('data-mebers-directory'),
-						form_id: form_id
+						form_id: form_id,
+						nonce: um_scripts.nonce
 					},
 					success: function( data ){
 						if( data.status == 'success' && parent.val() != '' ){

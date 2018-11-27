@@ -129,7 +129,9 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 			 * }
 			 * ?>
 			 */
-			$localize_data = apply_filters( 'um_enqueue_localize_data', array() );
+			$localize_data = apply_filters( 'um_enqueue_localize_data', array(
+				'nonce' => wp_create_nonce( "um-frontend-nonce" ),
+			) );
 			wp_localize_script( 'um_scripts', 'um_scripts', $localize_data );
 
 			wp_register_script( 'um_b64', $this->js_baseurl . 'jquery.b_64' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
