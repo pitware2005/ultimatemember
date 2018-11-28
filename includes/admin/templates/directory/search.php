@@ -49,14 +49,6 @@
 				'value'     => UM()->query()->get_meta_value( '_um_search' ),
 			),
 			array(
-				'id'            => '_um_must_search',
-				'type'          => 'checkbox',
-				'label'         => __( 'Show results only after search', 'ultimate-member' ),
-				'tooltip'       => __( 'If turned on, member results will only appear after search is performed', 'ultimate-member' ),
-				'value'         => UM()->query()->get_meta_value( '_um_must_search' ),
-				'conditional'   => array( '_um_search', '=', 1 )
-			),
-			array(
 				'id'            => '_um_roles_can_search',
 				'type'          => 'select',
 				'multi'         => true,

@@ -4,6 +4,13 @@
 		'prefix_id'	=> 'um_metadata',
 		'fields' => array(
 			array(
+				'id'            => '_um_must_search',
+				'type'          => 'checkbox',
+				'label'         => __( 'Show results only after search/filtration', 'ultimate-member' ),
+				'tooltip'       => __( 'If turned on, member results will only appear after search/filter is performed', 'ultimate-member' ),
+				'value'         => UM()->query()->get_meta_value( '_um_must_search' ),
+			),
+			array(
 				'id'		=> '_um_profiles_per_page',
 				'type'		=> 'text',
 				'label'		=> __( 'Number of profiles per page', 'ultimate-member' ),
