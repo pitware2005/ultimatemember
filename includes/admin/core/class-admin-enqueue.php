@@ -30,8 +30,6 @@ if ( ! class_exists( 'um\admin\core\Admin_Enqueue' ) ) {
 		 * Admin_Enqueue constructor.
 		 */
 		function __construct() {
-			$this->slug = 'ultimatemember';
-
 			$this->js_url = um_url . 'includes/admin/assets/js/';
 			$this->css_url = um_url . 'includes/admin/assets/css/';
 
@@ -354,6 +352,9 @@ if ( ! class_exists( 'um\admin\core\Admin_Enqueue' ) ) {
 				UM()->enqueue()->load_modal();
 				UM()->enqueue()->load_responsive();
 
+				wp_register_script( 'um_raty', um_url . 'assets/js/um-raty' . UM()->enqueue()->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
+				wp_register_style( 'um_raty', um_url . 'assets/css/um-raty.css', array(), ultimatemember_version );
+
 				wp_register_style( 'um_default_css', um_url . 'assets/css/um-old-default.css', '', ultimatemember_version, 'all' );
 				wp_enqueue_style( 'um_default_css' );
 
@@ -361,7 +362,7 @@ if ( ! class_exists( 'um\admin\core\Admin_Enqueue' ) ) {
 					wp_register_style( 'um_admin_rtl', $this->css_url . 'um-admin-rtl.css' );
 					wp_enqueue_style( 'um_admin_rtl' );
 				}
-            
+
 			} else {
 
 				$this->load_global_scripts();

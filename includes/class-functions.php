@@ -1,5 +1,6 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit;
 
+
 if ( ! class_exists( 'UM_Functions' ) ) {
 
 
@@ -22,7 +23,7 @@ if ( ! class_exists( 'UM_Functions' ) ) {
 		 * @param bool $action
 		 */
 		function check_ajax_nonce( $action = false ) {
-			$nonce = isset( $_POST['nonce'] ) ? $_POST['nonce'] : '';
+			$nonce = isset( $_REQUEST['nonce'] ) ? $_REQUEST['nonce'] : '';
 			$action = empty( $action ) ? 'um-frontend-nonce' : $action;
 
 			if ( ! wp_verify_nonce( $nonce, $action ) ) {
@@ -327,6 +328,5 @@ if ( ! class_exists( 'UM_Functions' ) ) {
 			$cpt = apply_filters( 'um_cpt_list', array( 'um_form', 'um_directory' ) );
 			return $cpt;
 		}
-
 	}
 }
