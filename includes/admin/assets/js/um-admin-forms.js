@@ -3,7 +3,7 @@ jQuery(document).ready( function() {
 	/**
 	 * Multi-selects field
 	 */
-	jQuery( document ).on( 'click', '.um-select-delete', function() {
+	jQuery( document.body ).on( 'click', '.um-select-delete', function() {
 		jQuery( this ).parents( 'li.um-multi-selects-option-line' ).remove();
 	});
 
@@ -34,7 +34,7 @@ jQuery(document).ready( function() {
 	/**
 	 * Multi-text field
 	 */
-	jQuery( document ).on( 'click', '.um-text-delete', function() {
+	jQuery( document.body ).on( 'click', '.um-text-delete', function() {
 		jQuery(this).parents('li.um-multi-text-option-line').remove();
 	});
 
@@ -137,7 +137,7 @@ jQuery(document).ready( function() {
 			jQuery(this).siblings('.um-set-image').trigger('click');
 		});
 
-		jQuery('.um-clear-image').click( function(e) {
+		jQuery('.um-clear-image').click( function() {
 			var clear_button = jQuery(this);
 			var default_image_url = jQuery(this).siblings('.um-forms-field').data('default');
 			clear_button.siblings('.um-set-image').show();
@@ -219,38 +219,38 @@ jQuery(document).ready( function() {
 
 		var tagName = condition_field.prop("tagName").toLowerCase();
 		var input_type = condition_field.attr('type');
-		if ( condition == '=' ) {
+		if ( condition === '=' ) {
 
-			if ( tagName == 'input' ) {
-				if ( input_type == 'checkbox' ) {
-					own_condition = ( value == '1' ) ? condition_field.is(':checked') : ! condition_field.is(':checked');
+			if ( tagName === 'input' ) {
+				if ( input_type === 'checkbox' ) {
+					own_condition = ( value === '1' ) ? condition_field.is(':checked') : ! condition_field.is(':checked');
 				} else {
 					own_condition = ( condition_field.val() == value );
 				}
-			} else if ( tagName == 'select' ) {
+			} else if ( tagName === 'select' ) {
 				own_condition = ( condition_field.val() == value );
 			}
-		} else if ( condition == '!=' ) {
+		} else if ( condition === '!=' ) {
 
-			if ( tagName == 'input' ) {
-				if ( input_type == 'checkbox' ) {
-					own_condition = ( value == '1' ) ? ! condition_field.is(':checked') : condition_field.is(':checked');
+			if ( tagName === 'input' ) {
+				if ( input_type === 'checkbox' ) {
+					own_condition = ( value === '1' ) ? ! condition_field.is(':checked') : condition_field.is(':checked');
 				} else {
 					own_condition = ( condition_field.val() != value );
 				}
-			} else if ( tagName == 'select' ) {
+			} else if ( tagName === 'select' ) {
 				own_condition = ( condition_field.val() != value );
 			}
-		} else if ( condition == 'length' ) {
+		} else if ( condition === 'length' ) {
 
-			if ( tagName == 'select' && condition_field.prop('multiple') ) {
+			if ( tagName === 'select' && condition_field.prop('multiple') ) {
 				var multiple = condition_field.val() || [];
 				own_condition = ( multiple.length >= value );
 			} else {
 				own_condition = true;
 			}
 
-		} else if ( condition == 'no_empty' ) {
+		} else if ( condition === 'no_empty' ) {
 
 			own_condition = true;
 
