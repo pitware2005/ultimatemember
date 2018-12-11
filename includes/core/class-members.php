@@ -440,7 +440,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 * get AJAX results members
 		 */
 		function ajax_get_members() {
-			UM()->check_frontend_ajax_nonce();
+			UM()->check_ajax_nonce();
 
 			$args = ! empty( $_POST['args'] ) ? $_POST['args'] : array();
 			$args['page'] = ! empty( $_POST['page'] ) ? $_POST['page'] : ( isset( $args['page'] ) ? $args['page'] : 1 );
@@ -514,7 +514,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				'header'        => $users['header'],
 			);
 
-			wp_send_json_success( array( 'users' => $users_data, 'pagi' => $pagination_data ) );
+			wp_send_json_success( array( 'users' => $users_data, 'pagination' => $pagination_data ) );
 		}
 
 
