@@ -223,7 +223,7 @@ jQuery(document).ready( function() {
 
 			if ( tagName === 'input' ) {
 				if ( input_type === 'checkbox' ) {
-					own_condition = ( value === '1' ) ? condition_field.is(':checked') : ! condition_field.is(':checked');
+					own_condition = ( parseInt( value ) === 1 ) ? condition_field.is(':checked') : ! condition_field.is(':checked');
 				} else {
 					own_condition = ( condition_field.val() == value );
 				}
@@ -234,7 +234,7 @@ jQuery(document).ready( function() {
 
 			if ( tagName === 'input' ) {
 				if ( input_type === 'checkbox' ) {
-					own_condition = ( value === '1' ) ? ! condition_field.is(':checked') : condition_field.is(':checked');
+					own_condition = ( parseInt( value ) === 1 ) ? ! condition_field.is(':checked') : condition_field.is(':checked');
 				} else {
 					own_condition = ( condition_field.val() != value );
 				}

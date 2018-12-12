@@ -7,11 +7,9 @@ jQuery(document).ready(function() {
 	jQuery( '.um-directory' ).each( function() {
 		var directory = jQuery(this);
 
+
 		//show preloader at first
 		um_members_show_preloader( directory );
-
-
-
 
 		var layout = directory.data( 'view_type' );
 		//set default directory view type
@@ -35,11 +33,16 @@ jQuery(document).ready(function() {
 			directory.find('.um-member-directory-sorting-options').val( sorting );
 		}
 
+
+		var show_after_search = false;
 		//set search line from session storage
 		if ( directory.find('.um-search-line').length ) {
 			var general_search = um_get_directory_storage( directory, 'general_search' );
 			if ( general_search !== null ) {
 				directory.find('.um-search-line').val( general_search );
+			} else {
+				//show results after search
+				show_after_search = true;
 			}
 		}
 
@@ -74,7 +77,7 @@ jQuery(document).ready(function() {
 					}
 				}
 
-				if ( filter.find( '.um-slider' ) ) {
+				if ( filter.find( '.um-slider' ).length ) {
 					var age_query_value = um_get_directory_storage( directory, 'filter_birth_date' );
 
 					if ( typeof age_query_value != 'undefined' ) {
@@ -97,19 +100,19 @@ jQuery(document).ready(function() {
 
 			if ( filters_data.length > 0 ) {
 				directory.find('.um-filtered-line').show();
+				show_after_search = false;
 			} else {
 				directory.find('.um-filtered-line').hide();
+				show_after_search = true;
 			}
 		}
 
-		um_ajax_get_members( directory );
+		if ( parseInt( directory.data( 'only_search' ) ) === 1 && show_after_search ) {
+			um_members_hide_preloader( directory );
+			return;
+		}
 
-		//show results after search
-		/*if ( jQuery(this).data('only_search') == '1' && ! um_members_hash_data[ um_members_get_unique_id( jQuery(this) ) ].hasOwnProperty('general_search') ) {
-			um_members_hide_preloader( jQuery(this) );
-			um_members_directory_busy[ um_members_get_unique_id( jQuery(this) ) ] = false;
-			return false;
-		}*/
+		um_ajax_get_members( directory );
 	});
 
 
@@ -135,11 +138,46 @@ jQuery(document).ready(function() {
 		directory.find('.um-member-directory-view-type-a').tipsy('hide').tipsy('show');
 
 		var data = um_get_directory_storage( directory, 'last_data' );
-		if ( typeof data !== 'undefined' ) {
+		if ( data !== null ) {
 			um_build_template( directory, data );
 		} else {
-			um_members_show_preloader( directory );
 
+			var show_after_search = false;
+			//set search line from session storage
+			if ( directory.find('.um-search-line').length ) {
+				var general_search = um_get_directory_storage( directory, 'general_search' );
+				if ( general_search === null ) {
+					//show results after search
+					show_after_search = true;
+				}
+			}
+
+			if ( jQuery('#tmpl-um-members-filtered-line').length ) {
+				var filters_data = [];
+				directory.find('.um-search-filter').each( function() {
+					var filter = jQuery(this);
+					var filter_name = filter.find('select').attr('name');
+					var query_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+
+					if ( typeof( query_value ) != 'undefined' ) {
+						if ( typeof( query_value ) == 'string' ) {
+							filters_data.push( {'name':filter_name} );
+						} else {
+							jQuery.each( query_value, function() {
+								filters_data.push( {'name': filter_name} );
+							});
+						}
+					}
+				});
+
+				show_after_search = ( filters_data.length <= 0 );
+			}
+
+			if ( parseInt( directory.data( 'only_search' ) ) === 1 && show_after_search ) {
+				return;
+			}
+
+			um_members_show_preloader( directory );
 			um_ajax_get_members( directory );
 		}
 	});
@@ -220,6 +258,41 @@ jQuery(document).ready(function() {
 			return;
 		}
 
+		var show_after_search = false;
+		//set search line from session storage
+		if ( directory.find('.um-search-line').length ) {
+			var general_search = um_get_directory_storage( directory, 'general_search' );
+			if ( general_search === null ) {
+				//show results after search
+				show_after_search = true;
+			}
+		}
+
+		if ( jQuery('#tmpl-um-members-filtered-line').length ) {
+			var filters_data = [];
+			directory.find('.um-search-filter').each( function() {
+				var filter = jQuery(this);
+				var filter_name = filter.find('select').attr('name');
+				var query_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+
+				if ( typeof( query_value ) != 'undefined' ) {
+					if ( typeof( query_value ) == 'string' ) {
+						filters_data.push( {'name':filter_name} );
+					} else {
+						jQuery.each( query_value, function() {
+							filters_data.push( {'name': filter_name} );
+						});
+					}
+				}
+			});
+
+			show_after_search = ( filters_data.length <= 0 );
+		}
+
+		if ( parseInt( directory.data( 'only_search' ) ) === 1 && show_after_search ) {
+			return;
+		}
+
 		directory.data( 'sorting', jQuery(this).val() );
 		um_set_directory_storage( directory, 'sorting', jQuery(this).val(), true );
 
@@ -227,7 +300,7 @@ jQuery(document).ready(function() {
 	});
 
 
-	// Searching
+	//searching
 	jQuery( document.body ).on( 'click', '.um-do-search', function() {
 		var directory = jQuery(this).parents('.um-directory');
 
@@ -236,6 +309,10 @@ jQuery(document).ready(function() {
 		}
 
 		var search = directory.find('.um-search-line').val();
+		if ( search === um_get_directory_storage( directory, 'general_search' ) ||
+			 ( search === '' && null === um_get_directory_storage( directory, 'general_search' ) ) ) {
+			return;
+		}
 
 		directory.data( 'general_search', search );
 		um_set_directory_storage( directory, 'general_search', search, true );
@@ -258,8 +335,7 @@ jQuery(document).ready(function() {
 
 
 	//filters controls
-	jQuery('.um-member-directory-filters').click( function(e) {
-		e.preventDefault();
+	jQuery('.um-member-directory-filters').click( function() {
 		var search_bar = jQuery(this).parents('.um-directory').find('.um-search');
 
 		if ( search_bar.is(':visible') ) {
@@ -270,105 +346,166 @@ jQuery(document).ready(function() {
 	});
 
 
-
-	jQuery('.um-close-filter').click( function(e){
-		e.preventDefault();
+	jQuery('.um-close-filter').click( function() {
 		var search_bar = jQuery(this).parents('.um-directory').find('.um-search');
-
 		search_bar.slideUp(750);
 	});
 
 
-	//filtration process
-	jQuery( document.body ).on( 'change', '.um-search-filter select', function(e){
-		e.preventDefault();
 
-		if ( jQuery(this).val() == '' )
-			return false;
+
+	//filtration process
+	jQuery( document.body ).on( 'change', '.um-search-filter select', function() {
+		if ( jQuery(this).val() === '' ) {
+			return;
+		}
 
 		var directory = jQuery(this).parents('.um-directory');
 
-		if ( um_is_directory_busy( directory ) )
-			return false;
-
-		var unique = um_members_get_unique_id( directory );
-
-		var global_hash = um_members_hash_data[ unique ][ jQuery(this).prop('name') ];
-
-		if ( typeof global_hash == 'undefined' ) {
-			global_hash = [];
-		} else if( typeof global_hash == 'string' ) {
-			global_hash = [ global_hash ];
+		if ( um_is_directory_busy( directory ) ) {
+			return;
 		}
 
-		if ( -1 == jQuery.inArray( jQuery(this).val(), global_hash ) ) {
-			global_hash.push( jQuery(this).val() );
+		var filter_name = jQuery(this).prop('name');
 
-			um_members_hash_data[ unique ][ jQuery(this).prop('name') ] = global_hash;
+		var current_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+		if ( current_value === null ) {
+			current_value = [];
+		}
+		if ( -1 === jQuery.inArray( jQuery(this).val(), current_value ) ) {
+			current_value.push( jQuery(this).val() );
+			um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
 
-			um_members_hash_data[ unique ].page = 1;
+			//set 1st page after filtration
+			um_set_directory_storage( directory, 'page', 1, true );
 		}
 
 		jQuery(this).val('').trigger('change');
 
-		return false;
-	});
+		um_ajax_get_members( directory );
 
 
+		var unique_id = um_members_get_unique_id( directory );
+		var filters_data = [];
 
-	jQuery( document.body ).on( 'click', '.um-members-filter-remove', function(e){
-		e.preventDefault();
+		directory.find('.um-search-filter').each( function() {
+			var filter = jQuery(this);
+			var filter_name = filter.find('select').attr('name');
+			var query_value = um_get_directory_storage( directory, 'filter_' + filter_name );
 
-		var directory = jQuery(this).parents('.um-directory');
+			var filter_title = filter.find('select').data('placeholder');
+			var filter_value_title;
 
-		if ( um_is_directory_busy( directory ) )
-			return false;
+			if ( typeof( query_value ) != 'undefined' ) {
+				if ( typeof( query_value ) == 'string' ) {
+					filter_value_title = filter.find('select option[value="' + query_value + '"]').data('value_label');
+					filters_data.push( {'name':filter_name, 'label':filter_title, 'value_label':filter_value_title, 'value':query_value, 'unique_id':unique_id} );
+				} else {
+					jQuery.each( query_value, function(e) {
+						filter_value_title = filter.find('select option[value="' + query_value[e] + '"]').data('value_label');
+						filters_data.push( {'name': filter_name, 'label':filter_title, 'value_label':filter_value_title, 'value':query_value[e], 'unique_id':unique_id} );
+					});
+				}
+			}
 
-		var unique = um_members_get_unique_id( directory );
+			if ( filter.find( '.um-slider' ).length ) {
+				var age_query_value = um_get_directory_storage( directory, 'filter_birth_date' );
 
-		var removeItem = jQuery(this).data('value');
-		if ( typeof um_members_hash_data[ unique ][ jQuery(this).data('name') ] == 'string' ) {
-			um_members_hash_data[ unique ][ jQuery(this).data('name') ] = [um_members_hash_data[ unique ][ jQuery(this).data('name') ]];
-		}
+				if ( typeof age_query_value != 'undefined' ) {
 
-		um_members_hash_data[ unique ][ jQuery(this).data('name') ] = jQuery.grep( um_members_hash_data[ unique ][ jQuery(this).data('name') ], function(value) {
-			return value != removeItem;
+					filter.find( ".um-slider" ).slider( "option", "values", age_query_value );
+
+					filter.find( ".um_range_min" ).val( age_query_value[0] );
+					filter.find( ".um_range_max" ).val( age_query_value[1] );
+
+					filter.find( ".um-slider-range" ).html( filter.find( ".um-slider" ).slider( "values", 0 ) + ' - ' +
+						filter.find( ".um-slider" ).slider( "values", 1 ) + ' y.o' );
+				}
+			}
 		});
 
-		um_members_hash_data[ unique ].page = 1;
-
 		directory.find('.um-members-filter-tag').remove();
-		return false;
+
+		var filters_template = wp.template( 'um-members-filtered-line' );
+		directory.find('.um-filtered-line').prepend( filters_template( {'filters': filters_data} ) );
+
+		if ( filters_data.length > 0 ) {
+			directory.find('.um-filtered-line').show();
+		} else {
+			directory.find('.um-filtered-line').hide();
+		}
 	});
 
 
-
-	jQuery( document.body ).on( 'click', '.um-clear-filters-a', function(e){
-		e.preventDefault();
-
+	jQuery( document.body ).on( 'click', '.um-members-filter-remove', function() {
 		var directory = jQuery(this).parents('.um-directory');
 
-		if ( um_is_directory_busy( directory ) )
-			return false;
+		if ( um_is_directory_busy( directory ) ) {
+			return;
+		}
 
-		var unique = um_members_get_unique_id( directory );
+		var removeItem = jQuery(this).data('value');
+		var filter_name = jQuery(this).data('name');
+
+		var current_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+		if ( current_value !== null && -1 !== jQuery.inArray( removeItem, current_value ) ) {
+			current_value = jQuery.grep( current_value, function( value ) {
+				return value !== removeItem;
+			});
+
+			if ( current_value.length > 0 ) {
+				um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
+			} else {
+				um_delete_directory_storage( directory, 'filter_' + filter_name );
+			}
+
+			//set 1st page after filtration
+			um_set_directory_storage( directory, 'page', 1, true );
+
+			jQuery(this).parents('.um-members-filter-tag').remove();
+		}
+
+		um_ajax_get_members( directory );
+
+		if ( directory.find( '.um-members-filter-remove' ).length === 0 ) {
+			directory.find('.um-clear-filters-a').remove();
+		}
+	});
+
+
+	jQuery( document.body ).on( 'click', '.um-clear-filters-a', function() {
+		var directory = jQuery(this).parents('.um-directory');
+		if ( um_is_directory_busy( directory ) ) {
+			return;
+		}
 
 		directory.find( '.um-members-filter-remove' ).each( function() {
 			var removeItem = jQuery(this).data('value');
-			if ( typeof um_members_hash_data[ unique ][ jQuery(this).data('name') ] == 'string' ) {
-				um_members_hash_data[ unique ][ jQuery(this).data('name') ] = [um_members_hash_data[ unique ][ jQuery(this).data('name') ]];
-			}
+			var filter_name = jQuery(this).data('name');
 
-			um_members_hash_data[ unique ][ jQuery(this).data('name') ] = jQuery.grep( um_members_hash_data[ unique ][ jQuery(this).data('name') ], function(value) {
-				return value != removeItem;
-			});
+			var current_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+			if ( current_value !== null && -1 !== jQuery.inArray( removeItem, current_value ) ) {
+				current_value = jQuery.grep( current_value, function( value ) {
+					return value !== removeItem;
+				});
+
+				if ( current_value.length > 0 ) {
+					um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
+				} else {
+					um_delete_directory_storage( directory, 'filter_' + filter_name );
+				}
+
+				directory.find('.um-members-filter-tag').remove();
+			}
 		});
 
-		um_members_hash_data[ unique ].page = 1;
-
+		//set 1st page after filtration
+		um_set_directory_storage( directory, 'page', 1, true );
 		directory.find('.um-members-filter-tag').remove();
 
-		return false;
+		um_ajax_get_members( directory );
+
+		jQuery(this).remove();
 	});
 
 
@@ -388,15 +525,11 @@ jQuery(document).ready(function() {
 			jQuery( this ).siblings('.um_range_max').val( ui.values[ 1 ] );
 		},
 		stop: function( event, ui ) {
-
 			var directory = jQuery(this).parents('.um-directory');
-			var unique = um_members_get_unique_id( directory );
-
 			if ( ! um_is_directory_busy( directory ) ) {
-
-				um_members_hash_data[ unique ][ jQuery(this).data('field_name') ] = ui.values;
-
-				um_members_hash_data[ unique ].page = 1;
+				um_set_directory_storage( directory, 'filter_' + jQuery(this).data('field_name'), ui.values, true );
+				um_set_directory_storage( directory, 'page', 1, true );
+				um_ajax_get_members( directory );
 			}
 		}
 	});
@@ -485,6 +618,11 @@ function um_get_directory_storage( directory, key ) {
 }
 
 
+function um_delete_directory_storage( directory, key ) {
+	sessionStorage.removeItem( 'um_directory_' + um_members_get_unique_id( directory ) + '_' + key );
+}
+
+
 function um_members_get_unique_id( directory ) {
 	return directory.data( 'unique_id' );
 }
@@ -528,6 +666,25 @@ function um_ajax_get_members( directory ) {
 	if ( directory.find('.um-member-directory-sorting-options').length ) {
 		request.sorting = um_get_directory_storage( directory, 'sorting' );
 	}
+
+	if ( directory.find('.um-search-line').length ) {
+		request.general_search = um_get_directory_storage( directory, 'general_search' );
+	}
+
+
+	if ( directory.find('.um-search-filter').length ) {
+		directory.find('.um-search-filter').each( function() {
+			var filter = jQuery(this);
+
+			if ( filter.find( '.um-slider' ).length ) {
+				request[ 'birth_date' ] = um_get_directory_storage( directory, 'filter_birth_date' );
+			} else {
+				var filter_name = filter.find('select').attr('name');
+				request[ filter_name ] = um_get_directory_storage( directory, 'filter_' + filter_name );
+			}
+		});
+	}
+
 
 	wp.ajax.send( 'um_get_members', {
 		data: request,

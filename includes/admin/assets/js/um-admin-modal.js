@@ -402,14 +402,14 @@ jQuery(document).ready(function() {
 					var arr_opts = [];
 					
 					for (var key in response.data ){
-                         arr_opts.push( response.data[ key ] );
+						arr_opts.push( response.data[ key ] );
 					}
 
 					_options.val( arr_opts.join('\n') );
 					
-		        }
-			});
-		}
+				}
+            });
+        }
 
 	});
 
