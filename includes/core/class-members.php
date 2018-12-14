@@ -523,15 +523,13 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 * @return array
 		 */
 		function get_sorting_fields() {
-
 			return apply_filters( 'um_members_directory_sort_dropdown_options', array(
-				'user_registered_desc'	=> __( 'Newest Members', 'ultimate-member' ),
-				'user_registered_asc'	=> __( 'Oldest Members', 'ultimate-member' ),
-				'username_asc'			=> __( 'Username', 'ultimate-member' ),
-				'first_name'			=> __( 'First Name', 'ultimate-member' ),
-				'last_name'				=> __( 'Last Name', 'ultimate-member' ),
+				'user_registered_desc'  => __( 'Newest Members', 'ultimate-member' ),
+				'user_registered_asc'   => __( 'Oldest Members', 'ultimate-member' ),
+				'username_asc'          => __( 'Username', 'ultimate-member' ),
+				'first_name'            => __( 'First Name', 'ultimate-member' ),
+				'last_name'             => __( 'Last Name', 'ultimate-member' ),
 			) );
-
 		}
 
 

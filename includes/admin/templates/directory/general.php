@@ -13,7 +13,8 @@ if ( $show_these_users ) {
 }
 
 $post_id = get_the_ID();
-$_um_view_types = get_post_meta( $post_id, '_um_view_types', true ); ?>
+$_um_view_types = get_post_meta( $post_id, '_um_view_types', true );
+$_um_view_types = empty( $_um_view_types ) ? array( 'grid' ) : $_um_view_types; ?>
 
 <div class="um-admin-metabox">
 

@@ -7,7 +7,9 @@
 
 	$post_id = get_the_ID();
 	$_um_tagline_fields = get_post_meta( $post_id, '_um_tagline_fields', true );
+	$_um_tagline_fields = empty( $_um_tagline_fields ) ? array() : $_um_tagline_fields;
 	$_um_reveal_fields = get_post_meta( $post_id, '_um_reveal_fields', true );
+	$_um_reveal_fields = empty( $_um_reveal_fields ) ? array() : $_um_reveal_fields;
 
 	UM()->admin_forms( array(
 		'class'		=> 'um-member-directory-profile um-half-column',
@@ -55,13 +57,6 @@
 				'value'		=> UM()->query()->get_meta_value( '_um_show_userinfo' ),
 			),
 			array(
-				'id'		=> '_um_userinfo_animate',
-				'type'		=> 'checkbox',
-				'label'		=> __( 'Enable reveal section transition by default', 'ultimate-member' ),
-				'value'		=> UM()->query()->get_meta_value( '_um_userinfo_animate' ),
-				'conditional'   => array( '_um_show_userinfo', '=', 1 )
-			),
-			array(
 				'id'		=> '_um_reveal_fields',
 				'type'		=> 'multi_selects',
 				'label'		=> __( 'Choose field(s) to display in reveal section', 'ultimate-member' ),
@@ -77,7 +72,14 @@
 				'label'		=> __( 'Show social connect icons', 'ultimate-member' ),
 				'value'		=> UM()->query()->get_meta_value( '_um_show_social' ),
 				'conditional'   => array( '_um_show_userinfo', '=', 1 )
-			)
+			),
+			array(
+				'id'		=> '_um_userinfo_animate',
+				'type'		=> 'checkbox',
+				'label'		=> __( 'Enable reveal section transition by default', 'ultimate-member' ),
+				'value'		=> UM()->query()->get_meta_value( '_um_userinfo_animate' ),
+				'conditional'   => array( '_um_show_userinfo', '=', 1 )
+			),
 		)
 	) )->render_form(); ?>
 	
