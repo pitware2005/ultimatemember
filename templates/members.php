@@ -102,10 +102,6 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 			$search_filters = apply_filters( 'um_frontend_member_search_filters', $search_filters );
 
 			if ( $args['filters'] == 1 && is_array( $search_filters ) ) { ?>
-				<div class="um-filtered-line">
-					<div class="um-clear-filters"><a href="javascript:void(0);" class="um-clear-filters-a"><?php esc_attr_e( 'Clear Filters', 'ultimate-member' ); ?></a></div>
-				</div>
-
 				<script type="text/template" id="tmpl-um-members-filtered-line">
 					<# if ( data.filters.length > 0 ) { #>
 						<# _.each( data.filters, function( filter, key, list ) { #>
@@ -139,6 +135,9 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 					</form>
 				</div>
 
+				<div class="um-filtered-line">
+					<div class="um-clear-filters"><a href="javascript:void(0);" class="um-clear-filters-a"><?php esc_attr_e( 'Clear All Filters', 'ultimate-member' ); ?></a></div>
+				</div>
 			<?php }
 
 			do_action( 'um_members_directory_head', $args );

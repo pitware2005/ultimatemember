@@ -3,7 +3,8 @@
 $sorting_fields = UM()->members()->get_sorting_fields();
 
 $post_id = get_the_ID();
-$_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true ); ?>
+$_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true );
+$_um_sorting_fields = empty( $_um_sorting_fields ) ? array() : $_um_sorting_fields; ?>
 
 <div class="um-admin-metabox">
 
@@ -29,15 +30,18 @@ $_um_sorting_fields = get_post_meta( $post_id, '_um_sorting_fields', true ); ?>
 	 * ?>
 	 */
 	$sort_options = apply_filters( 'um_admin_directory_sort_users_select', array(
-		'user_registered_desc'  => __( 'New users first', 'ultimate-member' ),
-		'user_registered_asc'   => __( 'Old users first', 'ultimate-member' ),
-		'last_login'            => __( 'Last login', 'ultimate-member' ),
+		'user_registered_desc'  => __( 'New Users First', 'ultimate-member' ),
+		'user_registered_asc'   => __( 'Old Users First', 'ultimate-member' ),
+		'username'              => __( 'Username', 'ultimate-member' ),
+		'last_login'            => __( 'Last Login', 'ultimate-member' ),
 		'display_name'          => __( 'Display Name', 'ultimate-member' ),
 		'first_name'            => __( 'First Name', 'ultimate-member' ),
 		'last_name'             => __( 'Last Name', 'ultimate-member' ),
 		'random'                => __( 'Random', 'ultimate-member' ),
-		'other'                 => __( 'Other (custom field)', 'ultimate-member' ),
+		'other'                 => __( 'Other (Custom Field)', 'ultimate-member' ),
 	) );
+
+	asort( $sort_options );
 
 	$fields = array(
 		array(

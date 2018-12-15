@@ -677,10 +677,18 @@ function um_ajax_get_members( directory ) {
 			var filter = jQuery(this);
 
 			if ( filter.find( '.um-slider' ).length ) {
-				request[ 'birth_date' ] = um_get_directory_storage( directory, 'filter_birth_date' );
+				var value = um_get_directory_storage( directory, 'filter_birth_date' );
+				if ( value !== null ) {
+					request[ 'birth_date' ] = value;
+					request['is_filters'] = true;
+				}
 			} else {
 				var filter_name = filter.find('select').attr('name');
-				request[ filter_name ] = um_get_directory_storage( directory, 'filter_' + filter_name );
+				var value = um_get_directory_storage( directory, 'filter_' + filter_name );
+				if ( value !== null ) {
+					request[ filter_name ] = value;
+					request['is_filters'] = true;
+				}
 			}
 		});
 	}

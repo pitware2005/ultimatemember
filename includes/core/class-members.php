@@ -442,8 +442,16 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		function ajax_get_members() {
 			UM()->check_ajax_nonce();
 
+			$data_args = array(
+				'show_count' => false
+			);
+
 			$args = ! empty( $_POST['args'] ) ? $_POST['args'] : array();
 			$args['page'] = ! empty( $_POST['page'] ) ? $_POST['page'] : ( isset( $args['page'] ) ? $args['page'] : 1 );
+
+			if ( ! empty( $_POST['general_search'] ) || ! empty( $args['search_filters'] ) || ! empty( $_POST['is_filters'] ) ) {
+				$data_args['show_count'] = true;
+			}
 
 			$sizes = UM()->options()->get( 'cover_thumb_sizes' );
 			$cover_size = UM()->mobile()->isTablet() ? $sizes[1] : $sizes[0];
@@ -483,7 +491,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				if ( $args['show_tagline'] && is_array( $args['tagline_fields'] ) ) {
 					foreach ( $args['tagline_fields'] as $key ) {
 						if ( $key && um_filtered_value( $key ) ) {
-							$data_array[$key] = um_filtered_value( $key );
+							$data_array[ $key ] = um_filtered_value( $key );
 						}
 					}
 				}
@@ -492,7 +500,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 					foreach ( $args['reveal_fields'] as $key ) {
 						if ( $key && um_filtered_value( $key ) ) {
 							$data_array["label_{$key}"] = UM()->fields()->get_label( $key );
-							$data_array[$key] = um_filtered_value( $key );
+							$data_array[ $key ] = um_filtered_value( $key );
 						}
 					}
 				}
@@ -514,7 +522,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				'header'        => $users['header'],
 			);
 
-			wp_send_json_success( array( 'users' => $users_data, 'pagination' => $pagination_data ) );
+			wp_send_json_success( array( 'users' => $users_data, 'pagination' => $pagination_data, 'args' => $data_args ) );
 		}
 
 
@@ -523,13 +531,19 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 * @return array
 		 */
 		function get_sorting_fields() {
-			return apply_filters( 'um_members_directory_sort_dropdown_options', array(
-				'user_registered_desc'  => __( 'Newest Members', 'ultimate-member' ),
-				'user_registered_asc'   => __( 'Oldest Members', 'ultimate-member' ),
+			$sort_options = apply_filters( 'um_members_directory_sort_dropdown_options', array(
+				'user_registered_desc'  => __( 'New Users First', 'ultimate-member' ),
+				'user_registered_asc'   => __( 'Old Users First', 'ultimate-member' ),
 				'username_asc'          => __( 'Username', 'ultimate-member' ),
 				'first_name'            => __( 'First Name', 'ultimate-member' ),
 				'last_name'             => __( 'Last Name', 'ultimate-member' ),
+				'display_name'          => __( 'Display Name', 'ultimate-member' ),
+				'last_login'            => __( 'Last Login', 'ultimate-member' ),
 			) );
+
+			asort( $sort_options );
+
+			return $sort_options;
 		}
 
 

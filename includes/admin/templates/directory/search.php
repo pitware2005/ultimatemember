@@ -68,7 +68,7 @@
 			array(
 				'id'                    => '_um_search_fields',
 				'type'                  => 'multi_selects',
-				'label'                 => __( 'Choose field(s) to enable in search', 'ultimate-member' ),
+				'label'                 => __( 'Choose filter(s) meta to enable', 'ultimate-member' ),
 				'value'                 => $_um_search_fields,
 				'conditional'           => array( '_um_filters', '=', 1 ),
 				'options'               => $user_fields,
