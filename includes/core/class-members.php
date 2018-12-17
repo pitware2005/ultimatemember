@@ -403,6 +403,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			}
 
 			if ( ! empty( $this->query_args['role__in'] ) ) {
+				$this->query_args['role__in'] = is_array( $this->query_args['role__in'] ) ? $this->query_args['role__in'] : array( $this->query_args['role__in'] );
 				$this->query_args['role__in'] = array_intersect( $this->query_args['role__in'], $roles );
 			} else {
 				$this->query_args['role__in'] = $roles;
@@ -580,6 +581,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 							if ( 'role' == $field ) {
 
 								if ( ! empty( $this->query_args['role__in'] ) ) {
+									$this->query_args['role__in'] = is_array( $this->query_args['role__in'] ) ? $this->query_args['role__in'] : array( $this->query_args['role__in'] );
 									$this->query_args['role__in'] = array_intersect( $this->query_args['role__in'], array( trim( $value ) ) );
 								} else {
 									$this->query_args['role__in'] = trim( $value );
