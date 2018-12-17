@@ -23,6 +23,12 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 
 		/**
+		 * @var
+		 */
+		var $query_args;
+
+
+		/**
 		 * Members constructor.
 		 */
 		function __construct() {
@@ -38,6 +44,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			add_action( 'um_pre_directory_shortcode', array( &$this, 'pre_directory_shortcode' ) );
 
 			add_filter( 'um_search_select_fields', array( &$this, 'search_select_fields' ), 10, 1 );
+			add_filter( 'pre_user_query', array( &$this, 'sortby_randomly' ), 10, 1 );
 		}
 
 
@@ -63,6 +70,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 		/**
 		 * Display assigned roles in search filter 'role' field
+		 *
 		 * @param  	array $attrs
 		 * @return 	array
 		 * @since 	1.3.83
@@ -73,7 +81,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				$shortcode_roles = get_post_meta( UM()->shortcodes()->form_id, '_um_roles', true );
 				$um_roles = UM()->roles()->get_roles( false );
 
-				if( ! empty( $shortcode_roles ) && is_array( $shortcode_roles ) ) {
+				if ( ! empty( $shortcode_roles ) && is_array( $shortcode_roles ) ) {
 
 					$attrs['options'] = array();
 
@@ -87,7 +95,57 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 			}
 
+			if ( ! empty( $attrs['custom_dropdown_options_source'] ) ) {
+				$attrs['custom'] = true;
+				$attrs['options'] = UM()->fields()->get_options_from_callback( $attrs, $attrs['type'] );
+			}
+
+			if ( isset( $attrs['label'] ) ) {
+				$attrs['label'] = strip_tags( $attrs['label'] );
+			}
+
 			return $attrs;
+		}
+
+
+		/**
+		 * Sorting random
+		 *
+		 * @param $query
+		 *
+		 * @return mixed
+		 */
+		function sortby_randomly( $query ) {
+
+			if ( 'random' == $query->query_vars["orderby"] ) {
+
+				if ( um_is_session_started() === false ) {
+					@session_start();
+				}
+
+				// Reset seed on load of initial
+				if ( ! isset( $_REQUEST['members_page'] ) || $_REQUEST['members_page'] == 0 || $_REQUEST['members_page'] == 1 ) {
+					if ( isset( $_SESSION['seed'] ) ) {
+						unset( $_SESSION['seed'] );
+					}
+				}
+
+				// Get seed from session variable if it exists
+				$seed = false;
+				if ( isset( $_SESSION['seed'] ) ) {
+					$seed = $_SESSION['seed'];
+				}
+
+				// Set new seed if none exists
+				if ( ! $seed ) {
+					$seed = rand();
+					$_SESSION['seed'] = $seed;
+				}
+
+				$query->query_orderby = 'ORDER by RAND(' . $seed . ')';
+			}
+
+			return $query;
 		}
 
 
@@ -237,21 +295,541 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 
 		/**
-		 * Generate a loop of results
+		 * Change mySQL meta query join attribute
+		 * for search only by UM user meta fields
+		 *
+		 * @param array $sql Array containing the query's JOIN and WHERE clauses.
+		 * @return mixed
+		 */
+		function change_meta_sql( $sql ) {
+
+			if ( ! empty( $_POST['general_search'] ) ) {
+				global $wpdb;
+
+				preg_match(
+					'/^(.*).meta_value LIKE \'%' . esc_attr( $_POST['general_search'] ) . '%\' [^\)]/im',
+					$sql['where'],
+					$join_matches
+				);
+
+				$meta_join_for_search = trim( $join_matches[1] );
+
+				$sql['join'] = preg_replace(
+					'/(' . $meta_join_for_search . ' ON \( ' . $wpdb->users . '\.ID = ' . $meta_join_for_search . '\.user_id )(\))/im',
+					"$1 AND " . $meta_join_for_search . ".meta_key IN( '" . implode( "','", array_keys( UM()->builtin()->all_user_fields ) ) . "' ) $2",
+					$sql['join']
+				);
+			}
+
+			return $sql;
+		}
+
+
+		/**
+		 * Must have a profile photo
 		 *
 		 * @param $args
-		 *
-		 * @return mixed|void
 		 */
-		function get_members( $args ) {
+		function profile_photo_query( $args ) {
+			if ( $args['has_profile_photo'] == 1 ) {
+				$meta_query = array(
+					'relation'  => 'OR',
+					array(
+						'key'       => 'synced_profile_photo', // addons
+						'value'     => '',
+						'compare'   => '!='
+					),
+					array(
+						'key'       => 'profile_photo', // from upload form
+						'value'     => '',
+						'compare'   => '!='
+					)
+				);
+
+				if ( UM()->options()->get( 'use_gravatars' ) ) {
+					$meta_query[] = array(
+						'key'       => 'synced_gravatar_hashed_id', // gravatar
+						'value'     => '',
+						'compare'   => '!='
+					);
+				}
+
+				$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( $meta_query ) );
+			}
+		}
+
+
+		/**
+		 * Must have a cover photo
+		 *
+		 * @param $args
+		 */
+		function cover_photo_query( $args ) {
+			if ( $args['has_cover_photo'] == 1 ) {
+				$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( array(
+					'key'       => 'cover_photo',
+					'value'     => '',
+					'compare'   => '!='
+				) ) );
+			}
+		}
+
+
+		/**
+		 *
+		 */
+		function hide_not_approved() {
+			if ( UM()->roles()->um_user_can( 'can_edit_everyone' )  ) {
+				return;
+			}
+
+			$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( array(
+				'key'       => 'account_status',
+				'value'     => 'approved',
+				'compare'   => '='
+			) ) );
+		}
+
+
+		/**
+		 *
+		 */
+		function hide_by_role() {
+			$roles = um_user( 'can_view_roles' );
+			$roles = maybe_unserialize( $roles );
+
+			if ( empty( $roles ) || ! UM()->roles()->um_user_can( 'can_view_all' ) ) {
+				return;
+			}
+
+			if ( ! empty( $this->query_args['role__in'] ) ) {
+				$this->query_args['role__in'] = array_intersect( $this->query_args['role__in'], $roles );
+			} else {
+				$this->query_args['role__in'] = $roles;
+			}
+		}
+
+
+		/**
+		 *
+		 */
+		function hide_by_account_settings() {
+			if ( ! UM()->options()->get( 'account_hide_in_directory' ) ) {
+				return;
+			}
+
+			if ( UM()->roles()->um_user_can( 'can_edit_everyone' ) ) {
+				return;
+			}
+
+			$meta_query = array(
+				"relation"  => "OR",
+				array(
+					'key'       => 'hide_in_members',
+					'value'     => '',
+					'compare'   => 'NOT EXISTS'
+				),
+				array(
+					"relation"  => "AND",
+					array(
+						'key'       => 'hide_in_members',
+						'value'     => __( 'Yes', 'ultimate-member' ),
+						'compare'   => 'NOT LIKE'
+					),
+					array(
+						'key'       => 'hide_in_members',
+						'value'     => 'Yes',
+						'compare'   => 'NOT LIKE'
+					),
+				),
+			);
+
+			$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( $meta_query ) );
+		}
+
+
+		/**
+		 * @param $args
+		 */
+		function sorting_query( $args ) {
+			// sort members by
+			$this->query_args['order'] = 'ASC';
+			$sortby = ! empty( $_POST['sorting'] ) ? $_POST['sorting'] : $args['sortby'];
+
+			if ( $sortby == 'other' && $args['sortby_custom'] ) {
+
+				$this->query_args['meta_key'] = $args['sortby_custom'];
+				$this->query_args['orderby'] = 'meta_value, display_name';
+
+			} elseif ( in_array( $sortby, array( 'last_name', 'first_name' ) ) ) {
+
+				$this->query_args['meta_key'] = $sortby;
+				$this->query_args['orderby'] = 'meta_value';
+
+			} elseif ( $sortby == 'last_login' ) {
+
+				$this->query_args['meta_key'] = '_um_last_login';
+				$this->query_args['orderby'] = 'meta_value_num';
+				$this->query_args['order'] = 'desc';
+
+			} else {
+
+				if ( strstr( $sortby, '_desc' ) ) {
+					$sortby = str_replace( '_desc','', $sortby );
+					$order = 'DESC';
+				}
+
+				if ( strstr( $sortby, '_asc' ) ) {
+					$sortby = str_replace('_asc','',$sortby);
+					$order = 'ASC';
+				}
+
+				$this->query_args['orderby'] = $sortby;
+				if ( isset( $order ) ) {
+					$this->query_args['order'] = $order;
+				}
+			}
+
+
+			/**
+			 * UM hook
+			 *
+			 * @type filter
+			 * @title um_modify_sortby_parameter
+			 * @description Change query sort by attributes for search at Members Directory
+			 * @input_vars
+			 * [{"var":"$query_args","type":"array","desc":"Query Arguments"},
+			 * {"var":"$sortby","type":"string","desc":"Sort by"}]
+			 * @change_log
+			 * ["Since: 2.0"]
+			 * @usage
+			 * <?php add_filter( 'um_modify_sortby_parameter', 'function_name', 10, 2 ); ?>
+			 * @example
+			 * <?php
+			 * add_filter( 'um_modify_sortby_parameter', 'my_modify_sortby_parameter', 10, 2 );
+			 * function my_modify_sortby_parameter( $query_args, $sortby ) {
+			 *     // your code here
+			 *     return $query_args;
+			 * }
+			 * ?>
+			 */
+			$this->query_args = apply_filters( 'um_modify_sortby_parameter', $this->query_args, $sortby );
+		}
+
+
+		function general_search() {
+			//general search
+			if ( ! empty( $_POST['general_search'] ) ) {
+				$meta_query = array(
+					array(
+						'value'     => trim( $_POST['general_search'] ),
+						'compare'   => '=',
+					),
+					array(
+						'value'     => trim( $_POST['general_search'] ),
+						'compare'   => 'LIKE',
+					),
+					array(
+						'value'     => trim( serialize( strval( $_POST['general_search'] ) ) ),
+						'compare'   => 'LIKE',
+					),
+					'relation' => 'OR',
+				);
+
+				$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( $meta_query ) );
+			}
+		}
+
+
+		/**
+		 *
+		 */
+		function filters( $args ) {
+			//filters
+			$query = $_POST;
+			if ( ! empty( $args['search_filters'] ) ) {
+				parse_str( $args['search_filters'], $search_filters );
+				if ( ! empty( $search_filters ) && is_array( $search_filters ) ) {
+					$query = array_merge( $search_filters, $query );
+				}
+			}
+
+			unset( $query['sorting'] );
+			unset( $query['page'] );
+			unset( $query['args'] );
+			unset( $query['members_page'] );
+			unset( $query['general_search'] );
+			unset( $query['action'] );
+			unset( $query['nonce'] );
+			unset( $query['referrer_url'] );
+			unset( $query['is_filters'] );
+
+			if ( ! empty( $query ) && is_array( $query ) ) {
+				foreach ( $query as $field => $value ) {
+
+					$filter_data = UM()->members()->prepare_filter( $field );
+
+					if ( $value && $field != 'um_search' && $field != 'page_id' ) {
+
+						if ( strstr( $field, 'role_' ) ) {
+							$field = 'role';
+						}
+
+						if ( ! in_array( $field, UM()->members()->core_search_fields ) ) {
+
+							if ( 'role' == $field ) {
+
+								if ( ! empty( $this->query_args['role__in'] ) ) {
+									$this->query_args['role__in'] = array_intersect( $this->query_args['role__in'], array( trim( $value ) ) );
+								} else {
+									$this->query_args['role__in'] = trim( $value );
+								}
+
+							} elseif ( 'birth_date' == $field ) {
+								$from_date = date( 'Y-m-d', mktime( 0,0,0, date('m'), date('d'), date('Y', time() - $query['birth_date'][0]*YEAR_IN_SECONDS ) ) );
+								$to_date = date( 'Y-m-d', mktime( 0,0,0, date('m'), date('d'), date('Y', time() - $query['birth_date'][1]*YEAR_IN_SECONDS ) ) );
+
+								$query_args['meta_query'][] = array(
+									array(
+										'key'       => 'birth_date',
+										'value'     => array( $to_date, $from_date ),
+										'compare'   => 'BETWEEN',
+										'type'      => 'DATE',
+									),
+									'relation' => 'OR'
+								);
+							} else {
+
+								if ( is_array( $value ) ) {
+									$field_query = array( 'relation' => 'OR' );
+
+									foreach ( $value as $single_val ) {
+										$field_query = array_merge( $field_query, array(
+											array(
+												'key' => $field,
+												'value' => trim( $single_val ),
+												'compare' => '=',
+											)
+										) );
+
+										$types = apply_filters( 'um_search_field_types', array(
+											'multiselect',
+											'radio',
+											'checkbox'
+										) );
+
+										if ( in_array( $filter_data['attrs']['type'], $types ) ) {
+
+											$arr_meta_query = array(
+												array(
+													'key' => $field,
+													'value' => serialize( strval( trim( $single_val ) ) ),
+													'compare' => 'LIKE',
+												),
+												array(
+													'key' => $field,
+													'value' => '"' . trim( $single_val ) . '"',
+													'compare' => 'LIKE',
+												)
+											);
+
+											if ( is_numeric( $single_val ) ) {
+
+												$arr_meta_query[ ] = array(
+													'key' => $field,
+													'value' => serialize( intval( trim( $single_val ) ) ),
+													'compare' => 'LIKE',
+												);
+
+											}
+
+											$field_query = array_merge( $field_query, $arr_meta_query );
+										}
+									}
+								} else {
+									$field_query = array(
+										array(
+											'key' => $field,
+											'value' => trim( $value ),
+											'compare' => '=',
+										),
+										'relation' => 'OR',
+									);
+
+									$types = apply_filters( 'um_search_field_types', array(
+										'multiselect',
+										'radio',
+										'checkbox'
+									) );
+
+									if ( in_array( $filter_data['attrs']['type'], $types ) ) {
+
+										$arr_meta_query = array(
+											array(
+												'key' => $field,
+												'value' => serialize( strval( trim( $value ) ) ),
+												'compare' => 'LIKE',
+											),
+											array(
+												'key' => $field,
+												'value' => '"' . trim( $value ) . '"',
+												'compare' => 'LIKE',
+											)
+										);
+
+										if ( is_numeric( $value ) ) {
+
+											$arr_meta_query[ ] = array(
+												'key' => $field,
+												'value' => serialize( intval( trim( $value ) ) ),
+												'compare' => 'LIKE',
+											);
+
+										}
+
+										$field_query = array_merge( $field_query, $arr_meta_query );
+									}
+								}
+
+								/**
+								 * UM hook
+								 *
+								 * @type filter
+								 * @title um_query_args_{$field}__filter
+								 * @description Change field's query for search at Members Directory
+								 * @input_vars
+								 * [{"var":"$field_query","type":"array","desc":"Field query"}]
+								 * @change_log
+								 * ["Since: 2.0"]
+								 * @usage
+								 * <?php add_filter( 'um_query_args_{$field}__filter', 'function_name', 10, 1 ); ?>
+								 * @example
+								 * <?php
+								 * add_filter( 'um_query_args_{$field}__filter', 'my_query_args_filter', 10, 1 );
+								 * function my_query_args_filter( $field_query ) {
+								 *     // your code here
+								 *     return $field_query;
+								 * }
+								 * ?>
+								 */
+								$field_query = apply_filters( "um_query_args_{$field}__filter", $field_query );
+								$query_args['meta_query'][] = $field_query;
+							}
+
+						}
+
+					}
+
+				}
+			}
+
+			/**
+			 * UM hook
+			 *
+			 * @type filter
+			 * @title um_query_args_filter
+			 * @description Change query for search at Members Directory
+			 * @input_vars
+			 * [{"var":"$query_args","type":"array","desc":"Query Arguments"}]
+			 * @change_log
+			 * ["Since: 2.0"]
+			 * @usage
+			 * <?php add_filter( 'um_query_args_filter', 'function_name', 10, 1 ); ?>
+			 * @example
+			 * <?php
+			 * add_filter( 'um_query_args_filter', 'my_query_args_filter', 10, 1 );
+			 * function my_query_args_filter( $query_args ) {
+			 *     // your code here
+			 *     return $query_args;
+			 * }
+			 * ?>
+			 */
+			$query_args = apply_filters( 'um_query_args_filter', $query_args );
+
+			$query = UM()->permalinks()->get_query_array();
+			$arr_columns = array();
+
+			foreach ( UM()->members()->core_search_fields as $key ) {
+				if ( ! empty( $query[ $key ]  ) ) {
+					$arr_columns[] = $key;
+					$query_args['search'] = '*' . $query[ $key ] .'*';
+				}
+			}
+
+			if ( ! empty( $arr_columns ) ) {
+				$query_args['search_columns'] = $arr_columns;
+			}
+		}
+
+
+		/**
+		 * get AJAX results members
+		 */
+		function ajax_get_members() {
+			UM()->check_ajax_nonce();
+
 			global $wpdb;
+
+			$args = ! empty( $_POST['args'] ) ? $_POST['args'] : array();
+			$args['page'] = ! empty( $_POST['page'] ) ? $_POST['page'] : ( isset( $args['page'] ) ? $args['page'] : 1 );
 
 			/**
 			 * @var $profiles_per_page
 			 * @var $profiles_per_page_mobile
 			 * @var $header
+			 * @var $header_single
+			 * @var $has_profile_photo
+			 * @var $has_cover_photo
 			 */
 			extract( $args );
+
+			$data_args = array(
+				'show_count' => false
+			);
+			if ( ! empty( $_POST['general_search'] ) || ! empty( $_POST['is_filters'] ) || ! empty( $args['search_filters'] ) ) {
+				$data_args['show_count'] = true;
+			}
+
+			$this->query_args = array(
+				'fields' => 'ids',
+				'number' => 0,
+				'meta_query' => array(
+					'relation' => 'AND'
+				),
+			);
+
+			// add roles to appear in directory
+			if ( ! empty( $args['roles'] ) ) {
+				//since WP4.4 use 'role__in' argument
+				$this->query_args['role__in'] = $args['roles'];
+			}
+
+			$this->profile_photo_query( $args );
+
+			$this->cover_photo_query( $args );
+
+			// show specific usernames
+			if ( ! empty( $args['show_these_users'] ) && is_array( $args['show_these_users'] ) ) {
+				foreach ( $args['show_these_users'] as $username ) {
+					if ( false !== ( $exists_id = username_exists( $username ) ) ) {
+						$users_array[] = $exists_id;
+					}
+				}
+
+				$this->query_args['include'] = $users_array;
+			}
+
+			$this->hide_not_approved();
+
+			$this->hide_by_role();
+
+			$this->hide_by_account_settings();
+
+			$this->sorting_query( $args );
+
+			$this->general_search();
+
+			$this->filters( $args );
 
 			/**
 			 * UM hook
@@ -275,7 +853,12 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 * }
 			 * ?>
 			 */
-			$query_args = apply_filters( 'um_prepare_user_query_args', array(), $args );
+			$this->query_args = apply_filters( 'um_prepare_user_query_args', $this->query_args, $args );
+
+			//unset empty meta_query attribute
+			if ( isset( $this->query_args['meta_query']['relation'] ) && count( $this->query_args['meta_query'] ) == 1 ) {
+				unset( $this->query_args['meta_query'] );
+			}
 
 			// Prepare for BIG SELECT query
 			$wpdb->query( 'SET SQL_BIG_SELECTS=1' );
@@ -319,7 +902,11 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 			add_filter( 'get_meta_sql', array( &$this, 'change_meta_sql' ), 10 );
 
+			var_dump( $query_args );
+
 			$users = new \WP_User_Query( $query_args );
+
+			var_dump( $users );
 
 			remove_filter( 'get_meta_sql', array( &$this, 'change_meta_sql' ), 10 );
 
@@ -401,62 +988,10 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 * }
 			 * ?>
 			 */
-			return apply_filters( 'um_prepare_user_results_array', $response );
-		}
-
-
-		/**
-		 * Change mySQL meta query join attribute
-		 * for search only by UM user meta fields
-		 *
-		 * @param array $sql Array containing the query's JOIN and WHERE clauses.
-		 * @return mixed
-		 */
-		function change_meta_sql( $sql ) {
-
-			if ( ! empty( $_POST['general_search'] ) ) {
-				global $wpdb;
-
-				preg_match(
-					'/^(.*).meta_value LIKE \'%' . esc_attr( $_POST['general_search'] ) . '%\' [^\)]/im',
-					$sql['where'],
-					$join_matches
-				);
-
-				$meta_join_for_search = trim( $join_matches[1] );
-
-				$sql['join'] = preg_replace(
-					'/(' . $meta_join_for_search . ' ON \( ' . $wpdb->users . '\.ID = ' . $meta_join_for_search . '\.user_id )(\))/im',
-					"$1 AND " . $meta_join_for_search . ".meta_key IN( '" . implode( "','", array_keys( UM()->builtin()->all_user_fields ) ) . "' ) $2",
-					$sql['join']
-				);
-			}
-
-			return $sql;
-		}
-
-
-		/**
-		 * get AJAX results members
-		 */
-		function ajax_get_members() {
-			UM()->check_ajax_nonce();
-
-			$data_args = array(
-				'show_count' => false
-			);
-
-			$args = ! empty( $_POST['args'] ) ? $_POST['args'] : array();
-			$args['page'] = ! empty( $_POST['page'] ) ? $_POST['page'] : ( isset( $args['page'] ) ? $args['page'] : 1 );
-
-			if ( ! empty( $_POST['general_search'] ) || ! empty( $args['search_filters'] ) || ! empty( $_POST['is_filters'] ) ) {
-				$data_args['show_count'] = true;
-			}
+			$users = apply_filters( 'um_prepare_user_results_array', $response );
 
 			$sizes = UM()->options()->get( 'cover_thumb_sizes' );
 			$cover_size = UM()->mobile()->isTablet() ? $sizes[1] : $sizes[0];
-
-			$users = $this->get_members( $args );
 
 			$users_data = array();
 			foreach ( $users['users'] as $user_id ) {
@@ -474,16 +1009,16 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 				$data_array = array(
 					'id'                    => $user_id,
-					'role'                  => um_user('role'),
-					'account_status'        => um_user('account_status'),
-					'account_status_name'   => um_user('account_status_name'),
-					'cover_photo'           => um_user('cover_photo', $cover_size),
-					'display_name'          => um_user('display_name'),
+					'role'                  => um_user( 'role' ),
+					'account_status'        => um_user( 'account_status' ),
+					'account_status_name'   => um_user( 'account_status_name' ),
+					'cover_photo'           => um_user( 'cover_photo', $cover_size ),
+					'display_name'          => um_user( 'display_name' ),
 					'profile_url'           => um_user_profile_url(),
 					'can_edit'              => ( UM()->roles()->um_current_user_can( 'edit', $user_id ) || UM()->roles()->um_user_can( 'can_edit_everyone' ) ) ? true : false,
 					'edit_profile_url'      => um_edit_profile_url(),
 					'avatar'                => get_avatar( $user_id, str_replace( 'px', '', UM()->options()->get( 'profile_photosize' ) ) ),
-					'display_name_html'     => um_user('display_name', 'html'),
+					'display_name_html'     => um_user( 'display_name', 'html' ),
 					'social_urls'           => UM()->fields()->show_social_urls( false ),
 					'actions'               => $actions,
 				);
@@ -513,7 +1048,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 			um_reset_user();
 
-
 			$pagination_data = array(
 				'pages_to_show' => $users['pages_to_show'],
 				'current_page'  => $args['page'],
@@ -524,7 +1058,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 			wp_send_json_success( array( 'users' => $users_data, 'pagination' => $pagination_data, 'args' => $data_args ) );
 		}
-
 
 
 		/**

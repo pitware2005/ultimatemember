@@ -1,10 +1,17 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; ?>
+
 <div class="um-admin-metabox">
-	<?php
-	$can_search_array = array();
+	<?php $can_search_array = array();
+	$can_filter_array = array();
 	foreach ( UM()->roles()->get_roles() as $key => $value ) {
 	    $_um_roles_can_search = UM()->query()->get_meta_value( '_um_roles_can_search', $key );
 		if ( ! empty( $_um_roles_can_search ) ) {
 			$can_search_array[] = $_um_roles_can_search;
+		}
+
+		$_um_roles_can_filter = UM()->query()->get_meta_value( '_um_roles_can_filter', $key );
+		if ( ! empty( $_um_roles_can_filter ) ) {
+			$can_filter_array[] = $_um_roles_can_filter;
 		}
 	}
 
@@ -64,6 +71,16 @@
 				'label'     => __( 'Enable Filters feature', 'ultimate-member' ),
 				'tooltip'   => __( 'If turned on, users will be able to filter members in this directory', 'ultimate-member' ),
 				'value'     => UM()->query()->get_meta_value( '_um_filters' ),
+			),
+			array(
+				'id'            => '_um_roles_can_filter',
+				'type'          => 'select',
+				'multi'         => true,
+				'label'         => __( 'User Roles that can use filters', 'ultimate-member' ),
+				'tooltip'       => __( 'If you want to allow specific user roles to be able to filter only', 'ultimate-member' ),
+				'value'         => $can_filter_array,
+				'options'       => UM()->roles()->get_roles(),
+				'conditional'   => array( '_um_filters', '=', 1 )
 			),
 			array(
 				'id'                    => '_um_search_fields',

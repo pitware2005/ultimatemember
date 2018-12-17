@@ -17,9 +17,15 @@ $sorting_options = array();
 if ( isset( $args['sorting_fields'] ) && ! empty( $args['sorting_fields'] ) ) {
 	$sorting_options = $args['sorting_fields'];
 }
+
 $show_search = true;
 if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $args['roles_can_search'] ) ) {
 	$show_search = false;
+}
+
+$show_filters = true;
+if ( ! empty( $args['roles_can_filter'] ) && ! in_array( um_user( 'role' ), $args['roles_can_filter'] ) ) {
+	$show_filters = false;
 } ?>
 
 <div class="um <?php echo $this->get_class( $mode ); ?> um-<?php echo esc_attr( $form_id ); ?>" data-unique_id="um-<?php echo esc_attr( $form_id ) ?>" data-view_type="<?php echo $view_type ?>" data-only_search="<?php echo ( $search && $show_search && ! empty( $must_search ) ) ? 1 : 0 ?>">
@@ -37,7 +43,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 				$classes .= ' um-member-with-sorting';
 			}
 
-			if ( $filters ) {
+			if ( $filters && $show_filters ) {
 				$classes .= ' um-member-with-filters';
 			}
 
@@ -61,7 +67,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 
 			<div class="um-member-directory-actions <?php echo esc_attr( $classes ) ?>">
 				<?php if ( ! empty( $sorting_options ) ) { ?>
-					<div class="um-member-directory-sorting <?php if ( ! $filters ) { ?>hidden_filter<?php } ?> <?php if ( $single_view ) { ?>hidden_type<?php } ?>">
+					<div class="um-member-directory-sorting <?php if ( ! $filters || ! $show_filters ) { ?>hidden_filter<?php } ?> <?php if ( $single_view ) { ?>hidden_type<?php } ?>">
 						<select class="um-s3 um-member-directory-sorting-options" id="um-member-directory-sorting-select-<?php echo esc_attr( $form_id ) ?>" data-placeholder="<?php esc_attr_e( 'Sort By', 'ultimate-member' ); ?>">
 							<option value=""></option>
 							<?php foreach ( $sorting_options as $value => $title ) { ?>
@@ -70,7 +76,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 						</select>
 					</div>
 				<?php } ?>
-				<?php if ( $filters ) { ?>
+				<?php if ( $filters && $show_filters ) { ?>
 					<div class="um-member-directory-filters">
 						<a href="javascript:void(0);" class="um-member-directory-filters-a um-tip-n" original-title="<?php esc_attr_e( 'Filters', 'ultimate-member' ); ?>">
 							<i class="um-faicon-sliders"></i>
@@ -88,7 +94,7 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 			<div class="um-clear"></div>
 		</div>
 
-		<?php if ( $filters ) {
+		<?php if ( $filters && $show_filters ) {
 			$search_filters = array();
 
 			if ( isset( $args['search_fields'] ) ) {
@@ -111,28 +117,24 @@ if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $arg
 				</script>
 
 				<div class="um-search um-search-<?php echo count( $search_filters ) ?>">
+					<?php $i = 0;
+					foreach ( $search_filters as $filter ) {
+						$i++;
 
-					<form method="post" action="" class="filters_form">
+						$add_class = ( $i % 2 == 0 ) ? 'um-search-filter-2' : ''; ?>
 
-						<?php $i = 0;
-						foreach ( $search_filters as $filter ) {
-							$i++;
-
-							$add_class = ( $i % 2 == 0 ) ? 'um-search-filter-2' : ''; ?>
-
-							<div class="um-search-filter <?php echo $add_class ?>">
-								<?php UM()->members()->show_filter( $filter ); ?>
-							</div>
-
-						<?php } ?>
-
-						<div class="um-clear"></div>
-
-						<div class="um-search-submit">
-							<a href="javascript:void(0);" class="um-close-filter"><?php esc_attr_e( 'Close Filters', 'ultimate-member' ); ?></a>
+						<div class="um-search-filter <?php echo $add_class ?>">
+							<?php UM()->members()->show_filter( $filter ); ?>
 						</div>
-						<div class="um-clear"></div>
-					</form>
+
+					<?php } ?>
+
+					<div class="um-clear"></div>
+
+					<div class="um-search-submit">
+						<a href="javascript:void(0);" class="um-close-filter"><?php esc_attr_e( 'Close Filters', 'ultimate-member' ); ?></a>
+					</div>
+					<div class="um-clear"></div>
 				</div>
 
 				<div class="um-filtered-line">

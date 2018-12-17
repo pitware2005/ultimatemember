@@ -478,3 +478,29 @@ function um_time_diff( $time1, $time2 ) {
 
 	return UM()->datetime()->time_diff( $time1, $time2 );
 }
+
+
+/**
+ * Check value of queried search in text input
+ *
+ * @param $filter
+ * @param bool $echo
+ *
+ * @return mixed|string
+ */
+function um_queried_search_value( $filter, $echo = true ) {
+	$value = '';
+	if ( isset( $_REQUEST['um_search'] ) ) {
+		$query = UM()->permalinks()->get_query_array();
+		if ( isset( $query[ $filter ] ) && $query[ $filter ] != '' ) {
+			$value = stripslashes_deep( $query[ $filter ] );
+		}
+	}
+
+	if ( $echo ) {
+		echo $value;
+		return '';
+	} else {
+		return $value;
+	}
+}

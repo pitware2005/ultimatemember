@@ -1,4 +1,6 @@
-<?php $roles_array = array();
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
+
+$roles_array = array();
 
 foreach ( UM()->roles()->get_roles() as $key => $value ) {
 	$_um_roles = UM()->query()->get_meta_value( '_um_roles', $key );

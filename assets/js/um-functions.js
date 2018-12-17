@@ -766,14 +766,14 @@ function um_reset_field( dOm ){
 jQuery(function(){
 
 	// Submit search form on keypress 'Enter'
-	jQuery(".um-search form *").keypress(function(e){
-			 if (e.which == 13) {
+/*	jQuery(".um-search form *").keypress(function(e){
+			 if (e.which === 13) {
 			    jQuery('.um-search form').submit();
 			    return false;
 			  }
-	});
+	});*/
 
-	if( jQuery('input[data-key=user_password],input[data-key=confirm_user_password]').length == 2 ) {
+	if ( jQuery('input[data-key="user_password"],input[data-key="confirm_user_password"]').length === 2 ) {
 		UM_check_password_matched();
 	}
 

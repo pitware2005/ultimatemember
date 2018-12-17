@@ -619,7 +619,7 @@ function um_social_links_icons( $args ) {
 	if ( ! empty( $args['show_social_links'] ) ) {
 
 		echo '<div class="um-profile-connect um-member-connect">';
-		UM()->fields()->show_social_urls();
+			UM()->fields()->show_social_urls();
 		echo '</div>';
 
 	}

@@ -51,14 +51,6 @@
 	display: none;
 }
 
-.um-search form {
-	float:left;
-	width:100%;
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-
 .um-search.um-search-2 {
 	padding-left: 20%;
 	padding-right: 20%;
@@ -414,6 +406,10 @@ a.um-edit-profile-btn {
 	box-sizing: border-box;
 }
 
+#content .um-member-directory-header a {
+	text-decoration: none;
+}
+
 .um-member-directory-search-line {
 	float: left;
 	padding: 0 10px 0 0;
@@ -604,6 +600,7 @@ div.uimob500 .um-member-directory-search-line .um-do-search {
 	width:100% !important;
 	padding: 15px;
 	margin-bottom: 20px;
+	box-sizing: border-box;
 }
 
 .um-members-list .um-member .um-member-photo {

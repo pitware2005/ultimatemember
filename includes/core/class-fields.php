@@ -57,8 +57,12 @@ if ( ! class_exists( 'um\core\Fields' ) ) {
 
 		/**
 		 * Shows social links
+		 *
+		 * @param bool $echo
+		 *
+		 * @return false|string
 		 */
-		function show_social_urls() {
+		function show_social_urls( $echo = true ) {
 			$social = array();
 
 			$fields = UM()->builtin()->all_user_fields;
@@ -68,6 +72,7 @@ if ( ! class_exists( 'um\core\Fields' ) ) {
 				}
 			}
 
+			ob_start();
 			foreach ( $social as $k => $arr ) {
 				if ( um_profile( $k ) ) { ?>
 
@@ -77,6 +82,15 @@ if ( ! class_exists( 'um\core\Fields' ) ) {
 
 					<?php
 				}
+			}
+
+			$social_urls = ob_get_clean();
+
+			if ( ! $echo ) {
+				return $social_urls;
+			} else {
+				echo $social_urls;
+				return '';
 			}
 		}
 
