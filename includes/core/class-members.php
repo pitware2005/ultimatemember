@@ -591,15 +591,16 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 								$from_date = date( 'Y-m-d', mktime( 0,0,0, date('m'), date('d'), date('Y', time() - $query['birth_date'][0]*YEAR_IN_SECONDS ) ) );
 								$to_date = date( 'Y-m-d', mktime( 0,0,0, date('m'), date('d'), date('Y', time() - $query['birth_date'][1]*YEAR_IN_SECONDS ) ) );
 
-								$query_args['meta_query'][] = array(
+								$meta_query = array(
 									array(
 										'key'       => 'birth_date',
 										'value'     => array( $to_date, $from_date ),
 										'compare'   => 'BETWEEN',
 										'type'      => 'DATE',
-									),
-									'relation' => 'OR'
+									)
 								);
+
+								$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( $meta_query ) );
 							} else {
 
 								if ( is_array( $value ) ) {
@@ -715,7 +716,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 								 * ?>
 								 */
 								$field_query = apply_filters( "um_query_args_{$field}__filter", $field_query );
-								$query_args['meta_query'][] = $field_query;
+								$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( $field_query ) );
 							}
 
 						}
@@ -725,41 +726,18 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				}
 			}
 
-			/**
-			 * UM hook
-			 *
-			 * @type filter
-			 * @title um_query_args_filter
-			 * @description Change query for search at Members Directory
-			 * @input_vars
-			 * [{"var":"$query_args","type":"array","desc":"Query Arguments"}]
-			 * @change_log
-			 * ["Since: 2.0"]
-			 * @usage
-			 * <?php add_filter( 'um_query_args_filter', 'function_name', 10, 1 ); ?>
-			 * @example
-			 * <?php
-			 * add_filter( 'um_query_args_filter', 'my_query_args_filter', 10, 1 );
-			 * function my_query_args_filter( $query_args ) {
-			 *     // your code here
-			 *     return $query_args;
-			 * }
-			 * ?>
-			 */
-			$query_args = apply_filters( 'um_query_args_filter', $query_args );
-
 			$query = UM()->permalinks()->get_query_array();
 			$arr_columns = array();
 
 			foreach ( UM()->members()->core_search_fields as $key ) {
 				if ( ! empty( $query[ $key ]  ) ) {
 					$arr_columns[] = $key;
-					$query_args['search'] = '*' . $query[ $key ] .'*';
+					$this->query_args['search'] = '*' . $query[ $key ] .'*';
 				}
 			}
 
 			if ( ! empty( $arr_columns ) ) {
-				$query_args['search_columns'] = $arr_columns;
+				$this->query_args['search_columns'] = $arr_columns;
 			}
 		}
 
@@ -871,14 +849,14 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				$profiles_per_page = $args['profiles_per_page_mobile'];
 			}
 
-			$query_args['number'] = isset( $args['number'] ) ? $args['number'] : $profiles_per_page;
-			$query_args['number'] = ( ! empty( $max_users ) && $max_users <= $profiles_per_page ) ? $max_users : $query_args['number'];
+			$this->query_args['number'] = isset( $args['number'] ) ? $args['number'] : $profiles_per_page;
+			$this->query_args['number'] = ( ! empty( $args['max_users'] ) && $args['max_users'] <= $profiles_per_page ) ? $args['max_users'] : $this->query_args['number'];
 
 			$current_page = isset( $args['page'] ) ? $args['page'] : 1;
-			$query_args['paged'] = $current_page;
+			$this->query_args['paged'] = $current_page;
 
 			if ( ! UM()->roles()->um_user_can( 'can_view_all' ) && is_user_logged_in() ) {
-				$query_args = array();
+				$this->query_args = array();
 			}
 
 			/**
@@ -900,15 +878,11 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 * }
 			 * ?>
 			 */
-			do_action( 'um_user_before_query', $query_args );
+			do_action( 'um_user_before_query', $this->query_args );
 
 			add_filter( 'get_meta_sql', array( &$this, 'change_meta_sql' ), 10 );
 
-			var_dump( $query_args );
-
-			$users = new \WP_User_Query( $query_args );
-
-			var_dump( $users );
+			$users = new \WP_User_Query( $this->query_args );
 
 			remove_filter( 'get_meta_sql', array( &$this, 'change_meta_sql' ), 10 );
 
@@ -932,7 +906,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 * }
 			 * ?>
 			 */
-			do_action( 'um_user_after_query', $query_args, $users );
+			do_action( 'um_user_after_query', $this->query_args, $users );
 
 			$user_ids = ! empty( $users->results ) ? array_unique( $users->results ) : array();
 			$total_users = ( ! empty( $max_users ) && $max_users <= $users->total_users ) ? $max_users : $users->total_users;
@@ -957,18 +931,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				);
 			}
 
-			$response = array(
-				'users'         => $user_ids,
-				'total_users'   => $total_users,
-				'total_pages'   => $total_pages,
-				'page'          => $current_page,
-				'no_users'      => empty( $user_ids ) ? 1 : 0,
-				'pages_to_show' => ( ! empty( $pages_to_show ) && count( $pages_to_show ) > 1 ) ? array_values( $pages_to_show ) : array()
-			);
-
-			$response['header'] = $this->convert_tags( $header, $response );
-			$response['header_single'] = $this->convert_tags( $header_single, $response );
-
 			/**
 			 * UM hook
 			 *
@@ -984,19 +946,19 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 * @example
 			 * <?php
 			 * add_filter( 'um_prepare_user_results_array', 'my_prepare_user_results', 10, 1 );
-			 * function my_prepare_user_results( $result ) {
+			 * function my_prepare_user_results( $user_ids ) {
 			 *     // your code here
-			 *     return $result;
+			 *     return $user_ids;
 			 * }
 			 * ?>
 			 */
-			$users = apply_filters( 'um_prepare_user_results_array', $response );
+			$users = apply_filters( 'um_prepare_user_results_array', $user_ids );
 
 			$sizes = UM()->options()->get( 'cover_thumb_sizes' );
 			$cover_size = UM()->mobile()->isTablet() ? $sizes[1] : $sizes[0];
 
 			$users_data = array();
-			foreach ( $users['users'] as $user_id ) {
+			foreach ( $users as $user_id ) {
 				um_fetch_user( $user_id );
 
 				$actions = array();
@@ -1036,7 +998,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				if ( $args['show_userinfo'] ) {
 					foreach ( $args['reveal_fields'] as $key ) {
 						if ( $key && um_filtered_value( $key ) ) {
-							$data_array["label_{$key}"] = UM()->fields()->get_label( $key );
+							$data_array[ "label_{$key}" ] = UM()->fields()->get_label( $key );
 							$data_array[ $key ] = um_filtered_value( $key );
 						}
 					}
@@ -1051,12 +1013,14 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			um_reset_user();
 
 			$pagination_data = array(
-				'pages_to_show' => $users['pages_to_show'],
+				'pages_to_show' => ( ! empty( $pages_to_show ) && count( $pages_to_show ) > 1 ) ? array_values( $pages_to_show ) : array(),
 				'current_page'  => $args['page'],
-				'total_pages'   => $users['total_pages'],
-				'header_single' => $users['header_single'],
-				'header'        => $users['header'],
+				'total_pages'   => $total_pages,
+				'total_users'   => $total_users,
 			);
+
+			$pagination_data['header'] = $this->convert_tags( $args['header'], $pagination_data );
+			$pagination_data['header_single'] = $this->convert_tags( $args['header_single'], $pagination_data );
 
 			wp_send_json_success( array( 'users' => $users_data, 'pagination' => $pagination_data, 'args' => $data_args ) );
 		}

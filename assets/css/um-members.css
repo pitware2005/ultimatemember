@@ -408,6 +408,12 @@ a.um-edit-profile-btn {
 
 #content .um-member-directory-header a {
 	text-decoration: none;
+	box-shadow: none !important;
+}
+
+#content .um-members-wrapper .um-member-photo a {
+	text-decoration: none;
+	box-shadow: none !important;
 }
 
 .um-member-directory-search-line {
@@ -598,7 +604,7 @@ div.uimob500 .um-member-directory-search-line .um-do-search {
 
 .um-members-list .um-member {
 	width:100% !important;
-	padding: 15px;
+	padding: 15px 0;
 	margin-bottom: 20px;
 	box-sizing: border-box;
 }
