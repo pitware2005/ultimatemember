@@ -3,6 +3,40 @@ var um_members_directory_busy = [];
 
 jQuery(document).ready(function() {
 
+	//slider filter
+	var slider = jQuery( ".um-slider" );
+	slider.slider({
+		range: true,
+		min: parseInt( slider.data('min') ),
+		max: parseInt( slider.data('max') ),
+		values: [ parseInt( slider.data('min') ), parseInt( slider.data('max') ) ],
+		create: function( event, ui ) {
+			console.log( ui );
+		},
+		slide: function( event, ui ) {
+			jQuery( this ).siblings('.um-slider-range').html( ui.values[ 0 ] + ' - ' + ui.values[ 1 ] + ' y.o' );
+			jQuery( this ).siblings('.um_range_min').val( ui.values[ 0 ] );
+			jQuery( this ).siblings('.um_range_max').val( ui.values[ 1 ] );
+		},
+		stop: function( event, ui ) {
+			var directory = jQuery(this).parents('.um-directory');
+			if ( ! um_is_directory_busy( directory ) ) {
+				um_set_directory_storage( directory, 'filter_' + jQuery(this).data('field_name'), ui.values, true );
+				um_set_directory_storage( directory, 'page', 1, true );
+				um_ajax_get_members( directory );
+			}
+		}
+	});
+
+	jQuery( ".um-slider-range" ).each( function() {
+		jQuery( this ).html( jQuery( this ).siblings( ".um-slider" ).slider( "values", 0 ) + ' - ' +
+			jQuery( this ).siblings( ".um-slider" ).slider( "values", 1 ) + ' y.o' );
+
+
+		jQuery( this ).siblings( ".um_range_min" ).val( jQuery( this ).siblings( ".um-slider" ).slider( "values", 0 ) );
+		jQuery( this ).siblings( ".um_range_max" ).val( jQuery( this ).siblings( ".um-slider" ).slider( "values", 1 ) );
+	});
+
 	//first page loading
 	jQuery( '.um-directory' ).each( function() {
 		var directory = jQuery(this);
@@ -80,7 +114,7 @@ jQuery(document).ready(function() {
 				if ( filter.find( '.um-slider' ).length ) {
 					var age_query_value = um_get_directory_storage( directory, 'filter_birth_date' );
 
-					if ( typeof age_query_value != 'undefined' ) {
+					if ( age_query_value !== null ) {
 
 						filter.find( ".um-slider" ).slider( "option", "values", age_query_value );
 
@@ -317,6 +351,9 @@ jQuery(document).ready(function() {
 		directory.data( 'general_search', search );
 		um_set_directory_storage( directory, 'general_search', search, true );
 
+		//set 1st page after search
+		um_set_directory_storage( directory, 'page', 1, true );
+
 		um_ajax_get_members( directory );
 	});
 
@@ -506,41 +543,6 @@ jQuery(document).ready(function() {
 		um_ajax_get_members( directory );
 
 		jQuery(this).remove();
-	});
-
-
-	//slider filter
-	var slider = jQuery( ".um-slider" );
-	slider.slider({
-		range: true,
-		min: parseInt( slider.data('min') ),
-		max: parseInt( slider.data('max') ),
-		values: [parseInt( slider.data('min') ), parseInt( slider.data('max') )],
-		create: function( event, ui ) {
-			console.log( ui );
-		},
-		slide: function( event, ui ) {
-			jQuery( this ).siblings('.um-slider-range').html( ui.values[ 0 ] + ' - ' + ui.values[ 1 ] + ' y.o' );
-			jQuery( this ).siblings('.um_range_min').val( ui.values[ 0 ] );
-			jQuery( this ).siblings('.um_range_max').val( ui.values[ 1 ] );
-		},
-		stop: function( event, ui ) {
-			var directory = jQuery(this).parents('.um-directory');
-			if ( ! um_is_directory_busy( directory ) ) {
-				um_set_directory_storage( directory, 'filter_' + jQuery(this).data('field_name'), ui.values, true );
-				um_set_directory_storage( directory, 'page', 1, true );
-				um_ajax_get_members( directory );
-			}
-		}
-	});
-
-	jQuery( ".um-slider-range" ).each( function() {
-		jQuery( this ).html( jQuery( this ).siblings( ".um-slider" ).slider( "values", 0 ) + ' - ' +
-			jQuery( this ).siblings( ".um-slider" ).slider( "values", 1 ) + ' y.o' );
-
-
-		jQuery( this ).siblings( ".um_range_min" ).val( jQuery( this ).siblings( ".um-slider" ).slider( "values", 0 ) );
-		jQuery( this ).siblings( ".um_range_max" ).val( jQuery( this ).siblings( ".um-slider" ).slider( "values", 1 ) );
 	});
 
 

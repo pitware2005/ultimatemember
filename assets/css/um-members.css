@@ -48,7 +48,7 @@
 	box-sizing: border-box;
 	float:left;
 	width: 100%;
-	display: none;
+	/*display: none;*/
 }
 
 .um-search.um-search-2 {
@@ -562,6 +562,11 @@ div.uimob500 .um-member-directory-search-line .um-do-search {
 	width:100% !important;
 }
 
+.um-search-filter .select2-container {
+	float:left;
+	width:100% !important;
+}
+
 .um-member-directory-sorting .select2.select2-container .select2-selection .select2-selection__arrow:before {
 	content:"\f0dc" !important;
 	font-family: "FontAwesome" !important;
@@ -911,4 +916,22 @@ div.uimob500 .um-members-list .um-member-card-actions {
 
 .um-slider.ui-slider.ui-slider-horizontal {
 	border: 2px solid #ddd !important;
+	box-sizing: border-box;
+}
+
+.um-slider {
+	float: left;
+	width:100%;
+}
+
+.um-slider-range {
+	float:left;
+	width:100%;
+	text-align: left;
+	padding-top: 6px;
+	box-sizing: border-box;
+}
+
+.um-member-directory-header .um-s1 {
+	width:100%;
 }

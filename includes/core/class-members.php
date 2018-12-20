@@ -43,7 +43,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			add_action( 'template_redirect', array( &$this, 'access_members' ), 555 );
 			add_action( 'um_pre_directory_shortcode', array( &$this, 'pre_directory_shortcode' ) );
 
-			add_filter( 'um_search_select_fields', array( &$this, 'search_select_fields' ), 10, 1 );
 			add_filter( 'pre_user_query', array( &$this, 'sortby_randomly' ), 10, 1 );
 		}
 
@@ -65,46 +64,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 */
 		function pre_directory_shortcode( $args ) {
 			wp_localize_script( 'um_members', 'um_members_args', $args );
-		}
-
-
-		/**
-		 * Display assigned roles in search filter 'role' field
-		 *
-		 * @param  	array $attrs
-		 * @return 	array
-		 * @since 	1.3.83
-		 */
-		function search_select_fields( $attrs ) {
-			if ( isset( $attrs['metakey'] ) && strstr( $attrs['metakey'], 'role_' ) ) {
-
-				$shortcode_roles = get_post_meta( UM()->shortcodes()->form_id, '_um_roles', true );
-				$um_roles = UM()->roles()->get_roles( false );
-
-				if ( ! empty( $shortcode_roles ) && is_array( $shortcode_roles ) ) {
-
-					$attrs['options'] = array();
-
-					foreach ( $um_roles as $key => $value ) {
-						if ( in_array( $key, $shortcode_roles ) ) {
-							$attrs['options'][ $key ] = $value;
-						}
-					}
-
-				}
-
-			}
-
-			if ( ! empty( $attrs['custom_dropdown_options_source'] ) ) {
-				$attrs['custom'] = true;
-				$attrs['options'] = UM()->fields()->get_options_from_callback( $attrs, $attrs['type'] );
-			}
-
-			if ( isset( $attrs['label'] ) ) {
-				$attrs['label'] = strip_tags( $attrs['label'] );
-			}
-
-			return $attrs;
 		}
 
 
@@ -146,6 +105,37 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			}
 
 			return $query;
+		}
+
+
+		/**
+		 * Change mySQL meta query join attribute
+		 * for search only by UM user meta fields
+		 *
+		 * @param array $sql Array containing the query's JOIN and WHERE clauses.
+		 * @return mixed
+		 */
+		function change_meta_sql( $sql ) {
+
+			if ( ! empty( $_POST['general_search'] ) ) {
+				global $wpdb;
+
+				preg_match(
+					'/^(.*).meta_value LIKE \'%' . esc_attr( $_POST['general_search'] ) . '%\' [^\)]/im',
+					$sql['where'],
+					$join_matches
+				);
+
+				$meta_join_for_search = trim( $join_matches[1] );
+
+				$sql['join'] = preg_replace(
+					'/(' . $meta_join_for_search . ' ON \( ' . $wpdb->users . '\.ID = ' . $meta_join_for_search . '\.user_id )(\))/im',
+					"$1 AND " . $meta_join_for_search . ".meta_key IN( '" . implode( "','", array_keys( UM()->builtin()->all_user_fields ) ) . "' ) $2",
+					$sql['join']
+				);
+			}
+
+			return $sql;
 		}
 
 
@@ -215,44 +205,202 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 * Render member's directory
 		 * filters selectboxes
 		 *
-		 * @param $filter
+		 * @param string $filter
+		 * @return string $filter
 		 */
 		function show_filter( $filter ) {
+			$filter_types = apply_filters( 'um_members_directory_filter_types', array(
+				'country'           => 'select',
+				'gender'            => 'select',
+				'languages'         => 'select',
+				'role'              => 'select',
+				'age'               => 'slider',
+				'last_login'        => 'datepicker',
+				'user_registered'   => 'datepicker',
+			) );
+
+			$fields = UM()->builtin()->all_user_fields;
+			if ( isset( $fields[ $filter ] ) ) {
+				$attrs = $fields[ $filter ];
+			} else {
+				/**
+				 * UM hook
+				 *
+				 * @type filter
+				 * @title um_custom_search_field_{$filter}
+				 * @description Custom search settings by $filter
+				 * @input_vars
+				 * [{"var":"$settings","type":"array","desc":"Search Settings"}]
+				 * @change_log
+				 * ["Since: 2.0"]
+				 * @usage
+				 * <?php add_filter( 'um_custom_search_field_{$filter}', 'function_name', 10, 1 ); ?>
+				 * @example
+				 * <?php
+				 * add_filter( 'um_custom_search_field_{$filter}', 'my_custom_search_field', 10, 1 );
+				 * function my_change_email_template_file( $settings ) {
+				 *     // your code here
+				 *     return $settings;
+				 * }
+				 * ?>
+				 */
+				$attrs = apply_filters( "um_custom_search_field_{$filter}", array() );
+			}
+
 			/**
-			 * @var $type
-			 * @var $attrs
+			 * UM hook
+			 *
+			 * @type filter
+			 * @title um_search_fields
+			 * @description Filter all search fields
+			 * @input_vars
+			 * [{"var":"$settings","type":"array","desc":"Search Fields"}]
+			 * @change_log
+			 * ["Since: 2.0"]
+			 * @usage
+			 * <?php add_filter( 'um_search_fields', 'function_name', 10, 1 ); ?>
+			 * @example
+			 * <?php
+			 * add_filter( 'um_search_fields', 'my_search_fields', 10, 1 );
+			 * function my_search_fields( $settings ) {
+			 *     // your code here
+			 *     return $settings;
+			 * }
+			 * ?>
 			 */
-			extract( $this->prepare_filter( $filter ) );
+			$attrs = apply_filters( 'um_search_fields', $attrs );
 
-			if ( $filter == 'age' ) {
+			ob_start();
 
-				$this->show_slider( $filter );
+			switch ( $filter_types[ $filter ] ) {
+				default: {
 
-			} else { ?>
+					do_action( "um_member_directory_filter_type_{$filter_types[ $filter ]}", $filter, $filter_types );
 
-				<select name="<?php echo $filter; ?>" id="<?php echo $filter; ?>" class="um-s1" style="width: 100%" data-placeholder="<?php echo __( stripslashes( $attrs['label'] ), 'ultimate-member' ); ?>" <?php if ( ! empty( $attrs['custom_dropdown_options_source'] ) ) { ?> data-um-ajax-source="<?php echo $attrs['custom_dropdown_options_source'] ?>"<?php } ?>>
+					break;
+				}
+				case 'select': {
 
-					<option></option>
+					if ( isset( $attrs['metakey'] ) && strstr( $attrs['metakey'], 'role_' ) ) {
+						$shortcode_roles = get_post_meta( UM()->shortcodes()->form_id, '_um_roles', true );
+						$um_roles = UM()->roles()->get_roles( false );
 
-					<?php foreach ( $attrs['options'] as $k => $v ) {
+						if ( ! empty( $shortcode_roles ) && is_array( $shortcode_roles ) ) {
+							$attrs['options'] = array();
 
-						$v = stripslashes( $v );
+							foreach ( $um_roles as $key => $value ) {
+								if ( in_array( $key, $shortcode_roles ) ) {
+									$attrs['options'][ $key ] = $value;
+								}
+							}
+						}
+					}
 
-						$opt = $v;
+					if ( ! empty( $attrs['custom_dropdown_options_source'] ) ) {
+						$attrs['custom'] = true;
+						$attrs['options'] = UM()->fields()->get_options_from_callback( $attrs, $attrs['type'] );
+					}
 
-						if ( strstr( $filter, 'role_' ) )
-							$opt = $k;
+					if ( isset( $attrs['label'] ) ) {
+						$attrs['label'] = strip_tags( $attrs['label'] );
+					}
 
-						if ( isset( $attrs['custom'] ) )
-							$opt = $k; ?>
+					if ( isset( $attrs['options'] ) && is_array( $attrs['options'] ) ) {
+						asort( $attrs['options'] );
+					}
 
-						<option value="<?php echo $opt; ?>" data-value_label="<?php echo __( $v, 'ultimate-member'); ?>"><?php echo __( $v, 'ultimate-member'); ?></option>
+					$custom_dropdown = ! empty( $attrs['custom_dropdown_options_source'] ) ? ' data-um-ajax-source="' . $attrs['custom_dropdown_options_source'] . '"' : '';
 
-					<?php } ?>
+					if ( ! empty( $attrs['options'] ) || ! empty( $custom_dropdown ) ) { ?>
 
-				</select>
+						<select class="um-s1" id="<?php echo $filter; ?>" name="<?php echo $filter; ?>"
+						        data-placeholder="<?php echo __( stripslashes( $attrs['label'] ), 'ultimate-member' ); ?>"
+								<?php echo $custom_dropdown; ?>>
 
-			<?php }
+							<option></option>
+
+							<?php if ( ! empty( $attrs['options'] ) ) {
+								foreach ( $attrs['options'] as $k => $v ) {
+
+									$v = stripslashes( $v );
+
+									$opt = $v;
+
+									if ( strstr( $filter, 'role_' ) ) {
+										$opt = $k;
+									}
+
+									if ( isset( $attrs['custom'] ) ) {
+										$opt = $k;
+									} ?>
+
+									<option value="<?php echo $opt; ?>" data-value_label="<?php echo __( $v, 'ultimate-member' ); ?>">
+										<?php echo __( $v, 'ultimate-member' ); ?>
+									</option>
+
+								<?php }
+							} ?>
+
+						</select>
+
+					<?php }
+
+					break;
+				}
+				case 'slider': {
+					$range = $this->slider_filters_range( $filter );
+
+					if ( $range ) { ?>
+						<input type="hidden" id="<?php echo $filter; ?>_min" name="<?php echo $filter; ?>[]" class="um_range_min" />
+						<input type="hidden" id="<?php echo $filter; ?>_max" name="<?php echo $filter; ?>[]" class="um_range_max" />
+						<div class="um-slider" data-field_name="birth_date" data-min="<?php echo $range[0] ?>" data-max="<?php echo $range[1] ?>"></div>
+						<div class="um-slider-range"></div>
+					<?php }
+
+					break;
+				}
+				case 'datepicker': {
+					break;
+				}
+			}
+
+			$filter = ob_get_clean();
+			return $filter;
+		}
+
+
+		/**
+		 * @param $filter
+		 *
+		 * @return mixed
+		 */
+		function slider_filters_range( $filter ) {
+
+
+			switch ( $filter ) {
+
+				default: {
+					$range = apply_filters( "um_member_directory_filter_{$filter}_slider", false );
+
+					break;
+				}
+				case 'age': {
+					global $wpdb;
+					$meta = $wpdb->get_col( "SELECT DISTINCT meta_value FROM {$wpdb->usermeta} WHERE meta_key='birth_date' ORDER BY meta_value DESC" );
+
+					if ( empty( $meta ) || count( $meta ) === 1 ) {
+						$range = false;
+					} elseif ( ! empty( $meta ) ) {
+						$range = array( $this->borndate( strtotime( $meta[0] ) ), $this->borndate( strtotime( $meta[ count( $meta ) - 1 ] ) ) );
+					}
+
+					break;
+				}
+
+			}
+
+
+			return $range;
 		}
 
 
@@ -266,62 +414,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				return (date('Y') - date('Y', $borndate ) - 1);
 			}
 			return (date('Y') - date('Y', $borndate));
-		}
-
-
-		/**
-		 * @param $filter
-		 */
-		function show_slider( $filter ) {
-
-			global $wpdb;
-			$meta = $wpdb->get_col( "SELECT meta_value FROM {$wpdb->usermeta} WHERE meta_key='birth_date' ORDER BY meta_value DESC" );
-
-			if ( ! empty( $meta ) ) {
-				$range = array( $this->borndate( strtotime( $meta[0] ) ), $this->borndate( strtotime( $meta[ count( $meta ) - 1 ] ) ) );
-			} else {
-				$range = array( 0, 100 );
-			}
-
-			$range = apply_filters( 'um_member_directory_filter_slider', $range ); ?>
-
-			<div class="um-slider" data-field_name="birth_date" data-min="<?php echo $range[0] ?>" data-max="<?php echo $range[1] ?>" style="float: left;width:100%;"></div>
-			<div class="um-slider-range" style="float:left;width:100%;text-align: left;padding-top: 5px;box-sizing: border-box;"></div>
-			<input type="hidden" name="birth_date[]" class="um_range_min" />
-			<input type="hidden" name="birth_date[]" class="um_range_max" />
-
-			<?php
-		}
-
-
-		/**
-		 * Change mySQL meta query join attribute
-		 * for search only by UM user meta fields
-		 *
-		 * @param array $sql Array containing the query's JOIN and WHERE clauses.
-		 * @return mixed
-		 */
-		function change_meta_sql( $sql ) {
-
-			if ( ! empty( $_POST['general_search'] ) ) {
-				global $wpdb;
-
-				preg_match(
-					'/^(.*).meta_value LIKE \'%' . esc_attr( $_POST['general_search'] ) . '%\' [^\)]/im',
-					$sql['where'],
-					$join_matches
-				);
-
-				$meta_join_for_search = trim( $join_matches[1] );
-
-				$sql['join'] = preg_replace(
-					'/(' . $meta_join_for_search . ' ON \( ' . $wpdb->users . '\.ID = ' . $meta_join_for_search . '\.user_id )(\))/im',
-					"$1 AND " . $meta_join_for_search . ".meta_key IN( '" . implode( "','", array_keys( UM()->builtin()->all_user_fields ) ) . "' ) $2",
-					$sql['join']
-				);
-			}
-
-			return $sql;
 		}
 
 
@@ -568,7 +660,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			if ( ! empty( $query ) && is_array( $query ) ) {
 				foreach ( $query as $field => $value ) {
 
-					$filter_data = UM()->members()->prepare_filter( $field );
+					//$filter_data = UM()->members()->prepare_filter( $field );
 
 					if ( $value && $field != 'um_search' && $field != 'page_id' ) {
 
@@ -615,13 +707,13 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 											)
 										) );
 
-										$types = apply_filters( 'um_search_field_types', array(
+										/*$types = apply_filters( 'um_search_field_types', array(
 											'multiselect',
 											'radio',
 											'checkbox'
-										) );
+										) );*/
 
-										if ( in_array( $filter_data['attrs']['type'], $types ) ) {
+										//if ( in_array( $filter_data['attrs']['type'], $types ) ) {
 
 											$arr_meta_query = array(
 												array(
@@ -647,7 +739,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 											}
 
 											$field_query = array_merge( $field_query, $arr_meta_query );
-										}
+										//}
 									}
 								} else {
 									$field_query = array(
@@ -659,13 +751,13 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 										'relation' => 'OR',
 									);
 
-									$types = apply_filters( 'um_search_field_types', array(
+									/*$types = apply_filters( 'um_search_field_types', array(
 										'multiselect',
 										'radio',
 										'checkbox'
-									) );
+									) );*/
 
-									if ( in_array( $filter_data['attrs']['type'], $types ) ) {
+									//if ( in_array( $filter_data['attrs']['type'], $types ) ) {
 
 										$arr_meta_query = array(
 											array(
@@ -691,7 +783,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 										}
 
 										$field_query = array_merge( $field_query, $arr_meta_query );
-									}
+									//}
 								}
 
 								/**
@@ -1050,158 +1142,19 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 * @return array
 		 */
 		function get_filters_fields() {
-
-			return apply_filters( 'um_members_directory_filter_dropdown_options', array(
-				'country'       => __( 'Country', 'ultimate-member' ),
-				'gender'        => __( 'Gender', 'ultimate-member' ),
-				'languages'     => __( 'Languages', 'ultimate-member' ),
-				'role'          => __( 'Roles', 'ultimate-member' ),
-				'age'           => __( 'Age', 'ultimate-member' ),
-				'mycred_rank'   => __( 'myCRED Rank', 'ultimate-member' ),
+			$filters = apply_filters( 'um_members_directory_filter_dropdown_options', array(
+				'country'           => __( 'Country', 'ultimate-member' ),
+				'gender'            => __( 'Gender', 'ultimate-member' ),
+				'languages'         => __( 'Languages', 'ultimate-member' ),
+				'role'              => __( 'Roles', 'ultimate-member' ),
+				'age'               => __( 'Age', 'ultimate-member' ),
+				'last_login'        => __( 'Last Login', 'ultimate-member' ),
+				'user_registered'   => __( 'User Registered', 'ultimate-member' ),
 			) );
 
+			ksort( $filters );
+
+			return $filters;
 		}
-
-
-		/**
-		 * Prepare filter data
-		 *
-		 * @param $filter
-		 * @return array
-		 */
-		function prepare_filter( $filter ) {
-			$fields = UM()->builtin()->all_user_fields;
-
-			if ( isset( $fields[ $filter ] ) ) {
-				$attrs = $fields[ $filter ];
-			} else {
-				/**
-				 * UM hook
-				 *
-				 * @type filter
-				 * @title um_custom_search_field_{$filter}
-				 * @description Custom search settings by $filter
-				 * @input_vars
-				 * [{"var":"$settings","type":"array","desc":"Search Settings"}]
-				 * @change_log
-				 * ["Since: 2.0"]
-				 * @usage
-				 * <?php add_filter( 'um_custom_search_field_{$filter}', 'function_name', 10, 1 ); ?>
-				 * @example
-				 * <?php
-				 * add_filter( 'um_custom_search_field_{$filter}', 'my_custom_search_field', 10, 1 );
-				 * function my_change_email_template_file( $settings ) {
-				 *     // your code here
-				 *     return $settings;
-				 * }
-				 * ?>
-				 */
-				$attrs = apply_filters( "um_custom_search_field_{$filter}", array() );
-			}
-
-			// additional filter for search field attributes
-			/**
-			 * UM hook
-			 *
-			 * @type filter
-			 * @title um_search_field_{$filter}
-			 * @description Extend search settings by $filter
-			 * @input_vars
-			 * [{"var":"$settings","type":"array","desc":"Search Settings"}]
-			 * @change_log
-			 * ["Since: 2.0"]
-			 * @usage
-			 * <?php add_filter( 'um_search_field_{$filter}', 'function_name', 10, 1 ); ?>
-			 * @example
-			 * <?php
-			 * add_filter( 'um_search_field_{$filter}', 'my_search_field', 10, 1 );
-			 * function my_change_email_template_file( $settings ) {
-			 *     // your code here
-			 *     return $settings;
-			 * }
-			 * ?>
-			 */
-			$attrs = apply_filters( "um_search_field_{$filter}", $attrs );
-
-			$type = UM()->builtin()->is_dropdown_field( $filter, $attrs ) ? 'select' : 'text';
-
-			/**
-			 * UM hook
-			 *
-			 * @type filter
-			 * @title um_search_field_type
-			 * @description Change search field type
-			 * @input_vars
-			 * [{"var":"$type","type":"string","desc":"Search field type"},
-			 * {"var":"$settings","type":"array","desc":"Search Settings"}]
-			 * @change_log
-			 * ["Since: 2.0"]
-			 * @usage
-			 * <?php add_filter( 'um_search_field_type', 'function_name', 10, 2 ); ?>
-			 * @example
-			 * <?php
-			 * add_filter( 'um_search_field_type', 'my_search_field_type', 10, 2 );
-			 * function my_search_field_type( $type, $settings ) {
-			 *     // your code here
-			 *     return $type;
-			 * }
-			 * ?>
-			 */
-			$type = apply_filters( 'um_search_field_type', $type, $attrs );
-
-			/**
-			 * UM hook
-			 *
-			 * @type filter
-			 * @title um_search_fields
-			 * @description Filter all search fields
-			 * @input_vars
-			 * [{"var":"$settings","type":"array","desc":"Search Fields"}]
-			 * @change_log
-			 * ["Since: 2.0"]
-			 * @usage
-			 * <?php add_filter( 'um_search_fields', 'function_name', 10, 1 ); ?>
-			 * @example
-			 * <?php
-			 * add_filter( 'um_search_fields', 'my_search_fields', 10, 1 );
-			 * function my_search_fields( $settings ) {
-			 *     // your code here
-			 *     return $settings;
-			 * }
-			 * ?>
-			 */
-			$attrs = apply_filters( 'um_search_fields', $attrs );
-
-			if ( $type == 'select' ) {
-				if( isset($attrs) && is_array( $attrs['options'] ) ){
-					asort( $attrs['options'] );
-				}
-				/**
-				 * UM hook
-				 *
-				 * @type filter
-				 * @title um_search_select_fields
-				 * @description Filter all search fields for select field type
-				 * @input_vars
-				 * [{"var":"$settings","type":"array","desc":"Search Fields"}]
-				 * @change_log
-				 * ["Since: 2.0"]
-				 * @usage
-				 * <?php add_filter( 'um_search_select_fields', 'function_name', 10, 1 ); ?>
-				 * @example
-				 * <?php
-				 * add_filter( 'um_search_select_fields', 'my_search_select_fields', 10, 1 );
-				 * function my_search_select_fields( $settings ) {
-				 *     // your code here
-				 *     return $settings;
-				 * }
-				 * ?>
-				 */
-				$attrs = apply_filters( 'um_search_select_fields', $attrs );
-			}
-
-			return compact( 'type', 'attrs' );
-		}
-
 	}
 }

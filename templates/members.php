@@ -98,19 +98,16 @@ if ( ! $single_view ) {
 		</div>
 
 		<?php if ( $filters && $show_filters ) {
-			$search_filters = array();
 
+			$search_filters = array();
 			if ( isset( $args['search_fields'] ) ) {
-				foreach( $args['search_fields'] as $k => $testfilter ) {
+				foreach ( $args['search_fields'] as $k => $testfilter ) {
 					if ( $testfilter && ! in_array( $testfilter, (array) $search_filters ) ) {
 						$search_filters[] = $testfilter;
 					}
 				}
 			}
-
 			$search_filters = apply_filters( 'um_frontend_member_search_filters', $search_filters );
-
-			var_dump( $search_filters );
 
 			if ( $args['filters'] == 1 && is_array( $search_filters ) ) { ?>
 				<script type="text/template" id="tmpl-um-members-filtered-line">
@@ -124,15 +121,19 @@ if ( ! $single_view ) {
 				<div class="um-search um-search-<?php echo count( $search_filters ) ?>">
 					<?php $i = 0;
 					foreach ( $search_filters as $filter ) {
-						$i++;
+						$filter_content = UM()->members()->show_filter( $filter );
+						if ( empty( $filter_content ) ) {
+							continue;
+						}
 
-						$add_class = ( $i % 2 == 0 ) ? 'um-search-filter-2' : ''; ?>
+						$add_class = ( $i % 2 !== 0 ) ? 'um-search-filter-2' : ''; ?>
 
 						<div class="um-search-filter <?php echo $add_class ?>">
-							<?php UM()->members()->show_filter( $filter ); ?>
+							<?php echo $filter_content; ?>
 						</div>
 
-					<?php } ?>
+						<?php $i++;
+					} ?>
 
 					<div class="um-clear"></div>
 

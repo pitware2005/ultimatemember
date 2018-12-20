@@ -134,8 +134,7 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 			) );
 			wp_localize_script( 'um_scripts', 'um_scripts', $localize_data );
 
-			wp_register_script( 'um_b64', $this->js_baseurl . 'jquery.b_64' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
-			wp_register_script( 'um_members', $this->js_baseurl . 'um-members' . $this->suffix . '.js', array( 'jquery', 'wp-util', 'jquery-ui-slider', 'um_b64' ), ultimatemember_version, true );
+			wp_register_script( 'um_members', $this->js_baseurl . 'um-members' . $this->suffix . '.js', array( 'jquery', 'wp-util', 'jquery-ui-slider' ), ultimatemember_version, true );
 			wp_register_script( 'um_profile', $this->js_baseurl . 'um-profile' . $this->suffix . '.js', array( 'jquery', 'wp-util' ), ultimatemember_version, true );
 			wp_register_script( 'um_account', $this->js_baseurl . 'um-account' . $this->suffix . '.js', array( 'jquery' ), ultimatemember_version, true );
 
@@ -147,6 +146,8 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 		 *
 		 */
 		function register_styles() {
+			global $wp_scripts;
+
 			//FontAwesome and FontIcons styles
 			wp_register_style( 'um_fonticons_ii', $this->css_baseurl . 'um-fonticons-ii.css', array(), ultimatemember_version );
 			wp_register_style( 'um_fonticons_fa', $this->css_baseurl . 'um-fonticons-fa.css', array(), ultimatemember_version );
@@ -166,7 +167,13 @@ if ( ! class_exists( 'um\core\Enqueue' ) ) {
 			wp_register_style( 'um_responsive', $this->css_baseurl . 'um-responsive.css', array( 'um_profile', 'um_crop' ), ultimatemember_version );
 
 			wp_register_style( 'um_styles', $this->css_baseurl . 'um-styles.css', array(), ultimatemember_version );
-			wp_register_style( 'um_members', $this->css_baseurl . 'um-members.css', array(), ultimatemember_version );
+
+			wp_register_style('um_ui',
+				$this->css_baseurl . 'jquery-ui.css',
+				array(),
+				ultimatemember_version );
+
+			wp_register_style( 'um_members', $this->css_baseurl . 'um-members.css', array( 'um_ui' ), ultimatemember_version );
 			wp_register_style( 'um_profile', $this->css_baseurl . 'um-profile.css', array(), ultimatemember_version );
 			wp_register_style( 'um_account', $this->css_baseurl . 'um-account.css', array(), ultimatemember_version );
 			wp_register_style( 'um_misc', $this->css_baseurl . 'um-misc.css', array(), ultimatemember_version );
