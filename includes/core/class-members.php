@@ -314,7 +314,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 					if ( ! empty( $attrs['options'] ) || ! empty( $custom_dropdown ) ) { ?>
 
 						<select class="um-s1" id="<?php echo $filter; ?>" name="<?php echo $filter; ?>"
-						        data-placeholder="<?php echo __( stripslashes( $attrs['label'] ), 'ultimate-member' ); ?>"
+						        data-placeholder="<?php esc_attr_e( stripslashes( $attrs['label'] ), 'ultimate-member' ); ?>"
 								<?php echo $custom_dropdown; ?>>
 
 							<option></option>
@@ -334,8 +334,8 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 										$opt = $k;
 									} ?>
 
-									<option value="<?php echo $opt; ?>" data-value_label="<?php echo __( $v, 'ultimate-member' ); ?>">
-										<?php echo __( $v, 'ultimate-member' ); ?>
+									<option value="<?php echo $opt; ?>" data-value_label="<?php esc_attr_e( $v, 'ultimate-member' ); ?>">
+										<?php _e( $v, 'ultimate-member' ); ?>
 									</option>
 
 								<?php }
@@ -353,13 +353,27 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 					if ( $range ) { ?>
 						<input type="hidden" id="<?php echo $filter; ?>_min" name="<?php echo $filter; ?>[]" class="um_range_min" />
 						<input type="hidden" id="<?php echo $filter; ?>_max" name="<?php echo $filter; ?>[]" class="um_range_max" />
-						<div class="um-slider" data-field_name="birth_date" data-min="<?php echo $range[0] ?>" data-max="<?php echo $range[1] ?>"></div>
+						<div class="um-slider" data-field_name="<?php echo $filter; ?>" data-min="<?php echo $range[0] ?>" data-max="<?php echo $range[1] ?>"></div>
 						<div class="um-slider-range"></div>
 					<?php }
 
 					break;
 				}
 				case 'datepicker': {
+
+					$range = $this->datepicker_filters_range( $filter );
+
+					if ( $range ) { ?>
+
+						<input type="text" id="<?php echo $filter; ?>_from" name="<?php echo $filter; ?>_from" class="um-half-filter um-datepicker-filter"
+						       placeholder="<?php esc_attr_e( sprintf( '%s From', stripslashes( $attrs['label'] ) ), 'ultimate-member' ); ?>"
+						       data-date_min="<?php echo $range[0] ?>" data-date_max="<?php echo $range[1] ?>" />
+						<input type="text" id="<?php echo $filter; ?>_to" name="<?php echo $filter; ?>_to" class="um-half-filter um-datepicker-filter"
+						       placeholder="<?php esc_attr_e( sprintf( '%s To', stripslashes( $attrs['label'] ) ), 'ultimate-member' ); ?>"
+						       data-date_min="<?php echo $range[0] ?>" data-date_max="<?php echo $range[1] ?>" />
+
+					<?php }
+
 					break;
 				}
 			}
@@ -399,6 +413,56 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 			}
 
+			return $range;
+		}
+
+
+		/**
+		 * @param $filter
+		 *
+		 * @return mixed
+		 */
+		function datepicker_filters_range( $filter ) {
+			global $wpdb;
+
+			switch ( $filter ) {
+
+				default: {
+					$range = apply_filters( "um_member_directory_filter_{$filter}_datepicker", false );
+
+					break;
+				}
+				case 'last_login': {
+					$meta = $wpdb->get_col( "SELECT DISTINCT meta_value 
+						FROM {$wpdb->usermeta} 
+						WHERE meta_key='_um_last_login' 
+						ORDER BY meta_value DESC" );
+
+					if ( empty( $meta ) || count( $meta ) === 1 ) {
+						$range = false;
+					} elseif ( ! empty( $meta ) ) {
+						$range = array( min( $meta ), max( $meta ) );
+					}
+
+					break;
+				}
+				case 'user_registered': {
+					$meta = $wpdb->get_col(
+					"SELECT DISTINCT user_registered 
+						FROM {$wpdb->users} 
+						ORDER BY user_registered DESC"
+					);
+
+					if ( empty( $meta ) || count( $meta ) === 1 ) {
+						$range = false;
+					} elseif ( ! empty( $meta ) ) {
+						$range = array( strtotime( min( $meta ) ), strtotime( max( $meta ) ) );
+					}
+
+					break;
+				}
+
+			}
 
 			return $range;
 		}

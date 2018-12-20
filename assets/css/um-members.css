@@ -935,3 +935,13 @@ div.uimob500 .um-members-list .um-member-card-actions {
 .um-member-directory-header .um-s1 {
 	width:100%;
 }
+
+.um .um-form .um-half-filter {
+	width:calc( 50% - 10px );
+	margin: 0 10px 0 0 !important;
+	float:left;
+}
+
+.um .um-form .um-half-filter:nth-child(even) {
+	margin: 0 0 0 10px !important;
+}

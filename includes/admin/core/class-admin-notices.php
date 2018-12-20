@@ -525,7 +525,7 @@ if ( ! class_exists( 'um\admin\core\Admin_Notices' ) ) {
 					continue;
 
 				if ( ( is_object( $license ) && 'inactive' == $license->license ) || 'inactive' == $license ) {
-					$arr_inactive_license_keys[ ] = $license->item_name;
+					$arr_inactive_license_keys[] = $license->item_name;
 				}
 
 				$invalid_license++;
@@ -541,7 +541,7 @@ if ( ! class_exists( 'um\admin\core\Admin_Notices' ) ) {
 			if ( $invalid_license ) {
 				$this->add_notice( 'license_key', array(
 					'class'     => 'error',
-					'message'   => '<p>' . sprintf( __( 'You have %d invalid or expired license keys for %s. Please go to the <a href="%s">Licenses page</a> to correct this issue.', 'ultimate-member' ), $invalid_license, ultimatemember_plugin_name, add_query_arg( array('page'=>'um_options', 'tab' => 'licenses'), admin_url( 'admin.php' ) ) ) . '</p>',
+					'message'   => '<p>' . sprintf( __( 'You have %d invalid or expired license keys for %s. Please go to the <a href="%s">Licenses page</a> to correct this issue.', 'ultimate-member' ), $invalid_license, ultimatemember_plugin_name, add_query_arg( array( 'page' => 'um_options', 'tab' => 'licenses' ), admin_url( 'admin.php' ) ) ) . '</p>',
 				), 3 );
 			}
 		}
