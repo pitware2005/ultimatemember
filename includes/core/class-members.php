@@ -214,7 +214,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				'gender'            => 'select',
 				'languages'         => 'select',
 				'role'              => 'select',
-				'age'               => 'slider',
+				'birth_date'        => 'slider',
 				'last_login'        => 'datepicker',
 				'user_registered'   => 'datepicker',
 			) );
@@ -269,7 +269,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 * ?>
 			 */
 			$attrs = apply_filters( 'um_search_fields', $attrs );
-
 			ob_start();
 
 			switch ( $filter_types[ $filter ] ) {
@@ -349,12 +348,13 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				}
 				case 'slider': {
 					$range = $this->slider_filters_range( $filter );
+					$placeholder = $this->slider_range_placeholder( $filter );
 
 					if ( $range ) { ?>
 						<input type="hidden" id="<?php echo $filter; ?>_min" name="<?php echo $filter; ?>[]" class="um_range_min" />
 						<input type="hidden" id="<?php echo $filter; ?>_max" name="<?php echo $filter; ?>[]" class="um_range_max" />
 						<div class="um-slider" data-field_name="<?php echo $filter; ?>" data-min="<?php echo $range[0] ?>" data-max="<?php echo $range[1] ?>"></div>
-						<div class="um-slider-range"></div>
+						<div class="um-slider-range" data-placeholder="<?php echo esc_attr( $placeholder ); ?>" data-label="<?php esc_attr_e( stripslashes( $attrs['label'] ), 'ultimate-member' ); ?>"></div>
 					<?php }
 
 					break;
@@ -363,14 +363,20 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 					$range = $this->datepicker_filters_range( $filter );
 
+					//var_dump( $range );
+					//var_dump( date( 'Y-m-d', $range[0] ) );
+					//var_dump( date( 'Y-m-d', $range[1] ) );
+
 					if ( $range ) { ?>
 
 						<input type="text" id="<?php echo $filter; ?>_from" name="<?php echo $filter; ?>_from" class="um-half-filter um-datepicker-filter"
 						       placeholder="<?php esc_attr_e( sprintf( '%s From', stripslashes( $attrs['label'] ) ), 'ultimate-member' ); ?>"
-						       data-date_min="<?php echo $range[0] ?>" data-date_max="<?php echo $range[1] ?>" />
+						       data-date_min="<?php echo $range[0] ?>" data-date_max="<?php echo $range[1] ?>"
+						       data-filter_name="<?php echo $filter; ?>" data-range="from" />
 						<input type="text" id="<?php echo $filter; ?>_to" name="<?php echo $filter; ?>_to" class="um-half-filter um-datepicker-filter"
 						       placeholder="<?php esc_attr_e( sprintf( '%s To', stripslashes( $attrs['label'] ) ), 'ultimate-member' ); ?>"
-						       data-date_min="<?php echo $range[0] ?>" data-date_max="<?php echo $range[1] ?>" />
+						       data-date_min="<?php echo $range[0] ?>" data-date_max="<?php echo $range[1] ?>"
+						       data-filter_name="<?php echo $filter; ?>" data-range="to" />
 
 					<?php }
 
@@ -398,7 +404,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 					break;
 				}
-				case 'age': {
+				case 'birth_date': {
 					global $wpdb;
 					$meta = $wpdb->get_col( "SELECT DISTINCT meta_value FROM {$wpdb->usermeta} WHERE meta_key='birth_date' ORDER BY meta_value DESC" );
 
@@ -414,6 +420,29 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			}
 
 			return $range;
+		}
+
+
+
+		/**
+		 * @param $filter
+		 *
+		 * @return mixed
+		 */
+		function slider_range_placeholder( $filter ) {
+			switch ( $filter ) {
+				default: {
+					$placeholder = apply_filters( "um_member_directory_filter_{$filter}_slider_range_placeholder", '' );
+					break;
+				}
+				case 'birth_date': {
+					// {field_label} - original field label
+					$placeholder = __( 'Age: {min_range} - {max_range} years old', 'ultimate-member' );
+					break;
+				}
+			}
+
+			return $placeholder;
 		}
 
 
@@ -1211,7 +1240,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				'gender'            => __( 'Gender', 'ultimate-member' ),
 				'languages'         => __( 'Languages', 'ultimate-member' ),
 				'role'              => __( 'Roles', 'ultimate-member' ),
-				'age'               => __( 'Age', 'ultimate-member' ),
+				'birth_date'        => __( 'Age', 'ultimate-member' ),
 				'last_login'        => __( 'Last Login', 'ultimate-member' ),
 				'user_registered'   => __( 'User Registered', 'ultimate-member' ),
 			) );
