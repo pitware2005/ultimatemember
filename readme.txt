@@ -5,8 +5,8 @@ Contributors: ultimatemember, champsupertramp, nsinelnikov
 Donate link: 
 Tags: community, member, membership, user-profile, user-registration
 Requires at least: 4.7
-Tested up to: 4.9
-Stable tag: 2.0.33
+Tested up to: 5.0
+Stable tag: 2.0.36
 License: GNU Version 2 or Any Later Version
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -128,16 +128,50 @@ The plugin works with popular caching plugins by automatically excluding Ultimat
 10. Screenshot 10
 11. Screenshot 11
 12. Screenshot 12
-13. Screenshot 13
-14. Screenshot 14
-15. Screenshot 15
-16. Screenshot 16
 
 == Changelog ==
 
 = Important: UM2.0+ is a significant update to the code base from 1.3.88. Please make sure you take a full-site backup with restore point before updating the plugin =
 
-= 2.0.33: November 21, 2018 =
+= 2.0.36: January 7, 2019 =
+
+* Bugfixes:
+  - Fixed Live Preview form at wp-admin
+  - Fixed tinyMCE editor loading in form builder
+  - Fixed external function for dropdown options
+  - Fixed Add New Menu Item handler
+  - Fixed small notices at frontend
+  - Fixed a few admin settings fields
+  - Fixed displaying comments when they are disabled
+  - Added compatibility for upcoming User Events extension
+
+= 2.0.35: December 9, 2018 =
+
+* Bugfixes:
+  - Fixed JS/CSS enqueue at wp-admin
+
+= 2.0.34: December 7, 2018 =
+
+* Enhancements:
+  - Added new "Extensions" class for future integrations
+
+* Bugfixes:
+  - Fixed logout redirect vulnerability
+  - Fixed modal window responsive position
+  - Fixed class autoloader for Windows servers
+  - Fixed admin forms integration
+  - Fixed empty value for select2 selectbox
+  - Fixed unchecked Remember Me by default on login page
+  - Fixed admin forms esc_attr value
+  - Fixed admin forms buttons wp_unslash
+  - Fixed get/clean plugin upgrades on multisites
+  - Fixed verify nonce on $_GET requests
+
+* Deprecated:
+  - removed "UM_TEXTDOMAIN" constant
+  - removed function UM()->get_ajax_route() for AJAX vulnerability fix
+
+= 2.0.33: November 22, 2018 =
 
 * Bugfixes:
   - Fixed AJAX vulnerabilities

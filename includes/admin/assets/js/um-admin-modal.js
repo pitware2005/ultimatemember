@@ -1,25 +1,23 @@
+var $um_tiny_editor = {};
+
+
 function um_admin_live_update_scripts() {
+	jQuery('.um-adm-conditional').each( function() {
+		jQuery(this).trigger('change');
+	});
 
-	/*jQuery('.um-admin-modal-body:visible select').select2({
-		allowClear: false,
-		minimumResultsForSearch: 10
-	});*/
-
-	jQuery('.um-adm-conditional').each(function(){jQuery(this).trigger('change');});
 	if ( jQuery('.um-admin-colorpicker').length ) {
 		jQuery('.um-admin-colorpicker').wpColorPicker();
 	}
-	
 }
 
-function um_admin_new_modal( id, ajax, size ){
-	
+function um_admin_new_modal( id, ajax, size ) {
 	var modal = jQuery('body').find('.um-admin-overlay');
-	
+
 	jQuery('.tipsy').hide();
-	
+
 	um_admin_remove_modal();
-		
+
 	jQuery('body').addClass('um-admin-modal-open').append('<div class="um-admin-overlay" /><div class="um-admin-modal" />');
 	jQuery('#' + id).prependTo('.um-admin-modal');
 	jQuery('#' + id).show();
@@ -34,11 +32,60 @@ function um_admin_new_modal( id, ajax, size ){
 	} else {
 		um_admin_modal_responsive();
 	}
-	
 }
 
+function um_tinymce_init( id, content ) {
+	var object = jQuery('#' + id);
+
+	if ( tinyMCE.get( id ) !== null ) {
+		tinyMCE.triggerSave();
+		tinyMCE.EditorManager.execCommand( 'mceRemoveEditor', true, id );
+		"4" === tinyMCE.majorVersion ? window.tinyMCE.execCommand( "mceRemoveEditor", !0, id ) : window.tinyMCE.execCommand( "mceRemoveControl", !0, id );
+		$um_tiny_editor = jQuery('<div>').append( object.parents( '#wp-' + id + '-wrap' ).clone() );
+		object.parents('#wp-' + id + '-wrap').replaceWith('<div class="um_tiny_placeholder"></div>');
+		jQuery('.um-admin-editor:visible').html( jQuery( $um_tiny_editor ).html() );
+
+		var init;
+		if( typeof tinyMCEPreInit.mceInit[ id ] == 'undefined' ){
+			init = tinyMCEPreInit.mceInit[ id ] = tinyMCE.extend( {}, tinyMCEPreInit.mceInit[ id ] );
+		} else {
+			init = tinyMCEPreInit.mceInit[ id ];
+		}
+		if ( typeof(QTags) == 'function' ) {
+			QTags( tinyMCEPreInit.qtInit[ id ] );
+			QTags._buttonsInit();
+		}
+		window.switchEditors.go( id );
+		tinyMCE.init( init );
+		tinyMCE.get( id ).setContent( content );
+		object.html( content );
+	} else {
+		$um_tiny_editor = jQuery('<div>').append( object.parents('#wp-' + id + '-wrap').clone() );
+		object.parents('#wp-' + id + '-wrap').replaceWith('<div class="um_tiny_placeholder"></div>');
+
+		jQuery('.um-admin-editor:visible').html( jQuery( $um_tiny_editor ).html() );
+
+		if ( typeof(QTags) == 'function' ) {
+			QTags( tinyMCEPreInit.qtInit[ id ] );
+			QTags._buttonsInit();
+		}
+
+		//use duplicate because it's new element
+		jQuery('#' + id).html( content );
+	}
+
+	jQuery( 'body' ).on( 'click', '.wp-switch-editor', function() {
+		var target = jQuery(this);
+
+		if ( target.hasClass( 'wp-switch-editor' ) ) {
+			var mode = target.hasClass( 'switch-tmce' ) ? 'tmce' : 'html';
+			window.switchEditors.go( id, mode );
+		}
+	});
+}
+
+
 function um_admin_modal_ajaxcall( act_id, arg1, arg2, arg3 ) {
-	
 	in_row = '';
 	in_sub_row = '';
 	in_column = '';
@@ -70,54 +117,29 @@ function um_admin_modal_ajaxcall( act_id, arg1, arg2, arg3 ) {
 			um_admin_modal_loaded();
 			um_admin_modal_responsive();
 		},
-		success: function(data){
+		success: function(data) {
 
 			jQuery('.um-admin-modal').find('.um-admin-modal-body').html( data );
-			
+
 			um_responsive();
-			
 			um_admin_live_update_scripts();
 
 			jQuery( "#_custom_dropdown_options_source" ).trigger('blur');
 
+
 			if ( jQuery('.um-admin-editor:visible').length > 0 ) {
 
 				if ( act_id == 'um_admin_edit_field_popup' ) {
-
-					tinyMCE.execCommand('mceRemoveEditor', true, 'um_editor_edit');
-					jQuery('.um-admin-editor:visible').html( jQuery('.um-hidden-editor-edit').contents() );
-					tinyMCE.execCommand('mceAddEditor', true, 'um_editor_edit');
-					
-					jQuery('.switch-html').trigger('click');
-					jQuery('.switch-html').trigger('click');
-					jQuery('.switch-tmce').trigger('click');
-					
-					jQuery('#um_editor_edit_ifr').height(200);
-
-					var editor = tinyMCE.get('um_editor_edit');
-					var content = editor.getContent();
-					editor.setContent( jQuery('.um-admin-modal:visible .dynamic-mce-content').html() );
-
+					um_tinymce_init( 'um_editor_edit', jQuery('.um-admin-modal:visible .dynamic-mce-content').html() );
 				} else {
-                    tinyMCE.get('um_editor_new').setContent('');
-					tinyMCE.execCommand('mceRemoveEditor', true, 'um_editor_new');
-					jQuery('.um-admin-editor:visible').html( jQuery('.um-hidden-editor-new').contents() );
-					tinyMCE.execCommand('mceAddEditor', true, 'um_editor_new');
-					
-					jQuery('.switch-html').trigger('click');
-					jQuery('.switch-html').trigger('click');
-					jQuery('.switch-tmce').trigger('click');
-					
-					jQuery('#um_editor_new_ifr').height(200);
-					
+					um_tinymce_init( 'um_editor_new', '' );
 				}
-				
+
 			}
 
 			um_init_tooltips();
-			
 		},
-		error: function(data){
+		error: function(data) {
 
 		}
 	});
@@ -129,26 +151,30 @@ function um_admin_modal_responsive() {
 	jQuery('.um-admin-modal:visible').css({'margin-top': '-' + required_margin });
 }
 
-function um_admin_remove_modal(){
+function um_admin_remove_modal() {
 
 	if ( jQuery('.um-admin-editor:visible').length > 0 ) {
-	
+		tinyMCE.triggerSave();
+
 		if ( jQuery('.um-admin-modal:visible').find('form').parent().attr('id') == 'UM_edit_field' ) {
-		
-			tinyMCE.execCommand('mceRemoveEditor', true, 'um_editor_edit');
+			jQuery('#wp-um_editor_edit-wrap').remove();
+
+			/*tinyMCE.execCommand('mceRemoveEditor', true, 'um_editor_edit');
 			jQuery('.um-hidden-editor-edit').html( jQuery('.um-admin-editor:visible').contents() );
-			tinyMCE.execCommand('mceAddEditor', true, 'um_editor_edit');
+			tinyMCE.execCommand('mceAddEditor', true, 'um_editor_edit');*/
 		
 		} else {
-		
-			tinyMCE.execCommand('mceRemoveEditor', true, 'um_editor_new');
+			jQuery('#wp-um_editor_new-wrap').remove();
+
+			/*tinyMCE.execCommand('mceRemoveEditor', true, 'um_editor_new');
 			jQuery('.um-hidden-editor-new').html( jQuery('.um-admin-editor:visible').contents() );
-			tinyMCE.execCommand('mceAddEditor', true, 'um_editor_new');
+			tinyMCE.execCommand('mceAddEditor', true, 'um_editor_new');*/
 		
 		}
-				
+
+		jQuery('.um_tiny_placeholder').replaceWith( jQuery( $um_tiny_editor ).html() );
 	}
-			
+
 	jQuery('body').removeClass('um-admin-modal-open');
 	jQuery('.um-admin-modal div[id^="UM_"]').hide().appendTo('body');
 	jQuery('.um-admin-modal,.um-admin-overlay').remove();
@@ -180,7 +206,7 @@ jQuery(document).ready(function() {
 	/**
 		disable link
 	**/
-	jQuery(document).on('click', '.um-admin-builder a, .um-admin-modal a', function(e){
+	jQuery(document.body).on('click', '.um-admin-builder a, .um-admin-modal a', function(e){
 		e.preventDefault();
 		return false;
 	});
@@ -188,7 +214,7 @@ jQuery(document).ready(function() {
 	/**
 		toggle area
 	**/
-	jQuery(document).on('click', '.um-admin-btn-toggle a', function(e){
+	jQuery(document.body).on('click', '.um-admin-btn-toggle a', function(e){
 		var content = jQuery(this).parent().find('.um-admin-btn-content');
 		var link = jQuery(this);
 		if ( content.is(':hidden') ) {
@@ -208,7 +234,7 @@ jQuery(document).ready(function() {
 	/**
 		clone a condition
 	**/
-	jQuery(document).on('click', '.um-admin-new-condition', function() {
+	jQuery(document.body).on('click', '.um-admin-new-condition', function() {
 
 		if ( jQuery(this).hasClass('disabled') )
 			return false;
@@ -252,7 +278,7 @@ jQuery(document).ready(function() {
 	/**
 		reset conditions
 	**/
-	jQuery(document).on('click', '.um-admin-reset-conditions a', function(){
+	jQuery(document.body).on('click', '.um-admin-reset-conditions a', function(){
 		var content = jQuery(this).parents('.um-admin-btn-content');
 		content.find('.um-admin-cur-condition').slice(1).remove();
 		content.find('input[type=text]').val('');
@@ -265,7 +291,7 @@ jQuery(document).ready(function() {
 	/**
 		remove a condition
 	**/
-	jQuery(document).on('click', '.um-admin-remove-condition', function(){
+	jQuery(document.body).on('click', '.um-admin-remove-condition', function(){
 		var condition = jQuery(this).parents('.um-admin-cur-condition');
 		jQuery('.um-admin-new-condition').removeClass('disabled');
 		jQuery('.tipsy').remove();
@@ -290,15 +316,14 @@ jQuery(document).ready(function() {
 	/**
 		remove modal via action
 	**/
-	jQuery(document).on('click', '.um-admin-overlay, a[data-action="UM_remove_modal"]', function(){
+	jQuery(document.body).on('click', '.um-admin-overlay, a[data-action="UM_remove_modal"]', function(){
 		um_admin_remove_modal();
 	});
 	
 	/**
 		fire new modal
 	**/
-	jQuery(document).on('click', 'a[data-modal^="UM_"], span[data-modal^="UM_"]', function(e){
-		
+	jQuery(document.body).on('click', 'a[data-modal^="UM_"], span[data-modal^="UM_"]', function(e){
 		e.preventDefault();
 
 		var modal_id = jQuery(this).attr('data-modal');
@@ -327,7 +352,7 @@ jQuery(document).ready(function() {
 	/**
 		choose font icon
 	**/
-	jQuery(document).on('click', '.um-admin-icons span', function(){
+	jQuery(document.body).on('click', '.um-admin-icons span', function(){
 		var icon = jQuery(this).attr('data-code');
 		jQuery(this).parent().find('span').removeClass('highlighted');
 		jQuery(this).addClass('highlighted');
@@ -337,7 +362,7 @@ jQuery(document).ready(function() {
 	/**
 		submit font icon
 	**/
-	jQuery(document).on('click', '#UM_fonticons a.um-admin-modal-back:not(.um-admin-modal-cancel)', function(){
+	jQuery(document.body).on('click', '#UM_fonticons a.um-admin-modal-back:not(.um-admin-modal-cancel)', function(){
 		var v_id = '';
 		var icon_selected = jQuery(this).attr('data-code');
 		if (icon_selected != ''){
@@ -359,7 +384,7 @@ jQuery(document).ready(function() {
 	/**
 		restore font icon
 	**/
-	jQuery(document).on('click', 'span.um-admin-icon-clear', function(){
+	jQuery(document.body).on('click', 'span.um-admin-icon-clear', function(){
 		var element = jQuery(this).parents('p');
 		jQuery('#UM_fonticons a.um-admin-modal-back').attr('data-code', '');
 		element.find('input[type=hidden]').val('');
@@ -374,7 +399,7 @@ jQuery(document).ready(function() {
 	/**
 		search font icons
 	**/
-	jQuery(document).on('keyup blur', '#_icon_search', function(){
+	jQuery(document.body).on('keyup blur', '#_icon_search', function(){
 		if ( jQuery(this).val().toLowerCase() != '' ) {
 			jQuery('.um-admin-icons span').hide();
 			jQuery('.um-admin-icons span[data-code*="'+jQuery(this).val().toLowerCase()+'"]').show();
@@ -388,7 +413,7 @@ jQuery(document).ready(function() {
 	/**
 	 * Retrieve options from a callback function
 	 */
-	jQuery(document).on('blur',"#_custom_dropdown_options_source", function(){
+	jQuery(document.body).on('blur',"#_custom_dropdown_options_source", function(){
         var me = jQuery(this);
         var _options = jQuery('textarea[id=_options]');
         
