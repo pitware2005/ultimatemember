@@ -46,10 +46,7 @@
 								</div>
 							<?php }
 
-							/*
-							 * Hook conflict (um-reviews)
-							 */
-							//do_action( 'um_members_after_user_name', $args ); ?>
+							do_action( 'um_members_after_user_name', $args ); ?>
 						</div>
 
 						<div class="um-member-card-content">
@@ -112,12 +109,7 @@
 								</a>
 							</div>
 							<# }); #>
-							<?php
-							/*
-							 * Hook conflict (um-reviews)
-							 */
-							 ?>
-							<?php //do_action( 'um_members_just_after_name', $args ); ?>
+							<?php do_action( 'um_members_just_after_name', $args ); ?>
 						</div>
 					<# } #>
 					<div class="um-clear"></div>

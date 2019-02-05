@@ -750,8 +750,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			unset( $query['referrer_url'] );
 			unset( $query['is_filters'] );
 
-			//var_dump($query);
-
 			if ( ! empty( $query ) && is_array( $query ) ) {
 				foreach ( $query as $field => $value ) {
 
@@ -832,22 +830,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 										'compare'   => '<',
 									);
 								}
-
-								// $meta_query = array(
-								// 	array(
-								// 		'key'       => '_um_last_login',
-								// 		'value'     =>  $from_date,
-								// 		'compare'   => '>',
-								// 		//'type'      => 'DATE',
-								// 	),
-								// 	array(
-								// 		'key'       => '_um_last_login',
-								// 		'value'     =>  $to_date,
-								// 		'compare'   => '<',
-								// 	)
-								// );
-
-								//var_dump($meta_query);
 
 								$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( $meta_query ) );
 

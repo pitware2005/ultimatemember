@@ -51,10 +51,7 @@
 					<?php }
 
 
-					/*
-					 * Hook conflict (um-reviews)
-					 */
-					//do_action( 'um_members_just_after_name', $args ); ?>
+					do_action( 'um_members_just_after_name', $args ); ?>
 
 
 					<# if ( user.can_edit ) { #>
@@ -65,12 +62,7 @@
 					</div>
 					<# } #>
 
-					<?php
-					/*
-					 * Hook conflict (um-reviews)
-					 */
-					?>
-					<?php //do_action( 'um_members_after_user_name', $args );
+					<?php do_action( 'um_members_after_user_name', $args );
 
 					if ( $show_tagline && is_array( $tagline_fields ) ) {
 						foreach ( $tagline_fields as $key ) {

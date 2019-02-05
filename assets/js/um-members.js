@@ -777,6 +777,7 @@ jQuery(document).ready(function() {
 		directory.find( '.um-members-filter-remove' ).each( function() {
 			var removeItem = jQuery(this).data('value');
 			var filter_name = jQuery(this).data('name');
+			var range = jQuery(this).data('range');
 
 			var current_value = um_get_directory_storage( directory, 'filter_' + filter_name );
 			if ( current_value !== null && -1 !== jQuery.inArray( removeItem, current_value ) ) {
@@ -791,6 +792,16 @@ jQuery(document).ready(function() {
 				}
 
 				directory.find('.um-members-filter-tag').remove();
+			} else if( current_value !== null && current_value[range] !== null ) {
+				directory.find('input.um-datepicker-filter[data-filter_name="' + filter_name + '"][data-range="' + range + '"]').val('').change();
+
+				delete current_value[range];
+				if ( jQuery.isEmptyObject( current_value ) === false ) {
+					um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
+				} else {
+					um_delete_directory_storage( directory, 'filter_' + filter_name );
+				}
+				jQuery(this).parents('.um-members-filter-tag').remove();
 			}
 		});
 
