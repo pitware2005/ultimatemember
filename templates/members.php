@@ -43,7 +43,7 @@ if ( ! $single_view ) {
 	$classes .= ' um-member-with-view';
 } ?>
 
-<div class="um <?php echo $this->get_class( $mode ); ?> um-<?php echo esc_attr( $form_id ); ?>"
+<div class="um <?php echo $this->get_class( $mode ); ?> um-<?php echo esc_attr( $form_id ); ?> um-visible"
      data-unique_id="um-<?php echo esc_attr( $form_id ) ?>"
      data-view_type="<?php echo $view_type ?>"
      data-only_search="<?php echo ( $search && $show_search && ! empty( $must_search ) ) ? 1 : 0 ?>">
@@ -113,7 +113,9 @@ if ( ! $single_view ) {
 				<script type="text/template" id="tmpl-um-members-filtered-line">
 					<# if ( data.filters.length > 0 ) { #>
 						<# _.each( data.filters, function( filter, key, list ) { #>
-							<div class="um-members-filter-tag"><strong>{{{filter.label}}}</strong>: {{{filter.value_label}}}<div class="um-members-filter-remove" data-name="{{{filter.name}}}" data-value="{{{filter.value}}}">&times;</div></div>
+							<div class="um-members-filter-tag">
+								<strong>{{{filter.label}}}</strong>: {{{filter.value_label}}}
+								<div class="um-members-filter-remove" data-name="{{{filter.name}}}" data-value="{{{filter.value}}}" data-range="{{{filter.range}}}">&times;</div></div>
 						<# }); #>
 					<# } #>
 				</script>
@@ -160,6 +162,7 @@ if ( ! $single_view ) {
 			<div class="um-members-overlay"><div class="um-ajax-loading"></div></div>
 		</div>
 		<div class="um-clear"></div>
+
 
 		<div class="um-members-pagination-box"></div>
 

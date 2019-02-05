@@ -462,9 +462,9 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 					break;
 				}
 				case 'last_login': {
-					$meta = $wpdb->get_col( "SELECT DISTINCT meta_value 
-						FROM {$wpdb->usermeta} 
-						WHERE meta_key='_um_last_login' 
+					$meta = $wpdb->get_col( "SELECT DISTINCT meta_value
+						FROM {$wpdb->usermeta}
+						WHERE meta_key='_um_last_login'
 						ORDER BY meta_value DESC" );
 
 					if ( empty( $meta ) || count( $meta ) === 1 ) {
@@ -477,8 +477,8 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				}
 				case 'user_registered': {
 					$meta = $wpdb->get_col(
-					"SELECT DISTINCT user_registered 
-						FROM {$wpdb->users} 
+					"SELECT DISTINCT user_registered
+						FROM {$wpdb->users}
 						ORDER BY user_registered DESC"
 					);
 
@@ -750,6 +750,8 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			unset( $query['referrer_url'] );
 			unset( $query['is_filters'] );
 
+			//var_dump($query);
+
 			if ( ! empty( $query ) && is_array( $query ) ) {
 				foreach ( $query as $field => $value ) {
 
@@ -786,6 +788,69 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 								);
 
 								$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( $meta_query ) );
+
+							} elseif ( 'user_registered' == $field ) {
+
+								if( isset( $query['user_registered']['from'] ) ) {
+									$from_date = date( 'Y-m-d', $query['user_registered']['from'] );
+								}
+
+								if( isset( $query['user_registered']['to'] ) ) {
+									$to_date = date( 'Y-m-d', $query['user_registered']['to'] );
+								}
+
+								$date_query = array(
+									array(
+										'column' => 'user_registered',
+										'before'  => $to_date,
+										'after' => $from_date,
+										'inclusive' => true,
+									),
+								 );
+
+								$this->query_args['date_query'] = array( $date_query );
+
+							} elseif ( 'last_login' == $field ) {
+
+								$meta_query = array();
+
+								if( isset( $query['last_login']['from'] ) ) {
+									$from_date = $query['last_login']['from'];
+
+									$meta_query[] = array(
+										'key'       => '_um_last_login',
+										'value'     =>  $from_date,
+										'compare'   => '>',
+									);
+								}
+
+								if( isset( $query['last_login']['to'] ) ) {
+									$to_date = $query['last_login']['to'];
+									$meta_query[] = array(
+										'key'       => '_um_last_login',
+										'value'     =>  $to_date,
+										'compare'   => '<',
+									);
+								}
+
+								// $meta_query = array(
+								// 	array(
+								// 		'key'       => '_um_last_login',
+								// 		'value'     =>  $from_date,
+								// 		'compare'   => '>',
+								// 		//'type'      => 'DATE',
+								// 	),
+								// 	array(
+								// 		'key'       => '_um_last_login',
+								// 		'value'     =>  $to_date,
+								// 		'compare'   => '<',
+								// 	)
+								// );
+
+								//var_dump($meta_query);
+
+								$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( $meta_query ) );
+
 							} else {
 
 								if ( is_array( $value ) ) {
@@ -947,6 +1012,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 * @var $has_cover_photo
 			 */
 			extract( $args );
+			//var_dump( $_REQUEST );
 
 			$data_args = array(
 				'show_count' => false

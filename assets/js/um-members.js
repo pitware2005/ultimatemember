@@ -39,7 +39,7 @@ jQuery(document).ready(function() {
 		var min = new Date( elem.data('date_min')*1000 );
 		var max = new Date( elem.data('date_max')*1000 );
 
-		elem.pickadate({
+		var $input = elem.pickadate({
 			selectYears: true,
 			min: min,
 			max: max,
@@ -63,36 +63,96 @@ jQuery(document).ready(function() {
 
 				var current_value = um_get_directory_storage( directory, 'filter_' + filter_name );
 				if ( current_value === null ) {
-					current_value = [];
+					current_value = {};
 				}
 
+				var select_val = context.select / 1000;
+
 				if ( range === 'from' ) {
-					current_value[0] = context.select / 1000;
+					if( select_val !== null && !isNaN( select_val ) ) {
+						current_value.from = select_val;
+					} else {
+						delete current_value.from;
+					}
 				} else if ( range === 'to' ) {
-					current_value[1] = context.select / 1000;
+					if( select_val !== null && !isNaN( select_val ) ) {
+						current_value.to = select_val;
+					} else {
+						delete current_value.to;
+					}
 				}
 
 				um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
 
 				//set 1st page after filtration
 				um_set_directory_storage( directory, 'page', 1, true );
+
 				um_ajax_get_members( directory );
 
-				/*var unique_id = um_members_get_unique_id( directory );
+				var unique_id = um_members_get_unique_id( directory );
 				var filters_data = [];
+				var filter_array = [];
 
 				directory.find('.um-search-filter').each( function() {
-					var filter = jQuery(this);
-					var filter_name = filter.find('select').attr('name');
-					var query_value = um_get_directory_storage( directory, 'filter_' + filter_name );
 
-					var filter_title = filter.find('select').data('placeholder');
-					var filter_value_title;
+					var filter = jQuery(this);
+					var hoper,
+						filter_name,
+						query_value,
+						filter_title,
+						filter_range,
+						filter_value_title;
+
+					if( filter.find('input.um-datepicker-filter').length ) {
+						hoper = 'datepicker';
+
+						filter.find('input.um-datepicker-filter').each(function() {
+							var _this = jQuery(this);
+							var obj = {};
+							if( _this.val().length ) {
+								obj.name		= _this.data('filter_name');
+								obj.label		= _this.attr('placeholder');
+								obj.range		= _this.data('range');
+								obj.value_title	= _this.val();
+								query_value		= um_get_directory_storage( directory, 'filter_' + _this.data('filter_name') );
+								filter_array.push(obj);
+							}
+						});
+
+					} else if( filter.find('select').length ) {
+						hoper = 'select';
+
+						filter_name = filter.find('select').attr('name');
+						query_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+
+						filter_title = filter.find('select').data('placeholder');
+						filter_value_title;
+
+					}
 
 					if ( typeof( query_value ) != 'undefined' ) {
 						if ( typeof( query_value ) == 'string' ) {
 							filter_value_title = filter.find('select option[value="' + query_value + '"]').data('value_label');
 							filters_data.push( {'name':filter_name, 'label':filter_title, 'value_label':filter_value_title, 'value':query_value, 'unique_id':unique_id} );
+						} else if( hoper == 'datepicker' ) { // после сформированных данных
+							jQuery.each( filter_array, function(e) {
+								var find = filters_data.find(function (item) {
+									return item.name == filter_array[e].name && item.range == filter_array[e].range;
+								});
+								if( typeof( find ) == 'undefined' ) {
+									filters_data.push(
+										{
+											'name':filter_array[e].name,
+											'range':filter_array[e].range,
+											'label':filter_array[e].label,
+											'value_label':filter_array[e].value_title,
+											'value':query_value[filter_array[e].range],
+											'unique_id':unique_id
+										}
+									);
+								}
+							})
+
 						} else {
 							jQuery.each( query_value, function(e) {
 								filter_value_title = filter.find('select option[value="' + query_value[e] + '"]').data('value_label');
@@ -101,6 +161,7 @@ jQuery(document).ready(function() {
 						}
 					}
 				});
+
 
 				directory.find('.um-members-filter-tag').remove();
 
@@ -111,9 +172,22 @@ jQuery(document).ready(function() {
 					directory.find('.um-filtered-line').show();
 				} else {
 					directory.find('.um-filtered-line').hide();
-				}*/
+				}
 			}
 		});
+
+		var $picker 	= $input.pickadate('picker');
+		var $fname		= elem.data('filter_name');
+		var $frange		= elem.data('range');
+		var $directory	= elem.parents('.um-directory');
+		var query_value	= um_get_directory_storage( $directory, 'filter_' + $fname );
+
+		if ( query_value !== null ) {
+			if( typeof( query_value[$frange] ) !== 'undefined' )  {
+				$picker.set( 'select', query_value[$frange]*1000 );
+			}
+		}
+
 	});
 
 
@@ -171,18 +245,76 @@ jQuery(document).ready(function() {
 			var unique_id = um_members_get_unique_id( directory );
 			var filters_data = [];
 
-			directory.find('.um-search-filter').each( function() {
-				var filter = jQuery(this);
-				var filter_name = filter.find('select').attr('name');
-				var query_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+			var filter_array = [];
 
-				var filter_title = filter.find('select').data('placeholder');
-				var filter_value_title;
+			directory.find('.um-search-filter').each( function() {
+
+				var filter = jQuery(this);
+				var hoper,
+					filter_name,
+					query_value,
+					filter_title,
+					filter_range,
+					filter_value_title;
+
+				if( filter.find('input.um-datepicker-filter').length ) {
+					hoper = 'datepicker';
+
+					filter.find('input.um-datepicker-filter').each(function() {
+						var _this = jQuery(this);
+						var obj = {};
+
+						if( _this.length ) {
+							query_value		= um_get_directory_storage( directory, 'filter_' + _this.data('filter_name') );
+							filter_name		= _this.data('filter_name');
+							filter_range	= _this.data('range');
+
+							if ( query_value !== null ) {
+								if( query_value[filter_range] ) {
+									obj.name		= filter_name;
+									obj.label		= _this.attr('placeholder');
+									obj.range		= filter_range;
+									obj.value_title	= _this.val();
+									filter_array.push(obj);
+								}
+							}
+						}
+					});
+
+				} else if( filter.find('select').length ) {
+					hoper = 'select';
+
+					filter_name = filter.find('select').attr('name');
+					query_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+
+					filter_title = filter.find('select').data('placeholder');
+					filter_value_title;
+
+				}
 
 				if ( typeof( query_value ) != 'undefined' ) {
 					if ( typeof( query_value ) == 'string' ) {
 						filter_value_title = filter.find('select option[value="' + query_value + '"]').data('value_label');
 						filters_data.push( {'name':filter_name, 'label':filter_title, 'value_label':filter_value_title, 'value':query_value, 'unique_id':unique_id} );
+					} else if( hoper == 'datepicker' ) { // после сформированных данных
+						jQuery.each( filter_array, function(e) {
+							var find = filters_data.find(function (item) {
+								return item.name == filter_array[e].name && item.range == filter_array[e].range;
+							});
+							if( typeof( find ) == 'undefined' ) {
+								filters_data.push(
+									{
+										'name':filter_array[e].name,
+										'range':filter_array[e].range,
+										'label':filter_array[e].label,
+										'value_label':filter_array[e].value_title,
+										'value':query_value[filter_array[e].range],
+										'unique_id':unique_id
+									}
+								);
+							}
+						})
+
 					} else {
 						jQuery.each( query_value, function(e) {
 							filter_value_title = filter.find('select option[value="' + query_value[e] + '"]').data('value_label');
@@ -190,22 +322,8 @@ jQuery(document).ready(function() {
 						});
 					}
 				}
-
-				if ( filter.find( '.um-slider' ).length ) {
-
-					filter.find( '.um-slider' ).each( function() {
-						var slider = jQuery(this);
-						var field_name = slider.data('field_name');
-						var slider_value = um_get_directory_storage( directory, 'filter_' + field_name );
-
-						if ( slider_value !== null ) {
-							slider.slider( "option", "values", slider_value );
-							um_set_range_label( slider );
-						}
-					});
-
-				}
 			});
+
 
 			directory.find('.um-members-filter-tag').remove();
 
@@ -446,9 +564,15 @@ jQuery(document).ready(function() {
 		}
 	});
 
-
-
-
+	//reset date filter
+	// jQuery( document.body ).on('click', '.um-filter-resset', function(e) {
+	// 	e.preventDefault();
+	// 	jQuery(this).addClass('um-reset-hidden');
+	// 	jQuery(this).parent().find('.um-datepicker-filter').each(function() {
+	// 		var elem = jQuery(this).pickadate('picker');
+	// 		elem.clear();
+	// 	});
+	// })
 
 
 	//filters controls
@@ -504,39 +628,82 @@ jQuery(document).ready(function() {
 
 		var unique_id = um_members_get_unique_id( directory );
 		var filters_data = [];
+		var filter_array = [];
 
 		directory.find('.um-search-filter').each( function() {
-			var filter = jQuery(this);
-			var filter_name = filter.find('select').attr('name');
-			var query_value = um_get_directory_storage( directory, 'filter_' + filter_name );
 
-			var filter_title = filter.find('select').data('placeholder');
-			var filter_value_title;
+			var filter = jQuery(this);
+			var hoper,
+				filter_name,
+				query_value,
+				filter_title,
+				filter_range,
+				filter_value_title;
+
+			if( filter.find('input.um-datepicker-filter').length ) {
+				hoper = 'datepicker';
+
+				filter.find('input.um-datepicker-filter').each(function() {
+					var _this = jQuery(this);
+					var obj = {};
+
+					if( _this.length ) {
+						query_value		= um_get_directory_storage( directory, 'filter_' + _this.data('filter_name') );
+						filter_name		= _this.data('filter_name');
+						filter_range	= _this.data('range');
+
+						if ( query_value !== null ) {
+							if( query_value[filter_range] ) {
+								obj.name		= filter_name;
+								obj.label		= _this.attr('placeholder');
+								obj.range		= filter_range;
+								obj.value_title	= _this.val();
+								filter_array.push(obj);
+							}
+						}
+					}
+				});
+
+			} else if( filter.find('select').length ) {
+				hoper = 'select';
+
+				filter_name = filter.find('select').attr('name');
+				query_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+
+				filter_title = filter.find('select').data('placeholder');
+				filter_value_title;
+
+			}
 
 			if ( typeof( query_value ) != 'undefined' ) {
 				if ( typeof( query_value ) == 'string' ) {
 					filter_value_title = filter.find('select option[value="' + query_value + '"]').data('value_label');
 					filters_data.push( {'name':filter_name, 'label':filter_title, 'value_label':filter_value_title, 'value':query_value, 'unique_id':unique_id} );
+				} else if( hoper == 'datepicker' ) { // после сформированных данных
+					jQuery.each( filter_array, function(e) {
+						var find = filters_data.find(function (item) {
+							return item.name == filter_array[e].name && item.range == filter_array[e].range;
+						});
+						if( typeof( find ) == 'undefined' ) {
+							filters_data.push(
+								{
+									'name':filter_array[e].name,
+									'range':filter_array[e].range,
+									'label':filter_array[e].label,
+									'value_label':filter_array[e].value_title,
+									'value':query_value[filter_array[e].range],
+									'unique_id':unique_id
+								}
+							);
+						}
+					})
+
 				} else {
 					jQuery.each( query_value, function(e) {
 						filter_value_title = filter.find('select option[value="' + query_value[e] + '"]').data('value_label');
 						filters_data.push( {'name': filter_name, 'label':filter_title, 'value_label':filter_value_title, 'value':query_value[e], 'unique_id':unique_id} );
 					});
 				}
-			}
-
-			if ( filter.find( '.um-slider' ).length ) {
-
-				filter.find( '.um-slider' ).each( function() {
-					var slider = jQuery(this);
-					var field_name = slider.data('field_name');
-					var slider_value = um_get_directory_storage( directory, 'filter_' + field_name );
-
-					if ( slider_value !== null ) {
-						slider.slider( "option", "values", slider_value );
-						um_set_range_label( slider );
-					}
-				});
 			}
 		});
 
@@ -560,6 +727,8 @@ jQuery(document).ready(function() {
 			return;
 		}
 
+		var range = jQuery(this).data('range');
+
 		var removeItem = jQuery(this).data('value');
 		var filter_name = jQuery(this).data('name');
 
@@ -578,6 +747,16 @@ jQuery(document).ready(function() {
 			//set 1st page after filtration
 			um_set_directory_storage( directory, 'page', 1, true );
 
+			jQuery(this).parents('.um-members-filter-tag').remove();
+		} else if( current_value !== null && current_value[range] !== null ) {
+			directory.find('input.um-datepicker-filter[data-filter_name="' + filter_name + '"][data-range="' + range + '"]').val('').change();
+
+			delete current_value[range];
+			if ( jQuery.isEmptyObject( current_value ) === false ) {
+				um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
+			} else {
+				um_delete_directory_storage( directory, 'filter_' + filter_name );
+			}
 			jQuery(this).parents('.um-members-filter-tag').remove();
 		}
 
@@ -777,7 +956,7 @@ function um_ajax_get_members( directory ) {
 					request['is_filters'] = true;
 				}
 			} else if ( filter.find( '.um-datepicker-filter' ).length ) {
-				var filter_name = filter.find( 'um-datepicker-filter' ).data('filter_name');
+				var filter_name = filter.find( '.um-datepicker-filter' ).data('filter_name');
 				var value = um_get_directory_storage( directory, 'filter_' + filter_name );
 				if ( value !== null ) {
 					request[ filter_name ] = value;
@@ -798,6 +977,7 @@ function um_ajax_get_members( directory ) {
 	wp.ajax.send( 'um_get_members', {
 		data: request,
 		success: function( answer ) {
+
 			//set last data hard for using on layouts reloading
 			um_set_directory_storage( directory, 'last_data', answer, true );
 

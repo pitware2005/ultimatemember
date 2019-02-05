@@ -945,3 +945,26 @@ div.uimob500 .um-members-list .um-member-card-actions {
 .um .um-form .um-half-filter:nth-child(even) {
 	margin: 0 0 0 10px !important;
 }
+
+/*
+new
+*/
+.um .um-filter-resset {
+	width: 22px;
+    height: 22px;
+    position: absolute;
+    text-decoration: none;
+    box-shadow: none;
+    font-size: 40px;
+    color: #a2a2a2;
+    line-height: 23px;
+    cursor: pointer;
+	top: -18px;
+    right: -20px;
+}
+.um .um-filter-resset.um-reset-hidden {
+	display: none;
+}
+.um-search .um-search-filter {
+	position: relative;
+}
