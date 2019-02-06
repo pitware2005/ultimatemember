@@ -789,50 +789,84 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 							} elseif ( 'user_registered' == $field ) {
 
+								$offset = 0;
+
+								if( isset( $query['gmt_offset'] ) ) {
+									$offset = (int)$query['gmt_offset'];
+								}
+
 								if( isset( $query['user_registered']['from'] ) ) {
-									$from_date = date( 'Y-m-d', $query['user_registered']['from'] );
+									$from_date = date( 'Y-m-d', strtotime( date( 'Y-m-d H:s:i', $query['user_registered']['from'] ) . "+$offset hours" ) );
 								}
 
 								if( isset( $query['user_registered']['to'] ) ) {
-									$to_date = date( 'Y-m-d', $query['user_registered']['to'] );
+									$to_date = date( 'Y-m-d', strtotime( date( 'Y-m-d H:s:i', $query['user_registered']['to'] ) . "+$offset hours" ) );
 								}
 
 								$date_query = array(
 									array(
-										'column' => 'user_registered',
-										'before'  => $to_date,
-										'after' => $from_date,
-										'inclusive' => true,
+										'column'	=> 'user_registered',
+										'before'	=> $to_date,
+										'after'		=> $from_date,
+										'inclusive'	=> true,
 									),
 								 );
+								// var_dump(date( 'Y-m-d H:s:i', $query['user_registered']['from'] ));
+								// var_dump(gmdate(date( 'Y-m-d H:s:i', $query['user_registered']['from'] )));
+								// var_dump(date( 'Y-m-d H:s:i', $query['user_registered']['from'] ));
+								// var_dump(gmdate(date( 'Y-m-d H:s:i', $query['user_registered']['to'] )));
+								// var_dump(date( 'Y-m-d H:s:i', strtotime(date( 'Y-m-d H:s:i', $query['user_registered']['to'] ) . "+2 hours" )));
+								//var_dump($date_query);
 
 								$this->query_args['date_query'] = array( $date_query );
 
 							} elseif ( 'last_login' == $field ) {
 
 								$meta_query = array();
+								$offset		= 0;
 
-								if( isset( $query['last_login']['from'] ) ) {
-									$from_date = $query['last_login']['from'];
+								if( isset( $query['gmt_offset'] ) ) {
+									$offset = (int)$query['gmt_offset'];
+								}
+
+								if( isset( $query['last_login']['from'] ) and isset( $query['last_login']['to'] ) ) {
+									$from_date = (int)$query['last_login']['from'] + ( $offset * 60 * 60 );
+									$to_date   = (int)$query['last_login']['to'] + ( $offset * 60 * 60 );
 
 									$meta_query[] = array(
 										'key'       => '_um_last_login',
-										'value'     =>  $from_date,
-										'compare'   => '>',
+										'value'     =>  array( $from_date, $to_date ),
+										'compare'   => 'BETWEEN',
 									);
+								} else {
+
+									if( isset( $query['last_login']['from'] ) ) {
+										$from_date = (int)$query['last_login']['from'] + ( $offset * 60 * 60 );
+
+										$meta_query[] = array(
+											'key'       => '_um_last_login',
+											'value'     =>  $from_date,
+											'compare'   => '>',
+										);
+									}
+
+									if( isset( $query['last_login']['to'] ) ) {
+										$to_date = (int)$query['last_login']['to'] + ( $offset * 60 * 60 );
+
+										$meta_query[] = array(
+											'key'       => '_um_last_login',
+											'value'     =>  $to_date,
+											'compare'   => '<',
+										);
+									}
 								}
 
-								if( isset( $query['last_login']['to'] ) ) {
-									$to_date = $query['last_login']['to'];
-									$meta_query[] = array(
-										'key'       => '_um_last_login',
-										'value'     =>  $to_date,
-										'compare'   => '<',
-									);
-								}
+								//var_dump($meta_query);
 
 								$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( $meta_query ) );
 
+							} elseif( 'gmt_offset' == $field ) {
+								continue;
 							} else {
 
 								if ( is_array( $value ) ) {

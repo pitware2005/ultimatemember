@@ -67,18 +67,25 @@ jQuery(document).ready(function() {
 				}
 
 				var select_val = context.select / 1000;
+				var change_val = elem.val();
 
 				if ( range === 'from' ) {
 					if( select_val !== null && !isNaN( select_val ) ) {
 						current_value.from = select_val;
 					} else {
-						delete current_value.from;
+						if( change_val == '' ) {
+							delete current_value.from;
+							//console.warn('Elem val from: ' + change_val);
+						}
 					}
 				} else if ( range === 'to' ) {
 					if( select_val !== null && !isNaN( select_val ) ) {
 						current_value.to = select_val;
 					} else {
-						delete current_value.to;
+						if( change_val == '' ) {
+							delete current_value.to;
+							//console.warn('Elem val to: ' + change_val);
+						}
 					}
 				}
 
@@ -162,7 +169,6 @@ jQuery(document).ready(function() {
 					}
 				});
 
-
 				directory.find('.um-members-filter-tag').remove();
 
 				var filters_template = wp.template( 'um-members-filtered-line' );
@@ -187,6 +193,11 @@ jQuery(document).ready(function() {
 				$picker.set( 'select', query_value[$frange]*1000 );
 			}
 		}
+
+		jQuery(document.body).on( 'click', '.picker__nav--next, .picker__nav--prev', function() {
+			$picker.off(onSet);
+			console.log('set');
+		})
 
 	});
 
@@ -983,6 +994,10 @@ function um_ajax_get_members( directory ) {
 			}
 		});
 	}
+
+	var local_date = new Date()
+	var gmt_hours = -local_date.getTimezoneOffset()/60;
+	request['gmt_offset'] = gmt_hours;
 
 
 	wp.ajax.send( 'um_get_members', {
