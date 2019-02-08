@@ -292,14 +292,26 @@ if ( ! class_exists( 'um\core\Password' ) ) {
 
 					if ( is_wp_error( $user ) ) {
 						setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
+
+						unset ( $_SESSION[ $rp_cookie ] );
+
 						wp_redirect( add_query_arg( array( 'updated' => 'invalidkey' ), get_permalink() ) );
 					}else{
 						$value = sprintf( '%s:%s', $rp_login, wp_unslash( $_GET['hash'] ) );
 						setcookie( $rp_cookie, $value, 0, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
+
+						// duplicate cookie in session
+						$_SESSION[ $rp_cookie ] = $value;
+
 						wp_safe_redirect( remove_query_arg( array( 'hash', 'user_id' ) ) );
 					}
-					
+
 					exit;
+				}
+
+				// restore cookie from session if site blocks or caches cookies
+				if( !isset( $_COOKIE[ $rp_cookie ] ) && isset( $_SESSION[ $rp_cookie ] ) ){
+					$_COOKIE[ $rp_cookie ] = $_SESSION[ $rp_cookie ];
 				}
 
 				if ( isset( $_COOKIE[ $rp_cookie ] ) && 0 < strpos( $_COOKIE[ $rp_cookie ], ':' ) ) {
@@ -311,6 +323,9 @@ if ( ! class_exists( 'um\core\Password' ) ) {
 
 				if ( ( ! $user || is_wp_error( $user ) ) && ! isset( $_GET['updated'] ) ) {
 					setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
+
+					unset ( $_SESSION[ $rp_cookie ] );
+
 					if ( $user && $user->get_error_code() === 'expired_key' ) {
 						wp_redirect( add_query_arg( array( 'updated' => 'expiredkey' ), get_permalink() ) );
 					} else {
@@ -607,6 +622,9 @@ if ( ! class_exists( 'um\core\Password' ) ) {
 				if ( ( ! $errors->get_error_code() ) ) {
 					reset_password( $user, $args['user_password'] );
 					setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
+
+					unset ( $_SESSION[ $rp_cookie ] );
+
 					delete_user_meta( $args['user_id'], 'password_rst_attempts' );
 
 					if ( is_user_logged_in() ) {
