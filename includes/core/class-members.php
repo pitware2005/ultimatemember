@@ -220,6 +220,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			) );
 
 			$fields = UM()->builtin()->all_user_fields;
+			//var_dump( $fields );
 			if ( isset( $fields[ $filter ] ) ) {
 				$attrs = $fields[ $filter ];
 			} else {
@@ -750,6 +751,8 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			unset( $query['referrer_url'] );
 			unset( $query['is_filters'] );
 
+			//var_dump( $query );
+
 			if ( ! empty( $query ) && is_array( $query ) ) {
 				foreach ( $query as $field => $value ) {
 
@@ -811,12 +814,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 										'inclusive'	=> true,
 									),
 								 );
-								// var_dump(date( 'Y-m-d H:s:i', $query['user_registered']['from'] ));
-								// var_dump(gmdate(date( 'Y-m-d H:s:i', $query['user_registered']['from'] )));
-								// var_dump(date( 'Y-m-d H:s:i', $query['user_registered']['from'] ));
-								// var_dump(gmdate(date( 'Y-m-d H:s:i', $query['user_registered']['to'] )));
-								// var_dump(date( 'Y-m-d H:s:i', strtotime(date( 'Y-m-d H:s:i', $query['user_registered']['to'] ) . "+2 hours" )));
-								//var_dump($date_query);
 
 								$this->query_args['date_query'] = array( $date_query );
 
@@ -831,13 +828,14 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 
 								if( isset( $query['last_login']['from'] ) and isset( $query['last_login']['to'] ) ) {
 									$from_date = (int)$query['last_login']['from'] + ( $offset * 60 * 60 );
-									$to_date   = (int)$query['last_login']['to'] + ( $offset * 60 * 60 );
+									$to_date   = (int)$query['last_login']['to'] + ( $offset * 60 * 60 ) + (24 * 60 * 60 - 1);
 
 									$meta_query[] = array(
 										'key'       => '_um_last_login',
 										'value'     =>  array( $from_date, $to_date ),
 										'compare'   => 'BETWEEN',
 									);
+
 								} else {
 
 									if( isset( $query['last_login']['from'] ) ) {
@@ -851,7 +849,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 									}
 
 									if( isset( $query['last_login']['to'] ) ) {
-										$to_date = (int)$query['last_login']['to'] + ( $offset * 60 * 60 );
+										$to_date = (int)$query['last_login']['to'] + ( $offset * 60 * 60 ) + (24 * 60 * 60 - 1);
 
 										$meta_query[] = array(
 											'key'       => '_um_last_login',
@@ -861,13 +859,13 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 									}
 								}
 
-								//var_dump($meta_query);
-
 								$this->query_args['meta_query'] = array_merge( $this->query_args['meta_query'], array( $meta_query ) );
 
 							} elseif( 'gmt_offset' == $field ) {
 								continue;
 							} else {
+								// var_dump($field);
+								// var_dump($value);
 
 								if ( is_array( $value ) ) {
 									$field_query = array( 'relation' => 'OR' );
@@ -881,11 +879,11 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 											)
 										) );
 
-										/*$types = apply_filters( 'um_search_field_types', array(
+										$types = apply_filters( 'um_search_field_types', array(
 											'multiselect',
 											'radio',
 											'checkbox'
-										) );*/
+										) );
 
 										//if ( in_array( $filter_data['attrs']['type'], $types ) ) {
 
@@ -925,11 +923,11 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 										'relation' => 'OR',
 									);
 
-									/*$types = apply_filters( 'um_search_field_types', array(
+									$types = apply_filters( 'um_search_field_types', array(
 										'multiselect',
 										'radio',
 										'checkbox'
-									) );*/
+									) );
 
 									//if ( in_array( $filter_data['attrs']['type'], $types ) ) {
 
@@ -1028,7 +1026,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			 * @var $has_cover_photo
 			 */
 			extract( $args );
-			//var_dump( $_REQUEST );
 
 			$data_args = array(
 				'show_count' => false
