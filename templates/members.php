@@ -13,6 +13,11 @@ if ( empty( $args['view_types'] ) ) {
 	}
 }
 
+/*
+ * Add new filter (fiter_types)
+ */
+$args['view_types'] = apply_filters( 'um_add_view_types_memeber', $args['view_types'] );
+
 $sorting_options = array();
 if ( ! empty( $args['sorting_fields'] ) ) {
 	$sorting_options = $args['sorting_fields'];
@@ -155,9 +160,13 @@ if ( ! $single_view ) {
 
 		<div class="um-members-wrapper">
 			<?php $args['view_type'] = $view_type;
+			echo "<pre>";
+			var_dump($args);
+			echo "</pre>";
 
 			include UM()->templates()->get_template( 'members-grid' );
-			include UM()->templates()->get_template( 'members-list' ); ?>
+			include UM()->templates()->get_template( 'members-list' );
+			do_action( 'um_member_directory_map', $args ); ?>
 
 			<div class="um-members-overlay"><div class="um-ajax-loading"></div></div>
 		</div>

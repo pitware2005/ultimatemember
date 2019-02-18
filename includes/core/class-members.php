@@ -769,15 +769,23 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 							if ( 'role' == $field ) {
 
 								if ( ! empty( $this->query_args['role__in'] ) ) {
+									$value = array_map('strtolower', $value);
+
 									$this->query_args['role__in'] = is_array( $this->query_args['role__in'] ) ? $this->query_args['role__in'] : array( $this->query_args['role__in'] );
-									$this->query_args['role__in'] = array_intersect( $this->query_args['role__in'], array( trim( $value ) ) );
+									$default_role = array_intersect( $this->query_args['role__in'], $value );
+									$um_role = array_diff( $value, $default_role );
+
+									foreach ($um_role as $key => &$val) {
+										$val = 'um_' . str_replace(' ', '-', $val);
+									}
+									$this->query_args['role__in'] = array_merge( $default_role, $um_role );
 								} else {
-									$this->query_args['role__in'] = trim( $value );
-								}
+									$this->query_args['role__in'] = $value;
+								};
 
 							} elseif ( 'birth_date' == $field ) {
-								$from_date = date( 'Y-m-d', mktime( 0,0,0, date('m'), date('d'), date('Y', time() - $query['birth_date'][0]*YEAR_IN_SECONDS ) ) );
-								$to_date = date( 'Y-m-d', mktime( 0,0,0, date('m'), date('d'), date('Y', time() - $query['birth_date'][1]*YEAR_IN_SECONDS ) ) );
+								$from_date = date( 'Y-m-d', mktime( 0,0,0, 1, 1, date('Y', time() - $query['birth_date'][0]*YEAR_IN_SECONDS ) ) );
+								$to_date = date( 'Y-m-d', mktime( 0,0,0, 1, 1, date('Y', time() - ($query['birth_date'][1] +1)*YEAR_IN_SECONDS ) ) );
 
 								$meta_query = array(
 									array(
@@ -785,6 +793,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 										'value'     => array( $to_date, $from_date ),
 										'compare'   => 'BETWEEN',
 										'type'      => 'DATE',
+										'inclusive'	=> true,
 									)
 								);
 
@@ -864,8 +873,8 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 							} elseif( 'gmt_offset' == $field ) {
 								continue;
 							} else {
-								// var_dump($field);
-								// var_dump($value);
+								 // var_dump($field);
+								 // var_dump($value);
 
 								if ( is_array( $value ) ) {
 									$field_query = array( 'relation' => 'OR' );

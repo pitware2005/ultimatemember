@@ -304,6 +304,7 @@ jQuery(document).ready(function() {
 
 		var layout = um_get_directory_storage( directory, 'layout' );
 		layout = ( layout === 'grid' ) ? 'list' : 'grid';
+		layout = 'map';
 
 		um_set_directory_storage( directory, 'layout', layout, true );
 		directory.data( 'view_type', layout );
@@ -589,7 +590,7 @@ jQuery(document).ready(function() {
 		var filter_name = jQuery(this).data('name');
 
 		var current_value = um_get_directory_storage( directory, 'filter_' + filter_name );
-		
+
 		if ( current_value !== null && -1 != jQuery.inArray( removeItem.toString(), current_value ) ) {
 			current_value = jQuery.grep( current_value, function( value ) {
 				return value != removeItem;
@@ -896,7 +897,7 @@ function um_build_template( directory, data ) {
 		jQuery( window ).trigger( 'resize' );
 	}
 
-	jQuery( document ).trigger( "um_build_template", [ directory ] );
+	jQuery( document ).trigger( "um_build_template", [ directory, data ] );
 }
 
 
