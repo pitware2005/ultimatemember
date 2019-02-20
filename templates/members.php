@@ -13,10 +13,27 @@ if ( empty( $args['view_types'] ) ) {
 	}
 }
 
+$view_type_info = array(
+	'list' => array(
+		'title' => __( 'Change to List', 'ultimate-member' ),
+		'icon'	=> 'um-faicon-list'
+	),
+	'grid' => array(
+		'title' => __( 'Change to Grid', 'ultimate-member' ),
+		'icon'	=> 'um-faicon-th'
+	)
+);
+
+$delete_default = array_diff( array_keys( $view_type_info ), array_keys( array_flip( $args['view_types'] ) ) );
+
+foreach ( $delete_default as $key => $value ) {
+	unset( $view_type_info[ $value ] );
+}
+
 /*
- * Add new filter (fiter_types)
+ * Add view info
  */
-$args['view_types'] = apply_filters( 'um_add_view_types_memeber', $args['view_types'] );
+$view_type_info = apply_filters( 'um_add_view_types_info', $view_type_info, $args['view_types'] );
 
 $sorting_options = array();
 if ( ! empty( $args['sorting_fields'] ) ) {
@@ -46,7 +63,7 @@ if ( $filters && $show_filters ) {
 
 if ( ! $single_view ) {
 	$classes .= ' um-member-with-view';
-} ?>
+}?>
 
 <div class="um <?php echo $this->get_class( $mode ); ?> um-<?php echo esc_attr( $form_id ); ?> um-visible"
      data-unique_id="um-<?php echo esc_attr( $form_id ) ?>"
@@ -93,9 +110,21 @@ if ( ! $single_view ) {
 
 				if ( ! $single_view ) { ?>
 					<div class="um-member-directory-view-type">
-						<a href="javascript:void(0);" class="um-member-directory-view-type-a um-tip-n" original-title="<?php if ( 'list' == $view_type ) { ?>Change to Grid<?php } else { ?>Change to List<?php } ?>">
+						<!-- <a href="javascript:void(0);" class="um-member-directory-view-type-a um-tip-n" original-title="<?php if ( 'list' == $view_type ) { ?>Change to Grid<?php } else { ?>Change to List<?php } ?>">
 							<i class="<?php if ( 'list' == $view_type ) { ?>um-faicon-list<?php } else { ?>um-faicon-th<?php } ?>"></i>
-						</a>
+						</a> -->
+
+						<?php foreach ( $view_type_info as $key => $type ) { ?>
+							<a href="javascript:void(0)"
+								class="um-member-directory-view-type-a um-tip-n"
+								data-type="<?php echo $key; ?>"
+								original-title="<?php echo $type['title']; ?>"
+								default-title="<?php echo $type['title']; ?>"
+								next-item="" >
+								<i class="<?php echo $type['icon']; ?>"></i>
+							</a>
+						<?php } ?>
+
 					</div>
 				<?php } ?>
 			</div>
@@ -160,6 +189,9 @@ if ( ! $single_view ) {
 
 		<div class="um-members-wrapper">
 			<?php $args['view_type'] = $view_type;
+			// echo "<pre>";
+			// var_dump($args);
+			// echo "</pre>";
 
 			include UM()->templates()->get_template( 'members-grid' );
 			include UM()->templates()->get_template( 'members-list' );

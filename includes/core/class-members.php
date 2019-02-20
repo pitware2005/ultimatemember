@@ -63,7 +63,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		 * @param $args
 		 */
 		function pre_directory_shortcode( $args ) {
-			wp_localize_script( 'um_members', 'um_members_args', $args );
+			wp_localize_script( 'um_members', 'um_members_args_' . $args['form_id'], $args );
 		}
 
 
@@ -751,8 +751,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			unset( $query['referrer_url'] );
 			unset( $query['is_filters'] );
 
-			//var_dump( $query );
-
 			if ( ! empty( $query ) && is_array( $query ) ) {
 				foreach ( $query as $field => $value ) {
 
@@ -873,8 +871,6 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 							} elseif( 'gmt_offset' == $field ) {
 								continue;
 							} else {
-								 // var_dump($field);
-								 // var_dump($value);
 
 								if ( is_array( $value ) ) {
 									$field_query = array( 'relation' => 'OR' );

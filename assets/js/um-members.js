@@ -134,12 +134,30 @@ jQuery(document).ready(function() {
 		layout = um_set_directory_storage( directory, 'layout', layout );
 
 		if ( directory.find('.um-member-directory-view-type-a').length ) {
-			var button_class = ( layout === 'list' ) ? 'um-faicon-list' : 'um-faicon-th';
-			directory.find('.um-member-directory-view-type-a i').attr( 'class', button_class );
+			var view_type = directory.find('.um-member-directory-view-type-a').parent();
+			var check_layout = um_get_directory_storage( directory, 'layout' );
 
-			var tooltip_title = ( layout === 'list' ) ? 'Change to Grid' : 'Change to List';
-			directory.find('.um-member-directory-view-type-a').attr( 'original-title', tooltip_title );
-			directory.find('.um-member-directory-view-type-a').tipsy('hide').tipsy('show');
+			var summ_elem = view_type.find('.um-member-directory-view-type-a').length
+
+			view_type.find('.um-member-directory-view-type-a').each( function ( index, elem ) {
+				if( jQuery(elem).data('type') == check_layout ) {
+					jQuery(elem).show();
+					if( index === summ_elem - 1) {
+						var tooltip_title = jQuery(elem).prevAll().last().attr('default-title');
+					} else {
+						var tooltip_title = jQuery(elem).next().attr('default-title');
+					}
+					jQuery(elem).attr( 'original-title', tooltip_title );
+				} else {
+					jQuery(elem).hide();
+				}
+			})
+			// var button_class = ( layout === 'list' ) ? 'um-faicon-list' : 'um-faicon-th';
+			// directory.find('.um-member-directory-view-type-a i').attr( 'class', button_class );
+			//
+			// var tooltip_title = ( layout === 'list' ) ? 'Change to Grid' : 'Change to List';
+			// directory.find('.um-member-directory-view-type-a').attr( 'original-title', tooltip_title );
+			// directory.find('.um-member-directory-view-type-a').tipsy('hide').tipsy('show');
 		}
 
 
@@ -297,24 +315,54 @@ jQuery(document).ready(function() {
 	//change layout
 	jQuery( document.body ).on( 'click', '.um-member-directory-view-type-a', function() {
 		var directory = jQuery(this).parents('.um-directory');
+		var $this = jQuery(this);
 
 		if ( um_is_directory_busy( directory ) ) {
 			return false;
 		}
 
 		var layout = um_get_directory_storage( directory, 'layout' );
-		layout = ( layout === 'grid' ) ? 'list' : 'grid';
-		layout = 'map';
+
+		var view_type = directory.find('.um-member-directory-view-type-a').parent();
+		var summ_elem = jQuery(this).parent().find('.um-member-directory-view-type-a').length;
+
+		var elem_next,
+			tooltip_title;
+
+		view_type.find('.um-member-directory-view-type-a').each( function ( index, elem ) {
+			if( jQuery(elem).data('type') == layout ) {
+				if( index === summ_elem - 1) {
+					elem_next = jQuery(elem).prevAll().last();
+					tooltip_title = jQuery(elem_next).next().attr('default-title');
+				} else {
+					elem_next = jQuery(elem).next();
+					if(index == 2) {
+						tooltip_title = jQuery(elem).prevAll().last().attr('default-title');
+					} else {
+						tooltip_title = jQuery(elem_next).next().attr('default-title');
+					}
+				}
+			}
+		})
+
+		jQuery(this).parent().find('.um-member-directory-view-type-a').hide();
+		elem_next.show();
+		elem_next.attr( 'original-title', tooltip_title );
+		layout = jQuery(elem_next).data('type');
+
+		// var layout = um_get_directory_storage( directory, 'layout' );
+		// layout = ( layout === 'grid' ) ? 'list' : 'grid';
+		// layout = 'map';
 
 		um_set_directory_storage( directory, 'layout', layout, true );
 		directory.data( 'view_type', layout );
 
-		var button_class = ( layout === 'list' ) ? 'um-faicon-list' : 'um-faicon-th';
-		directory.find('.um-member-directory-view-type-a i').attr( 'class', button_class );
-
-		var tooltip_title = ( layout === 'list' ) ? 'Change to Grid' : 'Change to List';
-		directory.find('.um-member-directory-view-type-a').attr( 'original-title', tooltip_title );
-		directory.find('.um-member-directory-view-type-a').tipsy('hide').tipsy('show');
+		// var button_class = ( layout === 'list' ) ? 'um-faicon-list' : 'um-faicon-th';
+		// directory.find('.um-member-directory-view-type-a i').attr( 'class', button_class );
+		//
+		// var tooltip_title = ( layout === 'list' ) ? 'Change to Grid' : 'Change to List';
+		// directory.find('.um-member-directory-view-type-a').attr( 'original-title', tooltip_title );
+		// directory.find('.um-member-directory-view-type-a').tipsy('hide').tipsy('show');
 
 		var data = um_get_directory_storage( directory, 'last_data' );
 		if ( data !== null ) {
@@ -812,9 +860,12 @@ function um_members_hide_preloader( directory ) {
 
 
 function um_ajax_get_members( directory ) {
+	var directory_id = directory.data('unique_id');
+	directory_id = directory_id.replace("um-", "");
+
 	var request = {
 		page: um_get_directory_storage( directory, 'page' ),
-		args: um_members_args,
+		args: window['um_members_args_' + directory_id],
 		nonce: um_scripts.nonce,
 		referrer_url: window.location.href
 	};
