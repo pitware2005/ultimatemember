@@ -575,9 +575,9 @@ jQuery(document).ready(function() {
 		var search_bar = jQuery(this).parents('.um-directory').find('.um-search');
 
 		if ( search_bar.is(':visible') ) {
-			search_bar.slideUp(750);
+			search_bar.slideUp(350);
 		} else {
-			search_bar.slideDown(750);
+			search_bar.slideDown(350);
 		}
 	});
 
@@ -675,7 +675,9 @@ jQuery(document).ready(function() {
 		um_ajax_get_members( directory );
 
 		if ( directory.find( '.um-members-filter-remove' ).length === 0 ) {
-			directory.find('.um-clear-filters-a').remove();
+			directory.find('.um-clear-filters-a').hide();
+		} else {
+			directory.find('.um-clear-filters-a').show();
 		}
 	});
 
@@ -691,30 +693,33 @@ jQuery(document).ready(function() {
 			var filter_name = jQuery(this).data('name');
 			var range = jQuery(this).data('range');
 
-			var current_value = um_get_directory_storage( directory, 'filter_' + filter_name );
-			if ( current_value !== null && -1 !== jQuery.inArray( removeItem, current_value ) ) {
-				current_value = jQuery.grep( current_value, function( value ) {
-					return value !== removeItem;
-				});
+			um_delete_directory_storage( directory, 'filter_' + filter_name );
 
-				if ( current_value.length > 0 ) {
-					um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
-				} else {
-					um_delete_directory_storage( directory, 'filter_' + filter_name );
-				}
-
-				directory.find('.um-members-filter-tag').remove();
-			} else if( current_value !== null && current_value[range] !== null ) {
-				directory.find('input.um-datepicker-filter[data-filter_name="' + filter_name + '"][data-range="' + range + '"]').val('').change();
-
-				delete current_value[range];
-				if ( jQuery.isEmptyObject( current_value ) === false ) {
-					um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
-				} else {
-					um_delete_directory_storage( directory, 'filter_' + filter_name );
-				}
-				jQuery(this).parents('.um-members-filter-tag').remove();
-			}
+			// var current_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+			// console.log(jQuery.inArray( removeItem.toString(), current_value ));
+			// if ( current_value !== null && -1 !== jQuery.inArray( removeItem, current_value ) ) {
+			// 	current_value = jQuery.grep( current_value, function( value ) {
+			// 		return value !== removeItem;
+			// 	});
+			//
+			// 	if ( current_value.length > 0 ) {
+			// 		um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
+			// 	} else {
+			// 		um_delete_directory_storage( directory, 'filter_' + filter_name );
+			// 	}
+			//
+			// 	directory.find('.um-members-filter-tag').remove();
+			// } else if( current_value !== null && current_value[range] !== null ) {
+			// 	directory.find('input.um-datepicker-filter[data-filter_name="' + filter_name + '"][data-range="' + range + '"]').val('').change();
+			//
+			// 	delete current_value[range];
+			// 	if ( jQuery.isEmptyObject( current_value ) === false ) {
+			// 		um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
+			// 	} else {
+			// 		um_delete_directory_storage( directory, 'filter_' + filter_name );
+			// 	}
+			// 	jQuery(this).parents('.um-members-filter-tag').remove();
+			// }
 		});
 
 		//set 1st page after filtration
@@ -723,7 +728,7 @@ jQuery(document).ready(function() {
 
 		um_ajax_get_members( directory );
 
-		jQuery(this).remove();
+		jQuery(this).hide();
 	});
 
 
@@ -1074,5 +1079,11 @@ function um_change_tag( directory ) {
 	} else {
 		directory.find('.um-filtered-line').hide();
 		show_after_search = true;
+	}
+
+	if ( directory.find( '.um-members-filter-remove' ).length === 0 ) {
+		directory.find('.um-clear-filters-a').hide();
+	} else {
+		directory.find('.um-clear-filters-a').show();
 	}
 }
