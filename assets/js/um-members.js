@@ -575,16 +575,16 @@ jQuery(document).ready(function() {
 		var search_bar = jQuery(this).parents('.um-directory').find('.um-search');
 
 		if ( search_bar.is(':visible') ) {
-			search_bar.slideUp(350);
+			search_bar.slideUp(650);
 		} else {
-			search_bar.slideDown(350);
+			search_bar.slideDown(650);
 		}
 	});
 
 
 	jQuery('.um-close-filter').click( function() {
 		var search_bar = jQuery(this).parents('.um-directory').find('.um-search');
-		search_bar.slideUp(750);
+		search_bar.slideUp(650);
 	});
 
 

@@ -1,9 +1,9 @@
 <div class="um <?php echo $this->get_class( $mode ); ?> um-<?php echo esc_attr( $form_id ); ?>">
 
 	<div class="um-form">
-	
+
 		<form method="post" action="">
-			
+
 			<?php
 			/**
 			 * UM hook
@@ -40,7 +40,7 @@
                 </div>
 
             </div>
-			
+
 			<div class="um-account-side uimob340-hide uimob500-hide">
 
                 <div class="um-account-meta radius-<?php echo UM()->options()->get('profile_photocorner'); ?>">
@@ -88,9 +88,9 @@
 					} ?>
 				</ul>
 			</div>
-			
+
 			<div class="um-account-main" data-current_tab="<?php echo UM()->account()->current_tab; ?>">
-			
+
 				<?php
 				/**
 				 * UM hook
@@ -112,7 +112,7 @@
 				 * ?>
 				 */
 				do_action( 'um_before_form', $args );
-				
+
 				foreach ( UM()->account()->tabs as $id => $info ) {
 
                     $current_tab = UM()->account()->current_tab;
@@ -133,13 +133,13 @@
                         </div>
 
                     <?php }
-						
+
 				} ?>
-				
+
 			</div>
 			<div class="um-clear"></div>
 		</form>
-		
+
 		<?php
 		/**
 		 * UM hook
@@ -159,7 +159,7 @@
 		 * ?>
 		 */
 		do_action( 'um_after_account_page_load' ); ?>
-	
+
 	</div>
-	
+
 </div>

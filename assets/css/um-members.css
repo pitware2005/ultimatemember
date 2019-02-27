@@ -604,7 +604,7 @@ div.uimob500 .um-member-directory-search-line .um-do-search {
 	font-size: 30px;
 	height: 30px;
 	line-height: 30px;
-	z-index: 66;
+	z-index: 1;
 }
 
 .um-members-list .um-member {
@@ -967,4 +967,7 @@ new
 }
 .um-search .um-search-filter {
 	position: relative;
+}
+.um-search[style*="overflow: hidden;"] .um-search-filter {
+	pointer-events: none;
 }
