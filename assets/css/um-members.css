@@ -206,6 +206,16 @@
 	float: none !important;
 }
 
+.um-members-list .um-member-photo img {
+	width: 90px;
+	height: 90px;
+	position: relative;
+	top: -35px;
+	margin-bottom: -45px !important;
+	float: none !important;
+	opacity: 1;
+}
+
 .um-member.with-cover .um-member-photo {padding-top: 0}
 .um-member.with-cover .um-member-photo img {
 	width: 90px;

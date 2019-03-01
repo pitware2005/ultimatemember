@@ -72,7 +72,7 @@
 							} ?>
 
 							<# if ( user.<?php echo $key;?> ) { #>
-							<div class="um-member-tagline um-member-tagline-<?php echo $key;?>">
+							<div class="um-member-tagline um-member-tagline-<?php echo $key;?>" data-key="<?php echo $key;?>">
 								{{{user.<?php echo $key;?>}}}
 							</div>
 							<# } #>

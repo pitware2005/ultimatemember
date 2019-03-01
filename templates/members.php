@@ -189,9 +189,6 @@ if ( ! $single_view ) {
 
 		<div class="um-members-wrapper">
 			<?php $args['view_type'] = $view_type;
-			// echo "<pre>";
-			// var_dump($args);
-			// echo "</pre>";
 
 			include UM()->templates()->get_template( 'members-grid' );
 			include UM()->templates()->get_template( 'members-list' );
