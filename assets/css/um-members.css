@@ -442,7 +442,8 @@ a.um-edit-profile-btn {
 }
 
 .um-member-directory-search-line.um-member-with-sorting.um-member-with-filters.um-member-with-view {
-	width: calc( 100% - 300px );
+	/* width: calc( 100% - 300px ); */
+	width: 100%;
 }
 
 .um-member-directory-actions.um-member-with-sorting.um-member-with-filters.um-member-with-view {
@@ -980,4 +981,8 @@ new
 }
 .um-search[style*="overflow: hidden;"] .um-search-filter {
 	pointer-events: none;
+}
+
+.um-member-with-sorting {
+
 }
