@@ -157,7 +157,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				$array['total_users'],
 			);
 
-			return str_replace( $search, $replace, $string );
+			return str_replace( $search, $replace, stripcslashes( $string ) );
 		}
 
 

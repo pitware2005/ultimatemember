@@ -689,7 +689,9 @@ div.uimob500 .um-members-list .um-member-card-actions {
 .um-members-list .um-member-metaline span span {
 	float: left;
 }
-
+.um-members-list .um-member-metaline span strong {
+	width: 100%;
+}
 
 .um-members-list .um-members-friend-stats div {
 	margin-left: 0;

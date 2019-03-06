@@ -665,7 +665,12 @@ jQuery(document).ready(function() {
 			}
 			jQuery(this).parents('.um-members-filter-tag').remove();
 		} else {
-			um_delete_directory_storage( directory, 'filter_' + filter_name );
+			if( current_value.length > 1 && current_value.includes(removeItem)) {
+				current_value.splice( current_value.indexOf(removeItem), 1 );
+				um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
+			} else {
+				um_delete_directory_storage( directory, 'filter_' + filter_name );
+			}
 			jQuery(this).parents('.um-members-filter-tag').remove();
 			var slider = jQuery(directory).find('div.um-slider');
 			slider.slider( "values", [ parseInt( slider.data('min') ), parseInt( slider.data('max') ) ] );
