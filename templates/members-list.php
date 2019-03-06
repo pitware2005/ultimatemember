@@ -100,8 +100,9 @@
 
 					</div>
 
-					<# if ( user.actions.length > 0 ) { #>
-						<div class="um-member-card-actions">
+
+					<div class="um-member-card-actions">
+						<# if ( user.actions.length > 0 ) { #>
 							<# _.each( user.actions, function( action, action_key, action_list ) { #>
 							<div class="{{{action.wrapper_class}}}">
 								<a href="{{{action.url}}}" class="{{{action.class}}}">
@@ -109,9 +110,10 @@
 								</a>
 							</div>
 							<# }); #>
-							<?php do_action( 'um_members_just_after_name', $args ); ?>
-						</div>
-					<# } #>
+						<# } #>
+						<?php do_action( 'um_members_just_after_name', $args ); ?>
+					</div>
+
 					<div class="um-clear"></div>
 				</div>
 

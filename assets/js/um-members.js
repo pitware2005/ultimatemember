@@ -693,33 +693,41 @@ jQuery(document).ready(function() {
 			var filter_name = jQuery(this).data('name');
 			var range = jQuery(this).data('range');
 
-			um_delete_directory_storage( directory, 'filter_' + filter_name );
+			//um_delete_directory_storage( directory, 'filter_' + filter_name );
 
-			// var current_value = um_get_directory_storage( directory, 'filter_' + filter_name );
-			// console.log(jQuery.inArray( removeItem.toString(), current_value ));
-			// if ( current_value !== null && -1 !== jQuery.inArray( removeItem, current_value ) ) {
-			// 	current_value = jQuery.grep( current_value, function( value ) {
-			// 		return value !== removeItem;
-			// 	});
-			//
-			// 	if ( current_value.length > 0 ) {
-			// 		um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
-			// 	} else {
-			// 		um_delete_directory_storage( directory, 'filter_' + filter_name );
-			// 	}
-			//
-			// 	directory.find('.um-members-filter-tag').remove();
-			// } else if( current_value !== null && current_value[range] !== null ) {
-			// 	directory.find('input.um-datepicker-filter[data-filter_name="' + filter_name + '"][data-range="' + range + '"]').val('').change();
-			//
-			// 	delete current_value[range];
-			// 	if ( jQuery.isEmptyObject( current_value ) === false ) {
-			// 		um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
-			// 	} else {
-			// 		um_delete_directory_storage( directory, 'filter_' + filter_name );
-			// 	}
-			// 	jQuery(this).parents('.um-members-filter-tag').remove();
-			// }
+			var current_value = um_get_directory_storage( directory, 'filter_' + filter_name );
+			if ( current_value !== null && -1 != jQuery.inArray( removeItem.toString(), current_value ) ) {
+				current_value = jQuery.grep( current_value, function( value ) {
+					return value != removeItem;
+				});
+
+				if ( current_value.length > 0 ) {
+					um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
+				} else {
+					um_delete_directory_storage( directory, 'filter_' + filter_name );
+				}
+
+				//set 1st page after filtration
+				um_set_directory_storage( directory, 'page', 1, true );
+
+				jQuery(this).parents('.um-members-filter-tag').remove();
+			} else if( current_value !== null && current_value[range] !== undefined ) {
+				directory.find('input.um-datepicker-filter[data-filter_name="' + filter_name + '"][data-range="' + range + '"]').val('').change();
+
+				delete current_value[range];
+				if ( jQuery.isEmptyObject( current_value ) === false ) {
+					um_set_directory_storage( directory, 'filter_' + filter_name, current_value, true );
+				} else {
+					um_delete_directory_storage( directory, 'filter_' + filter_name );
+				}
+				jQuery(this).parents('.um-members-filter-tag').remove();
+			} else {
+				um_delete_directory_storage( directory, 'filter_' + filter_name );
+				jQuery(this).parents('.um-members-filter-tag').remove();
+				var slider = jQuery(directory).find('div.um-slider');
+				slider.slider( "values", [ parseInt( slider.data('min') ), parseInt( slider.data('max') ) ] );
+				um_set_range_label( slider );
+			}
 		});
 
 		//set 1st page after filtration
