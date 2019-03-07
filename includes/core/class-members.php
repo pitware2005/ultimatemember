@@ -1150,7 +1150,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			do_action( 'um_user_before_query', $this->query_args );
 
 			add_filter( 'get_meta_sql', array( &$this, 'change_meta_sql' ), 10 );
-
+			
 			$users = new \WP_User_Query( $this->query_args );
 
 			remove_filter( 'get_meta_sql', array( &$this, 'change_meta_sql' ), 10 );

@@ -650,6 +650,7 @@ div.uimob500 .um-member-directory-search-line .um-do-search {
 
 .um-members-list .um-member-card-actions a {
 	min-width: 185px;
+	box-sizing: border-box;
 }
 
 div.uimob340 .um-members-list .um-member-card-actions,
