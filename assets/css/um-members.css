@@ -986,6 +986,7 @@ new
 	pointer-events: none;
 }
 
-.um-member-with-sorting {
-
+.um-dropdown li a {
+	min-width: 185px;
+	box-sizing: border-box;
 }
