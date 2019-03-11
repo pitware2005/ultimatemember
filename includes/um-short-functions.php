@@ -1792,7 +1792,18 @@ function um_closest_num( $array, $number ) {
  *
  * @return bool|string
  */
-function um_get_cover_uri( $image, $attrs ) {
+function um_get_cover_uri( $image, $attrs = null ) {
+  
+	if ( empty( $attrs ) ) {
+	  $sizes = array_replace( array(
+		0	 => 300,
+		1	 => 600,
+		2	 => 1000
+		  ), $sizes = UM()->options()->get( 'cover_thumb_sizes' ) );
+
+	  $attrs = UM()->mobile()->isMobile() ? ( UM()->mobile()->isTablet() ? $sizes[0] : $sizes[1] ) : $sizes[2];
+	}
+
 	$uri = false;
 	$uri_common = false;
 	$ext = '.' . pathinfo( $image, PATHINFO_EXTENSION );

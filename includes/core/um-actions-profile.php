@@ -568,19 +568,7 @@ function um_profile_header_cover_area( $args ) {
 
 				<?php if (um_profile( 'cover_photo' )) { ?>
 
-					<?php
-
-					if (UM()->mobile()->isMobile()) {
-						if (UM()->mobile()->isTablet()) {
-							echo um_user( 'cover_photo', 1000 );
-						} else {
-							echo um_user( 'cover_photo', 300 );
-						}
-					} else {
-						echo um_user( 'cover_photo', 1000 );
-					}
-
-					?>
+					<?php echo um_user( 'cover_photo' ); ?>
 
 				<?php } else if ($default_cover && $default_cover['url']) {
 
