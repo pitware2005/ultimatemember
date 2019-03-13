@@ -116,6 +116,11 @@ if ( ! empty( $_POST['role'] ) ) {
 
 		UM()->user()->remove_cache_all_users();
 
+		/*
+		 * After update user_role
+		 */
+		do_action( 'um_roles_after_update', $id );
+
 		um_js_redirect( $redirect );
 	}
 }
