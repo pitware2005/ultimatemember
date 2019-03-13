@@ -674,7 +674,7 @@ jQuery(document).ready(function() {
 			jQuery(this).parents('.um-members-filter-tag').remove();
 			var slider = jQuery(directory).find('div.um-slider');
 			slider.slider( "values", [ parseInt( slider.data('min') ), parseInt( slider.data('max') ) ] );
-			um_set_range_label( slider );
+			//um_set_range_label( slider );
 		}
 
 		um_ajax_get_members( directory );
