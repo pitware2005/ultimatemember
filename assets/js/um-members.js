@@ -332,12 +332,12 @@ jQuery(document).ready(function() {
 		view_type.find('.um-member-directory-view-type-a').each( function ( index, elem ) {
 			if( jQuery(elem).data('type') == layout ) {
 				if( index === summ_elem - 1) {
-					elem_next = jQuery(elem).prevAll().last();
+					elem_next = jQuery(elem).parent().find('.um-member-directory-view-type-a').eq(0);
 					tooltip_title = jQuery(elem_next).next().attr('default-title');
 				} else {
-					elem_next = jQuery(elem).next();
-					if(index == 2) {
-						tooltip_title = jQuery(elem).prevAll().last().attr('default-title');
+					elem_next = jQuery(elem).parent().find('.um-member-directory-view-type-a').eq( index + 1 );
+					if( index === summ_elem - 2) {
+						tooltip_title = jQuery(elem).parent().find('.um-member-directory-view-type-a').eq(0).attr('default-title');
 					} else {
 						tooltip_title = jQuery(elem_next).next().attr('default-title');
 					}
