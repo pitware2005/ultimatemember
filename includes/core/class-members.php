@@ -782,7 +782,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 								};
 
 							} elseif ( 'birth_date' == $field ) {
-								$from_date = date( 'Y-m-d', mktime( 0,0,0, 1, 1, date('Y', time() - $query['birth_date'][0]*YEAR_IN_SECONDS ) ) );
+								$from_date = date( 'Y-m-d', mktime( 0,0,0, 1, 1, date('Y', time() - ($query['birth_date'][0] -1)*YEAR_IN_SECONDS ) ) );
 								$to_date = date( 'Y-m-d', mktime( 0,0,0, 1, 1, date('Y', time() - ($query['birth_date'][1] +1)*YEAR_IN_SECONDS ) ) );
 
 								$meta_query = array(
@@ -1150,7 +1150,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 			do_action( 'um_user_before_query', $this->query_args );
 
 			add_filter( 'get_meta_sql', array( &$this, 'change_meta_sql' ), 10 );
-			
+
 			$users = new \WP_User_Query( $this->query_args );
 
 			remove_filter( 'get_meta_sql', array( &$this, 'change_meta_sql' ), 10 );
