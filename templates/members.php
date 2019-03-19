@@ -37,7 +37,7 @@ $view_type_info = apply_filters( 'um_add_view_types_info', $view_type_info, $arg
 /*
  * If view type deactive
  */
-if( ! in_array( $view_type, $view_type_info ) ) {
+if( ! array_key_exists( $view_type, $view_type_info ) ) {
 	$view_type = 'grid';
 }
 
