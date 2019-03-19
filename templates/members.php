@@ -34,6 +34,12 @@ foreach ( $delete_default as $key => $value ) {
  * Add view info
  */
 $view_type_info = apply_filters( 'um_add_view_types_info', $view_type_info, $args['view_types'] );
+/*
+ * If view type deactive
+ */
+if( ! in_array( $view_type, $view_type_info ) ) {
+	$view_type = 'grid';
+}
 
 $sorting_options = array();
 if ( ! empty( $args['sorting_fields'] ) ) {
