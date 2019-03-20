@@ -297,7 +297,8 @@
 	vertical-align: middle;
 }
 
-.um-member-metaline span {
+.um-members-grid .um-member-metaline > span,
+.um-members-grid .um-member-tagline > span.um-user-tags {
 	/* display: block; */
 	text-align: center;
 	display: flex;
