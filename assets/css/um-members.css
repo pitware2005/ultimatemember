@@ -306,6 +306,10 @@
 	align-items: center;
 	justify-content: center;
 }
+.um-members-grid .um-member-metaline strong,
+.um-members-grid .um-member-tagline strong {
+	margin-right: 5px;
+}
 
 /*
 	- Member connect bar
