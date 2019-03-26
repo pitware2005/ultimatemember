@@ -834,8 +834,8 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 								}
 
 								if( isset( $query['last_login']['from'] ) and isset( $query['last_login']['to'] ) ) {
-									$from_date = (int)$query['last_login']['from'] + ( $offset * 60 * 60 );
-									$to_date   = (int)$query['last_login']['to'] + ( $offset * 60 * 60 ) + (24 * 60 * 60 - 1);
+									$from_date = (int)$query['last_login']['from'] + ( $offset * 60 * 60 ); // client time zone offset
+									$to_date   = (int)$query['last_login']['to'] + ( $offset * 60 * 60 ) + (24 * 60 * 60 - 1); // time 23:59
 
 									$meta_query[] = array(
 										'key'       => '_um_last_login',
