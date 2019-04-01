@@ -18,7 +18,7 @@ jQuery(document).ready(function() {
 			max: parseInt( slider.data('max') ),
 			values: default_value,
 			create: function( event, ui ) {
-				console.log( ui );
+				//console.log( ui );
 			},
 			step: 1,
 			slide: function( event, ui ) {
@@ -303,7 +303,7 @@ jQuery(document).ready(function() {
 			um_change_tag( directory );
 		}
 
-		if ( parseInt( directory.data( 'only_search' ) ) === 1 && show_after_search ) {
+		if ( directory.data( 'only_search' ) > 0 && show_after_search ) {
 			um_members_hide_preloader( directory );
 			return;
 		}

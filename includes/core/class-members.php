@@ -1239,6 +1239,16 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 						'class'         => 'um-edit-profile-btn um-button um-alt',
 					);
 				}
+				
+				// Replace hook 'um_members_just_after_name'
+				ob_start();
+				do_action( 'um_members_just_after_name', $user_id, $args );
+				$hook_just_after_name = ob_get_clean();
+				
+				// Replace hook 'um_members_after_user_name'
+				ob_start();
+				do_action( 'um_members_after_user_name', $user_id, $args );
+				$hook_after_user_name = ob_get_clean();
 
 				$data_array = array(
 					'id'                    => $user_id,
@@ -1254,6 +1264,8 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 					'display_name_html'     => um_user( 'display_name', 'html' ),
 					'social_urls'           => UM()->fields()->show_social_urls( false ),
 					'actions'               => $actions,
+					'hook_just_after_name'  => $hook_just_after_name,
+					'hook_after_user_name'  => $hook_after_user_name,
 				);
 
 				if ( $args['show_tagline'] && is_array( $args['tagline_fields'] ) ) {
@@ -1273,9 +1285,7 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 					}
 				}
 
-				$data_array = apply_filters( 'um_ajax_get_members_data', $data_array, $user_id );
-
-				$users_data[] = $data_array;
+				$users_data[] = apply_filters( 'um_ajax_get_members_data', $data_array, $user_id );
 				um_reset_user_clean();
 			}
 

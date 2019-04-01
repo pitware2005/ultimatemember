@@ -426,8 +426,9 @@ a.um-edit-profile-btn {
 }
 
 #content .um-member-directory-header a {
+	border-bottom: none;
+	box-shadow: none;
 	text-decoration: none;
-	box-shadow: none !important;
 }
 
 #content .um-members-wrapper .um-member-photo a {

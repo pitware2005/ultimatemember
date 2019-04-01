@@ -11,113 +11,120 @@
 				<# } #>
 			</div>
 		</div>
+		
 		<div class="um-members">
 			<div class="um-gutter-sizer"></div>
+			
 			<# if ( data.users.length > 0 ) { #>
-			<# _.each( data.users, function( user, key, list ) { #>
-			<div class="um-member um-role-{{{user.role}}} {{{user.account_status}}} <?php if ( $cover_photos ) { echo 'with-cover'; } ?>">
-				<span class="um-member-status {{{user.account_status}}}">{{{user.account_status_name}}}</span>
+				<# _.each( data.users, function( user, key, list ) { #>
 
-				<?php if ( $cover_photos ) {
-					$sizes = UM()->options()->get( 'cover_thumb_sizes' );
-					$cover_size = UM()->mobile()->isTablet() ? $sizes[1] : $sizes[0]; ?>
+				<div class="um-member um-role-{{{user.role}}} {{{user.account_status}}} <?php if ( $cover_photos ) { echo 'with-cover'; } ?>">
+					<span class="um-member-status {{{user.account_status}}}">{{{user.account_status_name}}}</span>
+										
 
-					<div class="um-member-cover" data-ratio="<?php echo UM()->options()->get( 'profile_cover_ratio' ); ?>">
-						<div class="um-member-cover-e">
-							<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}">
-								{{{user.cover_photo}}}
-							</a>
-						</div>
-					</div>
-
-				<?php }
-
-				if ( $profile_photo ) { ?>
-					<div class="um-member-photo radius-<?php echo UM()->options()->get( 'profile_photocorner' ); ?>">
-						<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}">
-							{{{user.avatar}}}
-						</a>
-					</div>
-				<?php } ?>
-
-				<div class="um-member-card <?php if ( ! $profile_photo ) { echo 'no-photo'; } ?>">
-
-					<?php if ( $show_name ) { ?>
-						<div class="um-member-name">
-							<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}">
-								{{{user.display_name_html}}}
-							</a>
-						</div>
-					<?php }
-
-
-					do_action( 'um_members_just_after_name', $args ); ?>
-
-
-					<# if ( user.can_edit ) { #>
-					<div class="um-members-edit-btn">
-						<a href="{{{user.edit_profile_url}}}" class="um-edit-profile-btn um-button um-alt">
-							<?php _e( 'Edit profile','ultimate-member' ) ?>
-						</a>
-					</div>
-					<# } #>
-
-					<?php do_action( 'um_members_after_user_name', $args );
-
-					if ( $show_tagline && is_array( $tagline_fields ) ) {
-						foreach ( $tagline_fields as $key ) {
-
-							if ( empty( $key ) ) {
-								continue;
-							} ?>
-
-							<# if ( user.<?php echo $key;?> ) { #>
-							<div class="um-member-tagline um-member-tagline-<?php echo $key;?>" data-key="<?php echo $key;?>">
-								{{{user.<?php echo $key;?>}}}
+					<?php if ( $cover_photos ) :
+						$sizes = UM()->options()->get( 'cover_thumb_sizes' );
+						$cover_size = UM()->mobile()->isTablet() ? $sizes[1] : $sizes[0]; 
+						?>
+						<div class="um-member-cover" data-ratio="<?php echo UM()->options()->get( 'profile_cover_ratio' ); ?>">
+							<div class="um-member-cover-e">
+								<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}">
+									{{{user.cover_photo}}}
+								</a>
 							</div>
-							<# } #>
-						<?php }
-					}
+						</div>
+					<?php endif; ?>
 
-					if ( $show_userinfo ) { ?>
 
-						<div class="um-member-meta-main">
+					<?php if ( $profile_photo ) : ?>
+						<div class="um-member-photo radius-<?php echo UM()->options()->get( 'profile_photocorner' ); ?>">
+							<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}">
+								{{{user.avatar}}}
+							</a>
+						</div>
+					<?php endif; ?>
 
-							<?php if ( $userinfo_animate ) { ?>
-								<div class="um-member-more"><a href="javascript:void(0);"><i class="um-faicon-angle-down"></i></a></div>
-							<?php } ?>
 
-							<div class="um-member-meta <?php if ( !$userinfo_animate ) { echo 'no-animate'; } ?>">
+					<div class="um-member-card <?php if ( ! $profile_photo ) { echo 'no-photo'; } ?>">
+						<?php if ( $show_name ) : ?>
+							<div class="um-member-name">
+								<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}">
+									{{{user.display_name_html}}}
+								</a>
+							</div>
+						<?php endif; ?>
 
-								<?php foreach ( $reveal_fields as $key ) {
-									if ( empty( $key ) ) {
-										continue;
-									} ?>
-									<# if ( user.<?php echo $key;?> ) { #>
-									<div class="um-member-metaline um-member-metaline-<?php echo $key; ?>">
-													<span>
-														<strong>{{{user.label_<?php echo $key;?>}}}:</strong>
-														{{{user.<?php echo $key;?>}}}
-													</span>
-									</div>
-									<# } #>
-								<?php }
 
-								if ( $show_social ) { ?>
-									<div class="um-member-connect">
-										{{{user.social_urls}}}
-									</div>
+						{{{user.hook_just_after_name}}}
+
+
+						<# if ( user.can_edit ) { #>
+						<div class="um-members-edit-btn">
+							<a href="{{{user.edit_profile_url}}}" class="um-edit-profile-btn um-button um-alt"> <?php _e( 'Edit profile','ultimate-member' ) ?> </a>
+						</div>
+						<# } #>
+
+
+						{{{user.hook_after_user_name}}}
+
+
+						<?php 
+						if ( $show_tagline && is_array( $tagline_fields ) ) :
+							foreach ( $tagline_fields as $key ) :
+								if ( empty( $key ) ) {
+									continue;
+								} 
+								?>
+
+								<# if ( user.<?php echo $key;?> ) { #>
+								<div class="um-member-tagline um-member-tagline-<?php echo $key;?>" data-key="<?php echo $key;?>">
+									{{{user.<?php echo $key;?>}}}
+								</div>
+								<# } #>
+
+								<?php
+							endforeach;
+						endif;
+						?>
+
+
+						<?php if ( $show_userinfo ) : ?>
+							<div class="um-member-meta-main">
+								<?php if ( $userinfo_animate ) { ?>
+									<div class="um-member-more"><a href="javascript:void(0);"><i class="um-faicon-angle-down"></i></a></div>
 								<?php } ?>
+
+								<div class="um-member-meta <?php if ( !$userinfo_animate ) { echo 'no-animate'; } ?>">
+
+									<?php 
+									foreach ( $reveal_fields as $key ) :
+										if ( empty( $key ) ) {
+											continue;
+										} 
+										?>
+										<# if ( user.<?php echo $key;?> ) { #>
+										<div class="um-member-metaline um-member-metaline-<?php echo $key; ?>"> <span><strong>{{{user.label_<?php echo $key;?>}}}:</strong> {{{user.<?php echo $key;?>}}} </span> </div>
+										<# } #>
+									<?php endforeach; ?>
+
+
+									<?php if ( $show_social ) : ?>
+										<div class="um-member-connect">
+											{{{user.social_urls}}}
+										</div>
+									<?php endif; ?>
+								</div>
+
+								<div class="um-member-less"><a href="javascript:void(0);"><i class="um-faicon-angle-up"></i></a></div>
 							</div>
+						<?php endif; ?>
 
-							<div class="um-member-less"><a href="javascript:void(0);"><i class="um-faicon-angle-up"></i></a></div>
-						</div>
-
-					<?php } ?>
+					</div>
 				</div>
-			</div>
-			<# }); #>
+
+				<# }); #>
 			<# } else { #>
+							
 			<div class="um-members-none">
 				<p><?php echo $args['no_users']; ?></p>
 			</div>

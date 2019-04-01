@@ -1,15 +1,28 @@
-<?php $args['view_types'] = ! empty( $args['view_types'] ) ? $args['view_types'] : array();
+<?php
+
+// Get default and real arguments
+$def_args = array();
+foreach ( UM()->config()->core_directory_meta['members'] as $k => $v ) {
+	$key = str_replace( '_um_', '', $k );
+	$def_args[$key] = $v;
+}
+extract( array_merge( $def_args, $args ), EXTR_SKIP );
+
+
+$args['view_type'] = 'grid';
 if ( empty( $args['view_types'] ) ) {
 	$single_view = true;
-	$view_type = 'grid';
-} else {
+	$args['view_type'] = 'grid';
+}
+elseif ( is_array( $args['view_types'] ) ) {
 	if ( count( $args['view_types'] ) == 1 ) {
 		$single_view = true;
-		$view_type = $args['view_types'][0];
-	} else {
+		$args['view_type'] = $args['view_types'][0];
+	}
+	else {
 		$single_view = false;
-		$args['default_view'] = ! empty( $args['default_view'] ) ? $args['default_view'] : $args['view_types'][0];
-		$view_type = ! empty( $_GET['view_type'] ) ? $_GET['view_type'] : $args['default_view'];
+		$args['default_view'] = !empty( $args['default_view'] ) ? $args['default_view'] : $args['view_types'][0];
+		$args['view_type'] = !empty( $_GET['view_type'] ) ? $_GET['view_type'] : $args['default_view'];
 	}
 }
 
@@ -34,11 +47,12 @@ foreach ( $delete_default as $key => $value ) {
  * Add view info
  */
 $view_type_info = apply_filters( 'um_add_view_types_info', $view_type_info, $args['view_types'] );
+
 /*
  * If view type deactive
  */
-if( ! array_key_exists( $view_type, $view_type_info ) and ! empty( $view_type_info ) ) {
-	$view_type = 'grid';
+if( ! array_key_exists( $args['view_type'], $view_type_info ) && ! empty( $view_type_info ) ) {
+	$args['view_type'] = 'grid';
 }
 
 $sorting_options = array();
@@ -73,8 +87,8 @@ if ( ! $single_view ) {
 
 <div class="um <?php echo $this->get_class( $mode ); ?> um-<?php echo esc_attr( $form_id ); ?> um-visible"
      data-unique_id="um-<?php echo esc_attr( $form_id ) ?>"
-     data-view_type="<?php echo $view_type ?>"
-     data-only_search="<?php echo ( $search && $show_search && ! empty( $must_search ) ) ? 1 : 0 ?>">
+     data-view_type="<?php echo $args['view_type'] ?>"
+     data-only_search="<?php echo (int)( $search && $show_search && $must_search ) ?>">
 
 	<div class="um-form">
 		<div class="um-member-directory-header">
@@ -116,9 +130,6 @@ if ( ! $single_view ) {
 
 				if ( ! $single_view ) { ?>
 					<div class="um-member-directory-view-type">
-						<!-- <a href="javascript:void(0);" class="um-member-directory-view-type-a um-tip-n" original-title="<?php if ( 'list' == $view_type ) { ?>Change to Grid<?php } else { ?>Change to List<?php } ?>">
-							<i class="<?php if ( 'list' == $view_type ) { ?>um-faicon-list<?php } else { ?>um-faicon-th<?php } ?>"></i>
-						</a> -->
 
 						<?php foreach ( $view_type_info as $key => $type ) { ?>
 							<a href="javascript:void(0)"
@@ -126,9 +137,7 @@ if ( ! $single_view ) {
 								data-type="<?php echo $key; ?>"
 								original-title="<?php echo $type['title']; ?>"
 								default-title="<?php echo $type['title']; ?>"
-								next-item="" >
-								<i class="<?php echo $type['icon']; ?>"></i>
-							</a>
+								next-item="" ><i class="<?php echo $type['icon']; ?>"></i></a>
 						<?php } ?>
 
 					</div>
@@ -137,7 +146,12 @@ if ( ! $single_view ) {
 			<div class="um-clear"></div>
 		</div>
 
-		<?php if ( $filters && $show_filters ) {
+		<?php 
+		if ( $filters && $show_filters ) {
+			
+			include UM()->templates()->get_template( 'members-grid' );
+			include UM()->templates()->get_template( 'members-list' );
+			include UM()->templates()->get_template( 'members-pagination' );
 
 			$search_filters = array();
 			if ( isset( $args['search_fields'] ) ) {
@@ -147,7 +161,7 @@ if ( ! $single_view ) {
 					}
 				}
 			}
-			$search_filters = apply_filters( 'um_frontend_member_search_filters', $search_filters );
+			$search_filters = apply_filters( 'um_frontend_member_search_filters', $search_filters );			
 
 			if ( $args['filters'] == 1 && is_array( $search_filters ) ) { ?>
 				<script type="text/template" id="tmpl-um-members-filtered-line">
@@ -189,48 +203,18 @@ if ( ! $single_view ) {
 					<div class="um-clear-filters"><a href="javascript:void(0);" class="um-clear-filters-a"><?php esc_attr_e( 'Clear All Filters', 'ultimate-member' ); ?></a></div>
 				</div>
 			<?php }
-
+			
 			do_action( 'um_members_directory_head', $args );
-		} ?>
+		}
+		?>
 
 		<div class="um-members-wrapper">
-			<?php $args['view_type'] = $view_type;
-
-			include UM()->templates()->get_template( 'members-grid' );
-			include UM()->templates()->get_template( 'members-list' );
-			do_action( 'um_member_directory_map', $args ); ?>
-
+			<?php do_action( 'um_member_directory_map', $args ); ?>
 			<div class="um-members-overlay"><div class="um-ajax-loading"></div></div>
 		</div>
 		<div class="um-clear"></div>
 
-
-		<div class="um-members-pagination-box"></div>
-
-		<script type="text/template" id="tmpl-um-members-pagination">
-			<# if ( data.pagination.pages_to_show.length > 0 ) { #>
-				<div class="um-members-pagidrop uimob340-show uimob500-show">
-					<?php _e( 'Jump to page:','ultimate-member' ); ?>
-					<select class="um-s2 um-members-pagi-dropdown" style="width: 100px;display:inline-block;">
-						<# _.each( data.pagination.pages_to_show, function( page, key, list ) { #>
-							<option value="{{{page}}}" <# if ( page == data.pagination.current_page ) { #>selected<# } #>>{{{page}}} <?php _e( 'of','ultimate-member' ) ?> {{{data.pagination.total_pages}}}</option>
-						<# }); #>
-					</select>
-				</div>
-
-				<div class="um-members-pagi uimob340-hide uimob500-hide">
-					<span class="pagi pagi-arrow <# if ( data.pagination.current_page == 1 ) { #>disabled<# } #>" data-page="first"><i class="um-faicon-angle-double-left"></i></span>
-					<span class="pagi pagi-arrow <# if ( data.pagination.current_page == 1 ) { #>disabled<# } #>" data-page="prev"><i class="um-faicon-angle-left"></i></span>
-
-					<# _.each( data.pagination.pages_to_show, function( page, key, list ) { #>
-						<span class="pagi <# if ( page == data.pagination.current_page ) { #>current<# } #>" data-page="{{{page}}}">{{{page}}}</span>
-					<# }); #>
-
-					<span class="pagi pagi-arrow <# if ( data.pagination.current_page == data.pagination.total_pages ) { #>disabled<# } #>" data-page="next"><i class="um-faicon-angle-right"></i></span>
-					<span class="pagi pagi-arrow <# if ( data.pagination.current_page == data.pagination.total_pages ) { #>disabled<# } #>" data-page="last"><i class="um-faicon-angle-double-right"></i></span>
-				</div>
-			<# } #>
-		</script>
+		<div class="um-members-pagination-box"></div>		
 
 		<?php
 		/**
