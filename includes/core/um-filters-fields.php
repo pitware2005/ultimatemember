@@ -730,3 +730,23 @@ function um_edit_url_field_value( $value, $key ) {
 	return $value;
 }
 add_filter( 'um_edit_url_field_value', 'um_edit_url_field_value', 10, 2 );
+
+
+/**
+ * Set current date if date value is empty
+ * @param string	$value		"Field Value"
+ * @param string	$default	"Field Key"
+ * @param string	$key			"Field Type"
+ * @param string	$type			"Field Default Value"
+ * @param array		$data			"Field Data"
+ * @return string
+ */
+function um_field_value__default_date( $value, $default, $key, $type, $data ) {
+
+	if ( empty( $value ) && $type === 'date' ) {
+		$value = date( 'Y/m/d' );
+	}
+
+	return $value;
+}
+add_filter( 'um_field_value', 'um_field_value__default_date', 10, 5 );
