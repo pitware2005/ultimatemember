@@ -46,8 +46,13 @@
 							</div>
 						<?php endif; ?>
 													
-						{{{user.hook_after_user_name}}}
-								
+						<?php
+						try {
+							do_action( 'um_members_after_user_name', $args );
+						} catch ( Exception $exc ) {
+							echo '{{{user.hook_after_user_name}}}';
+						}
+						?>								
 					</div>
 					
 
@@ -107,7 +112,13 @@
 						<# }); #>
 					<# } #>
 
-					{{{user.hook_just_after_name}}}
+					<?php
+					try {
+						do_action( 'um_members_just_after_name', $args );
+					} catch ( Exception $exc ) {
+						echo '{{{user.hook_just_after_name}}}';
+					}
+					?>
 				</div>
 
 

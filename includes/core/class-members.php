@@ -433,12 +433,16 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 		function slider_range_placeholder( $filter ) {
 			switch ( $filter ) {
 				default: {
-					$placeholder = apply_filters( "um_member_directory_filter_{$filter}_slider_range_placeholder", '' );
+					$label = ucwords( str_replace(array('um_', '_'), array('', ' '), $filter) );
+					$placeholder = apply_filters( "um_member_directory_filter_{$filter}_slider_range_placeholder", "$label: {min_range} - {max_range}" );
 					break;
 				}
 				case 'birth_date': {
-					// {field_label} - original field label
 					$placeholder = __( 'Age: {min_range} - {max_range} years old', 'ultimate-member' );
+					break;
+				}
+				case 'user_rating': {
+					$placeholder = __( 'User Rating: {min_range} - {max_range} points', 'ultimate-member' );
 					break;
 				}
 			}
@@ -1241,14 +1245,22 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				}
 				
 				// Replace hook 'um_members_just_after_name'
-				ob_start();
-				do_action( 'um_members_just_after_name', $user_id, $args );
-				$hook_just_after_name = ob_get_clean();
+				try {
+					ob_start();
+					do_action( 'um_members_just_after_name', $user_id, $args );
+					$hook_just_after_name = ob_get_clean();					
+				} catch ( Exception $exc ) {
+					$hook_just_after_name = '';
+				}
 				
 				// Replace hook 'um_members_after_user_name'
-				ob_start();
-				do_action( 'um_members_after_user_name', $user_id, $args );
-				$hook_after_user_name = ob_get_clean();
+				try {					
+					ob_start();
+					do_action( 'um_members_after_user_name', $user_id, $args );
+					$hook_after_user_name = ob_get_clean();
+				} catch ( Exception $exc ) {
+					$hook_after_user_name = '';
+				}				
 
 				$data_array = array(
 					'id'                    => $user_id,
@@ -1279,7 +1291,11 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				if ( $args['show_userinfo'] ) {
 					foreach ( $args['reveal_fields'] as $key ) {
 						if ( $key && um_filtered_value( $key ) ) {
-							$data_array[ "label_{$key}" ] = UM()->fields()->get_label( $key );
+							$label = strtr( UM()->fields()->get_label( $key ), array(
+									' (Dropdown)' => '',
+									' (Radio)' => ''
+							) );
+							$data_array[ "label_{$key}" ] = $label;
 							$data_array[ $key ] = um_filtered_value( $key );
 						}
 					}

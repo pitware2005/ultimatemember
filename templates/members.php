@@ -72,6 +72,11 @@ if ( ! empty( $args['roles_can_filter'] ) && ! in_array( um_user( 'role' ), $arg
 	$show_filters = false;
 }
 
+$search_filters = array();
+if ( isset( $args['search_fields'] ) ) {
+	$search_filters = apply_filters( 'um_frontend_member_search_filters', array_unique( array_filter( $args['search_fields'] ) ) );
+}
+
 $classes = '';
 if ( ! empty( $sorting_options ) ) {
 	$classes .= ' um-member-with-sorting';
@@ -151,19 +156,9 @@ if ( ! $single_view ) {
 			
 			include UM()->templates()->get_template( 'members-grid' );
 			include UM()->templates()->get_template( 'members-list' );
-			include UM()->templates()->get_template( 'members-pagination' );
+			include UM()->templates()->get_template( 'members-pagination' );			
 
-			$search_filters = array();
-			if ( isset( $args['search_fields'] ) ) {
-				foreach ( $args['search_fields'] as $k => $testfilter ) {
-					if ( $testfilter && ! in_array( $testfilter, (array) $search_filters ) ) {
-						$search_filters[] = $testfilter;
-					}
-				}
-			}
-			$search_filters = apply_filters( 'um_frontend_member_search_filters', $search_filters );			
-
-			if ( $args['filters'] == 1 && is_array( $search_filters ) ) { ?>
+			if ( !empty( $args['filters'] ) && is_array( $search_filters ) ) { ?>
 				<script type="text/template" id="tmpl-um-members-filtered-line">
 					<# if ( data.filters.length > 0 ) { #>
 						<# _.each( data.filters, function( filter, key, list ) { #>
@@ -175,27 +170,20 @@ if ( ! $single_view ) {
 				</script>
 
 				<div class="um-search um-search-<?php echo count( $search_filters ) ?>">
-					<?php $i = 0;
-					foreach ( $search_filters as $filter ) {
+					<?php
+					foreach ( $search_filters as $i =>$filter ) :
 						$filter_content = UM()->members()->show_filter( $filter );
 						if ( empty( $filter_content ) ) {
 							continue;
-						}
+						} 
+						?>
 
-						$add_class = ( $i % 2 !== 0 ) ? 'um-search-filter-2' : ''; ?>
+						<div class="um-search-filter"> <?php echo $filter_content; ?> </div>
 
-						<div class="um-search-filter <?php echo $add_class ?>">
-							<?php echo $filter_content; ?>
-						</div>
-
-						<?php $i++;
-					} ?>
-
-					<div class="um-clear"></div>
-
-					<div class="um-search-submit">
-						<a href="javascript:void(0);" class="um-close-filter"><?php esc_attr_e( 'Close Filters', 'ultimate-member' ); ?></a>
-					</div>
+						<?php
+					endforeach;
+					?>
+						
 					<div class="um-clear"></div>
 				</div>
 

@@ -53,19 +53,31 @@
 								</a>
 							</div>
 						<?php endif; ?>
-
-
-						{{{user.hook_just_after_name}}}
-
+													
+							
+						<?php
+						try {
+							do_action( 'um_members_just_after_name', $args );
+						} catch ( Exception $exc ) {
+							echo '{{{user.hook_just_after_name}}}';
+						}
+						?>
+																																			
 
 						<# if ( user.can_edit ) { #>
 						<div class="um-members-edit-btn">
 							<a href="{{{user.edit_profile_url}}}" class="um-edit-profile-btn um-button um-alt"> <?php _e( 'Edit profile','ultimate-member' ) ?> </a>
 						</div>
 						<# } #>
-
-
-						{{{user.hook_after_user_name}}}
+													
+							
+						<?php
+						try {
+							do_action( 'um_members_after_user_name', $args );
+						} catch ( Exception $exc ) {
+							echo '{{{user.hook_after_user_name}}}';
+						}
+						?>
 
 
 						<?php 

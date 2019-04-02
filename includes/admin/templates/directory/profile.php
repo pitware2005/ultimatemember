@@ -67,17 +67,17 @@
 			'show_default_number'	=> 1,
 		),
 		array(
-			'id'		=> '_um_show_social',
-			'type'		=> 'checkbox',
-			'label'		=> __( 'Show social connect icons', 'ultimate-member' ),
-			'value'		=> UM()->query()->get_meta_value( '_um_show_social' ),
-			'conditional'   => array( '_um_show_userinfo', '=', 1 )
-		),
-		array(
 			'id'		=> '_um_userinfo_animate',
 			'type'		=> 'checkbox',
 			'label'		=> __( 'Enable reveal section transition by default', 'ultimate-member' ),
 			'value'		=> UM()->query()->get_meta_value( '_um_userinfo_animate' ),
+			'conditional'   => array( '_um_show_userinfo', '=', 1 )
+		),
+		array(
+			'id'		=> '_um_show_social',
+			'type'		=> 'checkbox',
+			'label'		=> __( 'Show social connect icons', 'ultimate-member' ),
+			'value'		=> UM()->query()->get_meta_value( '_um_show_social' ),
 			'conditional'   => array( '_um_show_userinfo', '=', 1 )
 		),
 	);
