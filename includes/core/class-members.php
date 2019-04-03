@@ -125,14 +125,16 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 					$sql['where'],
 					$join_matches
 				);
+				
+				if( isset( $join_matches[1] ) ){
+					$meta_join_for_search = trim( $join_matches[1] );
 
-				$meta_join_for_search = trim( $join_matches[1] );
-
-				$sql['join'] = preg_replace(
-					'/(' . $meta_join_for_search . ' ON \( ' . $wpdb->users . '\.ID = ' . $meta_join_for_search . '\.user_id )(\))/im',
-					"$1 AND " . $meta_join_for_search . ".meta_key IN( '" . implode( "','", array_keys( UM()->builtin()->all_user_fields ) ) . "' ) $2",
-					$sql['join']
-				);
+					$sql['join'] = preg_replace(
+						'/(' . $meta_join_for_search . ' ON \( ' . $wpdb->users . '\.ID = ' . $meta_join_for_search . '\.user_id )(\))/im',
+						"$1 AND " . $meta_join_for_search . ".meta_key IN( '" . implode( "','", array_keys( UM()->builtin()->all_user_fields ) ) . "' ) $2",
+						$sql['join']
+					);					
+				}
 			}
 
 			return $sql;
