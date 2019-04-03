@@ -55,14 +55,9 @@
 						<?php endif; ?>
 													
 							
-						<?php
-						try {
-							do_action( 'um_members_just_after_name', $args );
-						} catch ( Exception $exc ) {
-							echo '{{{user.hook_just_after_name}}}';
-						}
-						?>
-																																			
+						<?php do_action( 'um_members_just_after_name_tmpl', $args ); ?>
+						{{{user.hook_just_after_name}}}
+
 
 						<# if ( user.can_edit ) { #>
 						<div class="um-members-edit-btn">
@@ -71,13 +66,8 @@
 						<# } #>
 													
 							
-						<?php
-						try {
-							do_action( 'um_members_after_user_name', $args );
-						} catch ( Exception $exc ) {
-							echo '{{{user.hook_after_user_name}}}';
-						}
-						?>
+						<?php do_action( 'um_members_after_user_name_tmpl', $args ); ?>
+						{{{user.hook_after_user_name}}}
 
 
 						<?php 

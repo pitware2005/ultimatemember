@@ -29,9 +29,7 @@
 					$corner = UM()->options()->get( 'profile_photocorner' ); 
 					?>
 					<div class="um-member-photo radius-<?php echo $corner; ?>">
-						<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}">
-							{{{user.avatar}}}
-						</a>
+						<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}"> {{{user.avatar}}} </a>
 					</div>
 				<?php endif; ?>
 											
@@ -40,19 +38,12 @@
 					<div class="um-member-card-header">
 						<?php if ( $show_name ) : ?>
 							<div class="um-member-name">
-								<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}">
-									{{{user.display_name_html}}}
-								</a>
+								<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}"> {{{user.display_name_html}}} </a>
 							</div>
 						<?php endif; ?>
 													
-						<?php
-						try {
-							do_action( 'um_members_after_user_name', $args );
-						} catch ( Exception $exc ) {
-							echo '{{{user.hook_after_user_name}}}';
-						}
-						?>								
+						<?php do_action( 'um_members_after_user_name_tmpl', $args ); ?>
+						{{{user.hook_after_user_name}}}							
 					</div>
 					
 
@@ -112,13 +103,8 @@
 						<# }); #>
 					<# } #>
 
-					<?php
-					try {
-						do_action( 'um_members_just_after_name', $args );
-					} catch ( Exception $exc ) {
-						echo '{{{user.hook_just_after_name}}}';
-					}
-					?>
+					<?php do_action( 'um_members_just_after_name_tmpl', $args ); ?>
+					{{{user.hook_just_after_name}}}
 				</div>
 
 

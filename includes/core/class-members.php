@@ -218,9 +218,13 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				'last_login'        => 'datepicker',
 				'user_registered'   => 'datepicker',
 			) );
+			
+			if ( empty( $filter_types[$filter] ) ) {
+				return;
+			}
 
 			$fields = UM()->builtin()->all_user_fields;
-			//var_dump( $fields );
+			
 			if ( isset( $fields[ $filter ] ) ) {
 				$attrs = $fields[ $filter ];
 			} else {
@@ -1245,22 +1249,14 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 				}
 				
 				// Replace hook 'um_members_just_after_name'
-				try {
-					ob_start();
-					do_action( 'um_members_just_after_name', $user_id, $args );
-					$hook_just_after_name = ob_get_clean();					
-				} catch ( Exception $exc ) {
-					$hook_just_after_name = '';
-				}
+				ob_start();
+				do_action( 'um_members_just_after_name', $user_id, $args );
+				$hook_just_after_name = ob_get_clean();
 				
 				// Replace hook 'um_members_after_user_name'
-				try {					
-					ob_start();
-					do_action( 'um_members_after_user_name', $user_id, $args );
-					$hook_after_user_name = ob_get_clean();
-				} catch ( Exception $exc ) {
-					$hook_after_user_name = '';
-				}				
+				ob_start();
+				do_action( 'um_members_after_user_name', $user_id, $args );
+				$hook_after_user_name = ob_get_clean();		
 
 				$data_array = array(
 					'id'                    => $user_id,
@@ -1276,8 +1272,8 @@ if ( ! class_exists( 'um\core\Members' ) ) {
 					'display_name_html'     => um_user( 'display_name', 'html' ),
 					'social_urls'           => UM()->fields()->show_social_urls( false ),
 					'actions'               => $actions,
-					'hook_just_after_name'  => $hook_just_after_name,
-					'hook_after_user_name'  => $hook_after_user_name,
+					'hook_just_after_name'  => preg_replace('/^\s+/im', '', $hook_just_after_name),
+					'hook_after_user_name'  => preg_replace('/^\s+/im', '', $hook_after_user_name),
 				);
 
 				if ( $args['show_tagline'] && is_array( $args['tagline_fields'] ) ) {

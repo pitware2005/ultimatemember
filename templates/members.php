@@ -9,6 +9,7 @@ foreach ( UM()->config()->core_directory_meta['members'] as $k => $v ) {
 extract( array_merge( $def_args, $args ), EXTR_SKIP );
 
 
+// View
 $args['view_type'] = 'grid';
 if ( empty( $args['view_types'] ) ) {
 	$single_view = true;
@@ -43,52 +44,65 @@ foreach ( $delete_default as $key => $value ) {
 	unset( $view_type_info[ $value ] );
 }
 
-/*
- * Add view info
- */
 $view_type_info = apply_filters( 'um_add_view_types_info', $view_type_info, $args['view_types'] );
 
-/*
- * If view type deactive
- */
 if( ! array_key_exists( $args['view_type'], $view_type_info ) && ! empty( $view_type_info ) ) {
 	$args['view_type'] = 'grid';
 }
 
-$sorting_options = array();
-if ( ! empty( $args['sorting_fields'] ) ) {
-	$sorting_options = $args['sorting_fields'];
-}
-$all_sorting_options = UM()->members()->get_sorting_fields();
-$sorting_options = array_intersect_key( $all_sorting_options, array_flip( $sorting_options ) );
 
-$show_search = true;
-if ( ! empty( $args['roles_can_search'] ) && ! in_array( um_user( 'role' ), $args['roles_can_search'] ) ) {
-	$show_search = false;
+// Search
+$sorting_options = empty( $args['sorting_fields'] ) ? array() : $args['sorting_fields'];
+if ( $sorting_options ) {
+	$all_sorting_options = UM()->members()->get_sorting_fields();
+	$sorting_options = array_intersect_key( $all_sorting_options, array_flip( $sorting_options ) );
 }
 
-$show_filters = true;
-if ( ! empty( $args['roles_can_filter'] ) && ! in_array( um_user( 'role' ), $args['roles_can_filter'] ) ) {
-	$show_filters = false;
-}
+$priority_user_role = UM()->roles()->get_priority_user_role( um_user( 'ID' ) );
+
+$show_search = empty( $args['roles_can_search'] ) || in_array( $priority_user_role, $args['roles_can_search'] );
+
+$show_filters = empty( $args['roles_can_filter'] ) || in_array( $priority_user_role, $args['roles_can_filter'] );
 
 $search_filters = array();
 if ( isset( $args['search_fields'] ) ) {
 	$search_filters = apply_filters( 'um_frontend_member_search_filters', array_unique( array_filter( $args['search_fields'] ) ) );
 }
 
+
+// Classes
 $classes = '';
+if ( $search && $show_search ) {
+	$classes .= ' um-member-with-search';	
+}
+if ( $filters && $show_filters ) {
+	$classes .= ' um-member-with-filters';
+}
+if ( ! $single_view ) {
+	$classes .= ' um-member-with-view';
+}
 if ( ! empty( $sorting_options ) ) {
 	$classes .= ' um-member-with-sorting';
 }
 
-if ( $filters && $show_filters ) {
-	$classes .= ' um-member-with-filters';
+
+// Extentions scripts
+if ( UM()->options()->get( 'followers_show_stats' ) || UM()->options()->get( 'followers_show_button' ) ) {
+	wp_enqueue_script( 'um_followers' );
+}
+if ( !empty( $args['friends_show_stats'] ) || !empty( $args['friends_show_button'] ) ) {
+	wp_enqueue_script( 'um_friends' );
+}
+if ( !empty( $args['show_pm_button'] ) ) {
+	wp_enqueue_script( 'um-messaging' );
 }
 
-if ( ! $single_view ) {
-	$classes .= ' um-member-with-view';
-}?>
+
+// Templates		
+include UM()->templates()->get_template( 'members-grid' );
+include UM()->templates()->get_template( 'members-list' );
+include UM()->templates()->get_template( 'members-pagination' );
+?>
 
 <div class="um <?php echo $this->get_class( $mode ); ?> um-<?php echo esc_attr( $form_id ); ?> um-visible"
      data-unique_id="um-<?php echo esc_attr( $form_id ) ?>"
@@ -96,11 +110,9 @@ if ( ! $single_view ) {
      data-only_search="<?php echo (int)( $search && $show_search && $must_search ) ?>">
 
 	<div class="um-form">
-		<div class="um-member-directory-header">
-			<div class="um-clear"></div>
-
+		<div class="um-member-directory-header <?php echo esc_attr( $classes ) ?>">
 			<?php if ( $search && $show_search ) { ?>
-				<div class="um-member-directory-search-line <?php echo esc_attr( $classes ) ?>">
+				<div class="um-member-directory-search-line">
 					<input type="text" class="um-search-line" placeholder="<?php esc_attr_e( 'Search', 'ultimate-member' ) ?>"  value="" />
 					<div class="uimob340-show uimob500-show">
 						<a href="javascript:void(0);" class="um-button um-do-search um-tip-n" original-title="<?php esc_attr_e( 'Search', 'ultimate-member' ); ?>">
@@ -112,30 +124,29 @@ if ( ! $single_view ) {
 					</div>
 				</div>
 			<?php } ?>
+				
+			<?php if ( ! empty( $sorting_options ) ) { ?>
+				<div class="um-member-directory-sorting">
+					<select class="um-s3 um-member-directory-sorting-options" id="um-member-directory-sorting-select-<?php echo esc_attr( $form_id ) ?>" data-placeholder="<?php esc_attr_e( 'Sort By', 'ultimate-member' ); ?>">
+						<option value=""></option>
+						<?php foreach ( $sorting_options as $value => $title ) { ?>
+							<option value="<?php echo $value ?>"><?php echo $title ?></option>
+						<?php } ?>
+					</select>
+				</div>
+			<?php } ?>
 
-			<div class="um-member-directory-actions <?php echo esc_attr( $classes ) ?>">
-				<?php if ( ! empty( $sorting_options ) ) { ?>
-					<div class="um-member-directory-sorting <?php if ( ! $filters || ! $show_filters ) { ?>hidden_filter<?php } ?> <?php if ( $single_view ) { ?>hidden_type<?php } ?>">
-						<select class="um-s3 um-member-directory-sorting-options" id="um-member-directory-sorting-select-<?php echo esc_attr( $form_id ) ?>" data-placeholder="<?php esc_attr_e( 'Sort By', 'ultimate-member' ); ?>">
-							<option value=""></option>
-							<?php foreach ( $sorting_options as $value => $title ) { ?>
-								<option value="<?php echo $value ?>"><?php echo $title ?></option>
-							<?php } ?>
-						</select>
-					</div>
-				<?php }
-
-				if ( $filters && $show_filters ) { ?>
+			<div class="um-member-directory-actions">
+				<?php if ( $filters && $show_filters ) { ?>
 					<div class="um-member-directory-filters">
 						<a href="javascript:void(0);" class="um-member-directory-filters-a um-tip-n" original-title="<?php esc_attr_e( 'Filters', 'ultimate-member' ); ?>">
 							<i class="um-faicon-sliders"></i>
 						</a>
 					</div>
-				<?php }
+				<?php } ?>
 
-				if ( ! $single_view ) { ?>
+				<?php if ( ! $single_view ) { ?>
 					<div class="um-member-directory-view-type">
-
 						<?php foreach ( $view_type_info as $key => $type ) { ?>
 							<a href="javascript:void(0)"
 								class="um-member-directory-view-type-a um-tip-n"
@@ -144,19 +155,14 @@ if ( ! $single_view ) {
 								default-title="<?php echo $type['title']; ?>"
 								next-item="" ><i class="<?php echo $type['icon']; ?>"></i></a>
 						<?php } ?>
-
 					</div>
 				<?php } ?>
 			</div>
-			<div class="um-clear"></div>
 		</div>
+		<div class="um-clear"></div>
 
 		<?php 
-		if ( $filters && $show_filters ) {
-			
-			include UM()->templates()->get_template( 'members-grid' );
-			include UM()->templates()->get_template( 'members-list' );
-			include UM()->templates()->get_template( 'members-pagination' );			
+		if ( $filters && $show_filters ) {		
 
 			if ( !empty( $args['filters'] ) && is_array( $search_filters ) ) { ?>
 				<script type="text/template" id="tmpl-um-members-filtered-line">
@@ -190,10 +196,10 @@ if ( ! $single_view ) {
 				<div class="um-filtered-line">
 					<div class="um-clear-filters"><a href="javascript:void(0);" class="um-clear-filters-a"><?php esc_attr_e( 'Clear All Filters', 'ultimate-member' ); ?></a></div>
 				</div>
-			<?php }
-			
-			do_action( 'um_members_directory_head', $args );
+			<?php 
+			}
 		}
+		do_action( 'um_members_directory_head', $args );
 		?>
 
 		<div class="um-members-wrapper">

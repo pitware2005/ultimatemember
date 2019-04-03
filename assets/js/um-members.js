@@ -770,8 +770,8 @@ jQuery(document).ready(function() {
 
 
 function um_set_range_label( slider, ui ) {
-
 	var placeholder = slider.siblings( '.um-slider-range' ).data( 'placeholder' );
+	
 	if( ui ) {
 		placeholder = placeholder.replace( '\{min_range\}', ui.values[ 0 ] )
 			.replace( '\{max_range\}', ui.values[ 1 ] )
@@ -857,10 +857,14 @@ function um_ajax_get_members( directory ) {
 	var directory_id = directory.data('unique_id');
 	directory_id = directory_id.replace("um-", "");
 
+	var local_date = new Date();
+	var gmt_hours = -local_date.getTimezoneOffset()/60;
+
 	var request = {
 		page: um_get_directory_storage( directory, 'page' ),
 		args: window['um_members_args_' + directory_id],
-		nonce: um_scripts.nonce,
+		gmt_offset: gmt_hours,
+		nonce: window.um_scripts.nonce,
 		referrer_url: window.location.href
 	};
 
@@ -871,7 +875,6 @@ function um_ajax_get_members( directory ) {
 	if ( directory.find('.um-search-line').length ) {
 		request.general_search = um_get_directory_storage( directory, 'general_search' );
 	}
-
 
 	if ( directory.find('.um-search-filter').length ) {
 		directory.find('.um-search-filter').each( function() {
@@ -902,12 +905,7 @@ function um_ajax_get_members( directory ) {
 		});
 	}
 
-	var local_date = new Date()
-	var gmt_hours = -local_date.getTimezoneOffset()/60;
-	request['gmt_offset'] = gmt_hours;
-
-
-	wp.ajax.send( 'um_get_members', {
+	return wp.ajax.send( 'um_get_members', {
 		data: request,
 		success: function( answer ) {
 
@@ -922,6 +920,8 @@ function um_ajax_get_members( directory ) {
 			directory.find('.um-members-pagination-box').html( pagination_template( answer ) );
 
 			directory.data( 'total_pages', answer.pagination.total_pages );
+			
+			jQuery( document ).trigger('um_members_rendered');
 		},
 		error: function( data ) {
 			console.log( data );
@@ -937,6 +937,7 @@ function um_build_template( directory, data ) {
 	directory.find('.um-members-grid, .um-members-list').remove();
 	directory.find('.um-members-wrapper').prepend( template( data ) );
 	directory.addClass('um-loaded');
+	
 	if ( directory.find('.um-members').length ) {
 		UM_Member_Grid( directory.find('.um-members') );
 		jQuery( window ).trigger( 'resize' );
@@ -1057,7 +1058,6 @@ function um_change_tag( directory ) {
 			}
 		}
 	});
-
 
 	directory.find('.um-members-filter-tag').remove();
 

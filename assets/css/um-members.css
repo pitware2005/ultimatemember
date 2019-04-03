@@ -43,12 +43,24 @@
 */
 
 .um-search {
-	text-align: center;
-	padding: 20px 0;
 	box-sizing: border-box;
-	float:left;
+	float: left;
+	padding: 20px 0px;
+	text-align: center;
 	width: 100%;
-	/*display: none;*/
+}
+
+.um-search .um-search-filter {
+	box-sizing: border-box;
+	display: block;
+	float: left;
+	height: 58px;
+	padding: 0px;
+	width: 30.66%;
+}
+.um-directory:not(.uimob340):not(.uimob500):not(.uimob800):not(.uimob960) .um-search .um-search-filter:nth-of-type(3n),
+.um-directory:not(.uimob340):not(.uimob500):not(.uimob800):not(.uimob960) .um-search .um-search-filter:nth-of-type(3n-1){
+	margin-left: 4%;
 }
 
 .um-search.um-search-1 {
@@ -57,47 +69,24 @@
 	width: 100%;
 	box-sizing: border-box;
 }
-
-.um-search.um-search-1 .um-search-submit .um-button {
-	display: block !important;
-	min-width: 100% !important;
-	margin: 0 0 10px 0 !important;
-}
-
 .um-search.um-search-1 .um-search-filter {
-	width: 100%;
-	padding: 0 0 10px 0;
 	float: none;
+	padding: 0 0 10px 0;
+	width: 100%;
 }
 
-.uimob800 .um-search:not(.um-search-1) .um-search-filter {
-	height: 58px;
+.uimob960 .um-search .um-search-filter,
+.uimob800 .um-search .um-search-filter {
 	width: 48%;
 }
-.uimob800 .um-search:not(.um-search-1) .um-search-filter:nth-of-type(2n) {
+.uimob960 .um-search .um-search-filter:nth-of-type(2n),
+.uimob800 .um-search .um-search-filter:nth-of-type(2n) {
 	margin-left: 4%;
 }
 
-.um-search .um-search-filter {
-	padding: 0 30px 30px 0;
-	display: block;
-	float: left;
-	width: 33.33%;
-	box-sizing: border-box;
-}
-
-.um-search .um-search-filter:nth-child(3n+1) {
-	padding-left: 0;
-}
-
-.um-search .um-search-filter:nth-child(3n-1) {
-	padding-right: 15px;
-	padding-left: 15px;
-}
-
-.um-search .um-search-filter:nth-child(3n) {
-	padding-right: 0;
-	padding-left: 30px;
+.uimob500 .um-search .um-search-filter,
+.uimob340 .um-search .um-search-filter {
+	width: 100%;
 }
 
 .um-search .um-search-submit .um-button {
@@ -418,169 +407,122 @@ a.um-edit-profile-btn:before {content: "\f013"}
 
 
 /* NEW STYLES FOR VIEW TYPE LIST*/
-.um-member-directory-header {
-	padding: 20px 0 !important;
-	width: 100% !important;
+.um-directory .um-member-directory-header {
 	box-sizing: border-box;
+	padding: 20px 0;
+	width: 100%;
 }
-
 #content .um-member-directory-header a {
 	border-bottom: none;
 	box-shadow: none;
 	text-decoration: none;
 }
-
 #content .um-members-wrapper .um-member-photo a {
 	text-decoration: none;
 	box-shadow: none !important;
 }
 
-.um-member-directory-search-line {
-	float: left;
-	padding: 0 10px 0 0;
-	vertical-align: middle;
-	line-height: 30px;
-	width: calc( 100% - 300px );
+.um-directory .um-member-directory-search-line{
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
-}
-
-.um-member-directory-actions {
-	float:right;
-}
-
-.um-member-directory-search-line.um-member-with-sorting.um-member-with-filters.um-member-with-view {
-	/* width: calc( 100% - 300px ); */
-	width: 100%;
-}
-
-.um-member-directory-actions.um-member-with-sorting.um-member-with-filters.um-member-with-view {
-	width:300px;
-}
-
-.um-member-directory-search-line.um-member-with-filters.um-member-with-view {
-	width: calc( 100% - 68px );
-}
-
-.um-member-directory-actions.um-member-with-filters.um-member-with-view {
-	width:68px;
-}
-
-.um-member-directory-search-line.um-member-with-sorting.um-member-with-view,
-.um-member-directory-search-line.um-member-with-sorting.um-member-with-filters {
-	width: calc( 100% - 266px );
-}
-
-.um-member-directory-actions.um-member-with-sorting.um-member-with-view,
-.um-member-directory-actions.um-member-with-sorting.um-member-with-filters {
-	width:266px;
-}
-
-.um-member-directory-search-line.um-member-with-view,
-.um-member-directory-search-line.um-member-with-filters {
-	width: calc( 100% - 34px );
-}
-
-.um-member-directory-actions.um-member-with-view,
-.um-member-directory-actions.um-member-with-filters {
-	width:34px;
-}
-
-.um-member-directory-search-line.um-member-with-sorting {
-	width: calc( 100% - 232px );
-}
-
-.um-member-directory-actions.um-member-with-sorting {
-	width:232px;
-}
-
-body div.uimob340 .um-member-directory-actions,
-body div.uimob500 .um-member-directory-actions,
-body div.uimob800 .um-member-directory-actions {
-	float:left;
-	width:100%;
-}
-
-body div.uimob340 .um-member-directory-search-line,
-body div.uimob500 .um-member-directory-search-line,
-body div.uimob800 .um-member-directory-search-line {
-	width: 100%;
+	line-height: 30px;
 	margin-bottom: 5px;
-	padding: 0;
+	padding: 0px;
+	vertical-align: middle;
+	float: left;
+	width: 100%;
+}
+.um-directory .um-member-with-view:not(.um-member-with-sorting) .um-member-directory-search-line,
+.um-directory .um-member-with-filters:not(.um-member-with-sorting) .um-member-directory-search-line {	
+	float: left;
+	width: calc( 100% - 40px );
+}
+.um-directory .um-member-with-filters.um-member-with-view:not(.um-member-with-sorting) .um-member-directory-search-line {
+	float: left;
+	width: calc( 100% - 75px );
+}
+.um-directory:not(.uimob340):not(.uimob500):not(.uimob800) .um-member-with-sorting .um-member-directory-search-line{
+	width: 48%;
 }
 
-body .um-member-directory-search-line .um-search-line {
+.um-directory .um-member-directory-search-line .um-search-line {
+	border-radius: 2px 0px 0px 2px;
 	display: block;
 	float: left;
 	line-height: 30px;
 	vertical-align: middle;
-	width: calc( 85% - 10px ) !important;
+	width: calc( 85% );
+}
+.um-directory.uimob340 .um-member-directory-search-line .um-search-line,
+.um-directory.uimob500 .um-member-directory-search-line .um-search-line {
+	width: calc( 100% - 40px );
 }
 
-body div.uimob340 .um-member-directory-search-line .um-search-line,
-body div.uimob500 .um-member-directory-search-line .um-search-line {
-	width: calc( 100% - 50px ) !important;
-}
-
-.um-member-directory-search-line .um-do-search {
-	border-radius: 0px 4px 4px 0px !important;
+.um-directory .um-member-directory-search-line .um-do-search {
+	border-radius: 0px 2px 2px 0px !important;
 	float: left;
 	height: 40px;
 	line-height: 30px;
 	margin: 0;
-	padding: 11px 0 !important;
+	padding: 11px 2px !important;
 	vertical-align: middle;
 	width: 15%;
 }
+.um-directory.uimob340 .um-member-directory-search-line .um-do-search,
+.um-directory.uimob500 .um-member-directory-search-line .um-do-search {
+	width: 40px;
+}
 
-.um-member-directory-search-line .um-do-search i {
+.um-directory .um-member-directory-search-line .um-do-search i {
 	margin: 0;
 	padding: 0;
 }
 
-div.uimob340 .um-member-directory-search-line > div,
-div.uimob500 .um-member-directory-search-line > div {
-	float: left;
+
+.um-directory .um-member-directory-actions {
+	float: right;
 }
 
-div.uimob340 .um-member-directory-search-line .um-do-search,
-div.uimob500 .um-member-directory-search-line .um-do-search {
-	width: 40px;
-}
 
-.um-member-directory-sorting {
-	float:left;
-	width: calc( 100% - 70px );
+.um-directory .um-member-directory-sorting{
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
-	vertical-align: middle;
-	line-height: 30px;
 	font-size: 30px;
 	height: 30px;
-	padding: 0 10px 5px 0;
+	line-height: 30px;
 	position: relative;
-}
-
-.um-member-directory-sorting.hidden_filter {
-	width: calc( 100% - 35px );
-}
-
-.um-member-directory-sorting.hidden_type {
-	width: calc( 100% - 36px );
-}
-
-.um-member-directory-sorting.hidden_type.hidden_filter {
+	vertical-align: middle;
 	width: 100%;
 }
-
-
-.um-member-directory-sorting .select2-container {
-	float:left;
-	width:100% !important;
+.um-directory .um-member-with-view .um-member-directory-sorting,
+.um-directory .um-member-with-filters .um-member-directory-sorting {	
+	float: left;
+	width: calc( 100% - 40px );
+}
+.um-directory .um-member-with-filters.um-member-with-view .um-member-directory-sorting {
+	float: left;
+	width: calc( 100% - 75px );
 }
 
+.um-directory:not(.uimob340):not(.uimob500):not(.uimob800) .um-member-with-search .um-member-directory-sorting{
+	float: left;
+	margin-left: 4%;
+	width: 48%;
+}
+.um-directory:not(.uimob340):not(.uimob500):not(.uimob800) .um-member-with-search.um-member-with-view .um-member-directory-sorting,
+.um-directory:not(.uimob340):not(.uimob500):not(.uimob800) .um-member-with-search.um-member-with-filters .um-member-directory-sorting {	
+	float: left;
+	width: calc( 48% - 40px );
+}
+.um-directory:not(.uimob340):not(.uimob500):not(.uimob800) .um-member-with-search.um-member-with-filters.um-member-with-view .um-member-directory-sorting {
+	float: left;
+	width: calc( 48% - 75px );
+}
+
+
+.um-member-directory-sorting .select2-container,
 .um-search-filter .select2-container {
 	float:left;
 	width:100% !important;
