@@ -1836,6 +1836,48 @@ function um_get_cover_uri( $image, $attrs ) {
 }
 
 
+/**
+ * Get cover srcset
+ * @return string
+ */
+function um_get_cover_srcset() {
+
+	$cover_min_width = UM()->options()->get( 'cover_min_width' );
+
+	$base_dir = realpath( UM()->uploader()->get_upload_base_dir() ) . DIRECTORY_SEPARATOR;
+	$base_url = UM()->uploader()->get_upload_base_url();
+
+	//multisite fix for old customers
+	if ( is_multisite() ) {
+		$multisite_fix_dir = str_replace( DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . get_current_blog_id() . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $base_dir );
+		if ( is_dir( $multisite_fix_dir ) ) {
+			$base_dir = realpath( $multisite_fix_dir ) . DIRECTORY_SEPARATOR;
+			$base_url = str_replace( '/sites/' . get_current_blog_id() . '/', '/', $base_url );
+		}
+	}
+
+	$user_base_dir = $base_dir . um_user( 'ID' ) . DIRECTORY_SEPARATOR;
+	$user_base_url = $base_url . um_user( 'ID' ) . '/';
+
+	$images = array();
+	$matchs = array();
+
+	$files = glob( $user_base_dir . 'cover_photo*', GLOB_BRACE );
+
+	foreach ( $files as $file ) {
+		$filename = basename( $file );
+		preg_match( '/cover_photo\-?(\d+)/', $filename, $matchs );
+		$width = isset( $matchs[1] ) ? $matchs[1] : $cover_min_width;
+		$images[$width] = "{$user_base_url}{$filename} {$width}w";
+	}
+
+	ksort( $images );
+	
+	$srcset = apply_filters( 'um_user_cover_photo_srcset__filter', implode( ', ', array_unique( $images ) ), um_user( 'ID' ), $files );
+
+	return $srcset;
+}
+
 
 /**
  * get avatar URL instead of image
@@ -2425,8 +2467,11 @@ function um_user( $data, $attrs = null ) {
 			 * ?>
 			 */
 			$cover_uri = apply_filters( 'um_user_cover_photo_uri__filter', $cover_uri, $is_default, $attrs );
+			
+			$srcset = um_get_cover_srcset();
+			$alt = um_profile( 'nickname' );		
 
-			return $cover_uri ? '<img src="' . esc_attr( $cover_uri ) . '" alt="" />' : '';
+			return $cover_uri ? '<img srcset="' . esc_attr( $srcset ) . '" src="' . esc_attr( $cover_uri ) . '" alt="' . esc_attr( $alt ) . '" />' : '';
 			break;
 
 

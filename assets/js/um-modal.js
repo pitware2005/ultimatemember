@@ -56,7 +56,7 @@ jQuery(document).ready(function() {
 		
 		parent.find('.ajax-upload-dragdrop').show();
 		
-		parent.find('.um-modal-btn.um-finish-upload').addClass('disabled');
+		parent.find('.um-modal-btn.um-finish-upload').addClass('disabled').siblings('.um-modal-btn[data-action="um_remove_modal"]').show();
 		
 		um_modal_responsive();
 		

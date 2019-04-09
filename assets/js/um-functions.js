@@ -299,6 +299,14 @@ function initImageUpload_UM( trigger ) {
 							trigger.parents('.um-modal-body').find('.um-modal-btn.um-finish-upload.disabled').removeClass('disabled');
 							trigger.parents('.um-modal-body').find('.ajax-upload-dragdrop,.upload-statusbar').hide(0);
 							img_id_h.show(0);
+							
+							// User must not close modal until he use crop
+							trigger.closest('.um-modal-body').find('.um-modal-btn[data-action="um_remove_modal"]').hide();
+							trigger.closest('.um-modal').siblings('.um-modal-overlay').on('click', function(e){
+								e.stopPropagation();
+								return false;
+							} );
+							
 							um_modal_responsive();
 
 						});

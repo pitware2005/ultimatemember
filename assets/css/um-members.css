@@ -153,6 +153,9 @@
 	box-sizing: border-box;
 	position: relative;
 }
+.um-member-cover[data-ratio] {
+	overflow-y: hidden;
+}
 
 .um-member-cover-e {
 	text-align: center;
