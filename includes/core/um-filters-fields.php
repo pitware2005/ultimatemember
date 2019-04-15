@@ -733,20 +733,17 @@ add_filter( 'um_edit_url_field_value', 'um_edit_url_field_value', 10, 2 );
 
 
 /**
- * Set current date if date value is empty
- * @param string	$value		"Field Value"
- * @param string	$default	"Field Key"
- * @param string	$key			"Field Type"
- * @param string	$type			"Field Default Value"
+ * Set default date if date value is empty
+ * @param string	$default	"Field Default Value"
  * @param array		$data			"Field Data"
  * @return string
  */
-function um_field_value__default_date( $value, $default, $key, $type, $data ) {
+function um_field_date_default_value( $default, $data ) {
 
-	if ( empty( $value ) && $type === 'date' ) {
-		$value = date( 'Y/m/d' );
+	if ( $default ) {
+		$default = date( 'Y/m/d', strtotime( $default ) );
 	}
 
-	return $value;
+	return $default;
 }
-add_filter( 'um_field_value', 'um_field_value__default_date', 10, 5 );
+add_filter( 'um_field_date_default_value', 'um_field_date_default_value', 20, 2 );

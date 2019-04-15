@@ -584,7 +584,6 @@ if ( ! class_exists( 'um\core\Fields' ) ) {
 				return $_SESSION['um_social_profile'][ $key ];
 			}
 
-			$value = '';
 			$type = ( isset( $data['type'] ) ) ? $data['type'] : '';
 
 			// preview in backend
@@ -762,31 +761,32 @@ if ( ! class_exists( 'um\core\Fields' ) ) {
 			}
 
 			// Default Value for Registration Form and Profile Form editing
-			if ( ! isset( $value ) && ( $this->set_mode == 'register' || $this->editing == true ) ) {
-
-				/**
-				 * UM hook
-				 *
-				 * @type filter
-				 * @title um_edit_{$key}_field_value
-				 * @description Change field value on edit by field $key
-				 * @input_vars
-				 * [{"var":"$value","type":"string","desc":"Field Value"},
-				 * {"var":"$key","type":"string","desc":"Field Key"}]
-				 * @change_log
-				 * ["Since: 2.0"]
-				 * @usage add_filter( 'um_edit_{$key}_field_value', 'function_name', 10, 2 );
-				 * @example
-				 * <?php
-				 * add_filter( 'um_edit_{$key}_field_value', 'my_edit_field_value', 10, 2 );
-				 * function my_edit_field_value( $value, $key ) {
-				 *     // your code here
-				 *     return $value;
-				 * }
-				 * ?>
-				 */
-				$value = apply_filters( "um_edit_{$key}_field_value", $default, $key );
-
+			if ( ! isset( $value ) ) {
+				$value = '';
+				if( $this->set_mode == 'register' || $this->editing == true ){
+					/**
+					 * UM hook
+					 *
+					 * @type filter
+					 * @title um_edit_{$key}_field_value
+					 * @description Change field value on edit by field $key
+					 * @input_vars
+					 * [{"var":"$value","type":"string","desc":"Field Value"},
+					 * {"var":"$key","type":"string","desc":"Field Key"}]
+					 * @change_log
+					 * ["Since: 2.0"]
+					 * @usage add_filter( 'um_edit_{$key}_field_value', 'function_name', 10, 2 );
+					 * @example
+					 * <?php
+					 * add_filter( 'um_edit_{$key}_field_value', 'my_edit_field_value', 10, 2 );
+					 * function my_edit_field_value( $value, $key ) {
+					 *     // your code here
+					 *     return $value;
+					 * }
+					 * ?>
+					 */
+					$value = apply_filters( "um_edit_{$key}_field_value", $default, $key );					
+				}
 			}
 
 			/**

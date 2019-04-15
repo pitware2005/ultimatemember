@@ -2178,6 +2178,10 @@ if ( ! class_exists( 'um\admin\core\Admin_Metabox' ) ) {
 						<textarea name="_default" id="_default"><?php echo $this->edit_mode_value; ?></textarea>
 					</p>
 
+				<?php } elseif ( $this->set_field_type == 'date' ) { ?>
+
+					<p><label for="_default"><?php _e( 'Default Date', 'ultimate-member' ); ?> <?php UM()->tooltip( __( 'You may use all PHP compatible date formats such as: 2020-02-02, 02/02/2020, yesterday, today, tomorrow, next monday, first day of next month, +3 day', 'ultimate-member' ) ); ?></label><input type="text" name="_default" id="_default" value="<?php echo $this->edit_mode_value; ?>" /></p>
+
 				<?php } elseif ( $this->set_field_type == 'rating' ) { ?>
 
 					<p><label for="_default">Default Rating <?php UM()->tooltip( __( 'If you wish the rating field to be prefilled with a number of stars, enter it here.', 'ultimate-member' ) ); ?></label>
