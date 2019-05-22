@@ -609,7 +609,7 @@
   $.fn.um_raty.defaults = {
     cancel       : false,
     cancelClass  : 'raty-cancel',
-    cancelHint   : 'Cancel this rating!',
+    cancelHint   : (typeof(um_raty) === 'object' && um_raty['Cancel this rating!']) || 'Cancel this rating!',
     cancelOff    : 'cancel-off.png',
     cancelOn     : 'cancel-on.png',
     cancelPlace  : 'left',
@@ -620,7 +620,7 @@
     iconRange    : undefined,
     mouseout     : undefined,
     mouseover    : undefined,
-    noRatedMsg   : 'Not rated yet!',
+    noRatedMsg   : (typeof(um_raty) === 'object' && um_raty['Not rated yet!']) || 'Not rated yet!',
     number       : 5,
     numberMax    : 20,
     path         : undefined,
